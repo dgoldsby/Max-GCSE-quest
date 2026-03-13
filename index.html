@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Max's GCSE Quest</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d1a;
+  --surface: #16172a;
+  --surface2: #1e2038;
+  --border: rgba(255,255,255,0.08);
+  --text: #f0eeff;
+  --muted: #7878a8;
+  --purple: #8b5cf6;
+  --pink: #ec4899;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --cyan: #06b6d4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── PARTICLES ─── */
+#particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+.particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0; }
+@keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.3; } 100% { transform: translateY(-10vh) scale(1); opacity: 0; } }
+
+/* ─── LAYOUT ─── */
+.app { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 16px; }
+
+/* ─── HEADER ─── */
+.hdr {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 18px;
+  margin-bottom: 14px;
+}
+.avatar {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 900; color: white; flex-shrink: 0;
+  position: relative;
+}
+.avatar .level-pip {
+  position: absolute; bottom: -4px; right: -4px;
+  background: var(--amber); color: #000; font-size: 9px; font-weight: 900;
+  width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg);
+}
+.hdr-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+.hdr-stat { text-align: center; }
+.hdr-stat .v { font-size: 18px; font-weight: 900; font-family: 'JetBrains Mono', monospace; }
+.hdr-stat .l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.hdr-xp { flex: 1; }
+.xp-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.xp-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; }
+.xp-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--pink)); border-radius: 8px; transition: width 0.8s cubic-bezier(.34,1.56,.64,1); }
+
+/* ─── COMBO BANNER ─── */
+.combo-banner {
+  display: none; text-align: center; padding: 10px;
+  background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.2));
+  border: 1px solid rgba(139,92,246,0.4); border-radius: 12px;
+  margin-bottom: 12px; font-size: 15px; font-weight: 800;
+  animation: comboPulse 0.5s ease;
+}
+.combo-banner.show { display: block; }
+@keyframes comboPulse { 0% { transform: scale(0.8); opacity: 0; } 60% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
+
+/* ─── COACH BUBBLE ─── */
+.coach {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 14px 16px; margin-bottom: 14px;
+  transition: all 0.3s ease;
+}
+.coach-face {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; position: relative;
+}
+.coach-face::after {
+  content: ''; position: absolute; left: 100%; top: 50%;
+  transform: translateY(-50%); border: 7px solid transparent;
+  border-left-color: var(--surface);
+}
+.coach-msg { font-size: 14px; line-height: 1.6; color: var(--text); flex: 1; }
+.coach-msg strong { color: #a78bfa; }
+.coach-msg .nudge { color: var(--amber); font-weight: 800; }
+
+/* ─── CURRICULUM MAP ─── */
+.curriculum-wrap {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; padding: 16px; margin-bottom: 14px;
+}
+.curriculum-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+.curriculum-title .heat-legend { display: flex; gap: 6px; align-items: center; font-size: 10px; }
+.heat-dot { width: 10px; height: 10px; border-radius: 3px; }
+.topic-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 7px; }
+.topic-node {
+  border-radius: 10px; padding: 8px 10px; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 1.5px solid transparent; position: relative;
+}
+.topic-node:hover { transform: translateY(-2px); }
+.topic-node.hot { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.3); }
+.topic-node.warm { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.25); }
+.topic-node.cool { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.25); }
+.topic-node.cold { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.2); }
+.topic-node.active { box-shadow: 0 0 0 2px var(--purple); }
+.topic-node .t-icon { font-size: 14px; margin-bottom: 3px; }
+.topic-node .t-name { font-size: 10px; font-weight: 700; line-height: 1.3; color: var(--text); }
+.topic-node .t-bar { height: 3px; background: rgba(255,255,255,0.08); border-radius: 3px; margin-top: 5px; overflow: hidden; }
+.topic-node .t-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.topic-node .t-count { position: absolute; top: 4px; right: 5px; font-size: 9px; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--muted); }
+.topic-node.neglected::after {
+  content: '!'; position: absolute; top: -5px; left: -5px;
+  background: var(--red); color: white; font-size: 9px; font-weight: 900;
+  width: 14px; height: 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+
+/* ─── QUESTION CARD ─── */
+.q-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 22px; margin-bottom: 14px;
+  animation: slideIn 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes slideIn { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+.q-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 0.3px; }
+.tag-topic { background: rgba(139,92,246,0.2); color: #c4b5fd; }
+.tag-year { background: rgba(6,182,212,0.15); color: #67e8f9; }
+.tag-diff-easy { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+.tag-diff-med { background: rgba(245,158,11,0.15); color: #fcd34d; }
+.tag-diff-hard { background: rgba(239,68,68,0.15); color: #fca5a5; }
+.marks-pill {
+  background: rgba(245,158,11,0.12); color: var(--amber);
+  border: 1.5px solid rgba(245,158,11,0.25);
+  border-radius: 20px; padding: 4px 12px;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+}
+
+.q-text { font-size: 16px; line-height: 1.75; color: #e2e0ff; margin-bottom: 18px; }
+.q-text strong { color: #fff; }
+.q-text em { color: var(--muted); font-style: normal; font-size: 13px; }
+
+/* ─── SCAFFOLD HINTS ─── */
+.scaffold {
+  background: var(--surface2); border-radius: 12px; padding: 14px;
+  margin-bottom: 16px;
+}
+.scaffold-step {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; line-height: 1.6; color: var(--muted);
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+  opacity: 0.4; transition: opacity 0.4s, color 0.4s;
+}
+.scaffold-step:last-child { border-bottom: none; }
+.scaffold-step.unlocked { opacity: 1; color: #c4b5fd; }
+.scaffold-step.done { opacity: 1; color: var(--green); }
+.step-num {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(139,92,246,0.2); color: #a78bfa;
+  font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.scaffold-step.done .step-num { background: rgba(16,185,129,0.2); color: var(--green); }
+
+.answer-area {
+  width: 100%; min-height: 110px;
+  background: var(--surface2); border: 2px solid var(--border);
+  border-radius: 12px; color: var(--text);
+  font-family: 'Nunito', sans-serif; font-size: 15px;
+  padding: 12px 14px; resize: vertical; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s; line-height: 1.65;
+}
+.answer-area:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+}
+.answer-area.has-content { border-color: rgba(139,92,246,0.4); }
+
+/* ─── TYPING PROMPTS ─── */
+.typing-prompt {
+  font-size: 12px; color: var(--muted); margin-top: 6px; min-height: 18px;
+  transition: color 0.3s;
+}
+.typing-prompt.active { color: #a78bfa; }
+
+/* ─── ACTION ROW ─── */
+.action-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.btn {
+  padding: 10px 20px; border-radius: 12px; font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.15s; border: none; outline: none;
+}
+.btn-submit {
+  background: linear-gradient(135deg, var(--purple), #7c3aed);
+  color: white; flex: 1;
+  box-shadow: 0 4px 15px rgba(139,92,246,0.3);
+}
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,92,246,0.4); }
+.btn-submit:active { transform: scale(0.97); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-hint {
+  background: rgba(245,158,11,0.12); color: var(--amber);
+  border: 1.5px solid rgba(245,158,11,0.25);
+}
+.btn-hint:hover { background: rgba(245,158,11,0.2); }
+.btn-skip {
+  background: rgba(255,255,255,0.05); color: var(--muted);
+  border: 1px solid var(--border);
+}
+.btn-skip:hover { background: rgba(255,255,255,0.09); color: var(--text); }
+
+/* ─── FEEDBACK ─── */
+.feedback {
+  border-radius: 16px; padding: 20px; margin-top: 14px;
+  display: none; animation: slideIn 0.3s ease;
+}
+.feedback.show { display: block; }
+.feedback.great { background: rgba(16,185,129,0.07); border: 1.5px solid rgba(16,185,129,0.25); }
+.feedback.good { background: rgba(245,158,11,0.07); border: 1.5px solid rgba(245,158,11,0.2); }
+.feedback.needs-work { background: rgba(239,68,68,0.06); border: 1.5px solid rgba(239,68,68,0.2); }
+
+.fb-score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.fb-score {
+  font-size: 36px; font-weight: 900; font-family: 'JetBrains Mono', monospace;
+}
+.feedback.great .fb-score { color: var(--green); }
+.feedback.good .fb-score { color: var(--amber); }
+.feedback.needs-work .fb-score { color: var(--red); }
+.fb-title { font-size: 17px; font-weight: 900; }
+.fb-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+.mark-breakdown {
+  display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;
+}
+.mark-line {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; line-height: 1.55;
+}
+.mark-line .mark-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.mark-line.earned { color: #a7f3d0; }
+.mark-line.missed { color: #fca5a5; }
+.mark-line.tip { color: #fcd34d; }
+
+.ms-box {
+  background: rgba(255,255,255,0.04); border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 14px;
+}
+.ms-box h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+.ms-box p { font-size: 13px; line-height: 1.7; color: #c4b5fd; }
+
+.xp-gain {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.25);
+  border-radius: 20px; padding: 4px 12px; font-size: 13px; font-weight: 800; color: #c4b5fd;
+  animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ─── NEXT ACTIONS ─── */
+.next-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.btn-next {
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white; font-size: 14px; font-weight: 900; flex: 1;
+  box-shadow: 0 4px 15px rgba(139,92,246,0.25);
+}
+.btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,92,246,0.35); }
+.btn-change-topic {
+  background: rgba(6,182,212,0.1); color: var(--cyan);
+  border: 1.5px solid rgba(6,182,212,0.25); font-size: 13px;
+}
+
+/* ─── TOPIC NUDGE MODAL ─── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: none; align-items: center; justify-content: center;
+  z-index: 100; backdrop-filter: blur(4px);
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 24px; padding: 28px; max-width: 420px; width: 90%;
+  animation: modalIn 0.4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes modalIn { from { transform: scale(0.7) translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+.modal-emoji { font-size: 48px; text-align: center; margin-bottom: 12px; }
+.modal h2 { font-size: 20px; font-weight: 900; text-align: center; margin-bottom: 8px; }
+.modal p { font-size: 14px; color: var(--muted); text-align: center; line-height: 1.65; margin-bottom: 20px; }
+.modal-choices { display: flex; flex-direction: column; gap: 8px; }
+.modal-choice {
+  background: var(--surface2); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 12px 16px; cursor: pointer;
+  transition: all 0.15s; display: flex; align-items: center; gap: 10px;
+}
+.modal-choice:hover { border-color: var(--purple); background: rgba(139,92,246,0.1); transform: translateX(4px); }
+.modal-choice .mc-icon { font-size: 20px; }
+.modal-choice .mc-text { flex: 1; }
+.modal-choice .mc-name { font-size: 14px; font-weight: 800; }
+.modal-choice .mc-sub { font-size: 12px; color: var(--muted); }
+.modal-choice .mc-badge { font-size: 10px; font-weight: 900; padding: 2px 7px; border-radius: 8px; }
+.mc-badge.cold { background: rgba(59,130,246,0.2); color: #93c5fd; }
+.mc-badge.neglected { background: rgba(239,68,68,0.2); color: #fca5a5; }
+
+/* ─── CELEBRATION ─── */
+.celebration {
+  position: fixed; inset: 0; pointer-events: none; z-index: 200;
+  display: none; align-items: center; justify-content: center;
+}
+.celebration.show { display: flex; }
+.celeb-text {
+  font-size: 80px; font-weight: 900; animation: celebFly 1.5s ease forwards;
+  text-shadow: 0 0 40px rgba(139,92,246,0.8);
+}
+@keyframes celebFly { 0% { transform: scale(0) rotate(-15deg); opacity: 0; } 30% { transform: scale(1.2) rotate(5deg); opacity: 1; } 60% { transform: scale(1) rotate(0); opacity: 1; } 100% { transform: scale(0.5) translateY(-80px); opacity: 0; } }
+
+/* ─── FLOATING XP ─── */
+.float-xp {
+  position: fixed; pointer-events: none; z-index: 150;
+  font-size: 22px; font-weight: 900; color: #a78bfa;
+  font-family: 'JetBrains Mono', monospace;
+  animation: floatXP 1.5s ease forwards;
+}
+@keyframes floatXP { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-80px) scale(1.3); } }
+
+/* ─── DANGER ZONE BADGE ─── */
+.danger-zone {
+  display: none; background: rgba(239,68,68,0.1); border: 1.5px solid rgba(239,68,68,0.3);
+  border-radius: 12px; padding: 10px 14px; margin-bottom: 12px;
+  font-size: 13px; line-height: 1.5; animation: shake 0.5s ease;
+}
+.danger-zone.show { display: flex; align-items: center; gap: 10px; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-5px); } 40%,80% { transform: translateX(5px); } }
+
+/* ─── PROGRESS FOOTER ─── */
+.progress-footer {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;
+}
+.prog-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 14px;
+}
+.prog-card h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 10px; }
+.mini-topic { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.mini-topic .mt-name { flex: 1; font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-topic .mt-bar { width: 60px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; flex-shrink: 0; }
+.mini-topic .mt-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.mini-topic .mt-n { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--muted); min-width: 14px; text-align: right; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<!-- CELEBRATION LAYER -->
+<div class="celebration" id="celebration">
+  <div class="celeb-text" id="celeb-text">🎉</div>
+</div>
+
+<!-- TOPIC NUDGE MODAL -->
+<div class="modal-overlay" id="nudge-modal">
+  <div class="modal">
+    <div class="modal-emoji" id="nudge-emoji">🎯</div>
+    <h2 id="nudge-title">Time to level up a new area!</h2>
+    <p id="nudge-msg">You're smashing it on that topic — now let's unlock some new territory and boost your overall grade!</p>
+    <div class="modal-choices" id="nudge-choices"></div>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="avatar">
+      M
+      <div class="level-pip" id="level-num">3</div>
+    </div>
+    <div class="hdr-stats">
+      <div class="hdr-stat">
+        <div class="v" id="h-pts" style="color:#a78bfa">0</div>
+        <div class="l">Points</div>
+      </div>
+      <div class="hdr-stat">
+        <div class="v" id="h-streak" style="color:#f59e0b">🔥0</div>
+        <div class="l">Streak</div>
+      </div>
+      <div class="hdr-stat">
+        <div class="v" id="h-combo" style="color:#10b981">×1</div>
+        <div class="l">Combo</div>
+      </div>
+    </div>
+    <div class="hdr-xp">
+      <div class="xp-row"><span id="xp-level">Level 3</span><span id="xp-val">0 / 400 XP</span></div>
+      <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- COMBO BANNER -->
+  <div class="combo-banner" id="combo-banner"></div>
+
+  <!-- DANGER ZONE -->
+  <div class="danger-zone" id="danger-zone">
+    <span style="font-size:20px">🚨</span>
+    <div>
+      <strong id="dz-msg">You've done 4 questions on the same topic!</strong>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">Switch topics to unlock bonus XP and make sure you cover everything for the exam.</div>
+    </div>
+  </div>
+
+  <!-- COACH BUBBLE -->
+  <div class="coach" id="coach">
+    <div class="coach-face">🤖</div>
+    <div class="coach-msg" id="coach-msg">Hey Max! 👋 Pick a topic below to start — each correct answer earns XP and powers up your grade. Let's go! 🚀</div>
+  </div>
+
+  <!-- CURRICULUM MAP -->
+  <div class="curriculum-wrap">
+    <div class="curriculum-title">
+      <span>📚 Curriculum map — tap any topic to practise it</span>
+      <div class="heat-legend">
+        <div class="heat-dot" style="background:rgba(59,130,246,0.5)"></div><span style="color:var(--muted)">Cold</span>
+        <div class="heat-dot" style="background:rgba(245,158,11,0.6)"></div><span style="color:var(--muted)">Warm</span>
+        <div class="heat-dot" style="background:rgba(239,68,68,0.6)"></div><span style="color:var(--muted)">Hot</span>
+      </div>
+    </div>
+    <div class="topic-map" id="topic-map"></div>
+  </div>
+
+  <!-- QUESTION CARD -->
+  <div class="q-card" id="q-card">
+    <div style="text-align:center;padding:30px 0;color:var(--muted)">
+      <div style="font-size:40px;margin-bottom:10px">👆</div>
+      <div style="font-weight:800">Tap a topic above to start your quest!</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS FOOTER -->
+  <div class="progress-footer">
+    <div class="prog-card">
+      <h3>📐 Maths coverage</h3>
+      <div id="maths-mini"></div>
+    </div>
+    <div class="prog-card">
+      <h3>⚗️ Chemistry coverage</h3>
+      <div id="chem-mini"></div>
+    </div>
+  </div>
+
+  <!-- SEND REPORT BUTTON -->
+  <div id="report-bar" style="
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 18px; padding: 16px 20px; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  ">
+    <div style="flex:1; min-width: 180px;">
+      <div style="font-size:14px; font-weight:800; color:var(--text);">📧 Send today's report to Dad</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:2px;">Opens your email app — one tap to send</div>
+    </div>
+    <button class="btn" onclick="sendReport()" style="
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white; font-size:14px; font-weight:900;
+      box-shadow: 0 4px 15px rgba(16,185,129,0.3); white-space: nowrap;
+    ">Send report 🚀</button>
+  </div>
+
+  <!-- SENT CONFIRMATION -->
+  <div id="report-sent" style="
+    display:none; background: rgba(16,185,129,0.08);
+    border: 1.5px solid rgba(16,185,129,0.3);
+    border-radius: 14px; padding: 14px 18px; margin-bottom: 14px;
+    font-size: 14px; color: #6ee7b7; font-weight: 700; text-align: center;
+  ">✅ Email app opened! Hit send and your report is on its way to Dad 👍</div>
+
+</div><!-- /app -->
+
+<script>
+// ════════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════════
+
+const TOPICS = {
+  // MATHS
+  'm-fractions':   { name: 'Fractions',       icon: '½',  sub: 'maths',   color: '#8b5cf6' },
+  'm-percent':     { name: 'Percentages',      icon: '%',  sub: 'maths',   color: '#ec4899' },
+  'm-algebra':     { name: 'Algebra',          icon: 'x²', sub: 'maths',   color: '#06b6d4' },
+  'm-ratio':       { name: 'Ratio',            icon: '∶',  sub: 'maths',   color: '#3b82f6' },
+  'm-geometry':    { name: 'Geometry',         icon: '△',  sub: 'maths',   color: '#10b981' },
+  'm-stats':       { name: 'Statistics',       icon: '📊', sub: 'maths',   color: '#f59e0b' },
+  'm-number':      { name: 'Number',           icon: '#',  sub: 'maths',   color: '#a78bfa' },
+  // CHEMISTRY
+  'c-atoms':       { name: 'Atoms',            icon: '⚛',  sub: 'chem',    color: '#10b981' },
+  'c-periodic':    { name: 'Periodic Table',   icon: 'Fe', sub: 'chem',    color: '#06b6d4' },
+  'c-bonding':     { name: 'Bonding',          icon: '🔗', sub: 'chem',    color: '#8b5cf6' },
+  'c-reactions':   { name: 'Reactions',        icon: '⚗',  sub: 'chem',    color: '#ec4899' },
+  'c-rates':       { name: 'Rates',            icon: '⏱', sub: 'chem',    color: '#f59e0b' },
+  'c-energy':      { name: 'Energy Changes',   icon: '🔥', sub: 'chem',    color: '#ef4444' },
+  'c-equations':   { name: 'Equations',        icon: '⇌',  sub: 'chem',    color: '#3b82f6' },
+};
+
+// State per topic: { attempts, correct, lastQ, streak }
+const topicState = {};
+Object.keys(TOPICS).forEach(k => { topicState[k] = { attempts: 0, correct: 0, lastQId: null, consecutive: 0 }; });
+
+// ────────────────────────────────────────────────────────────
+// QUESTION BANK — each question: id, topicKey, marks, diff, year, text, scaffold[], hint, ms, check(ans)->result
+// ────────────────────────────────────────────────────────────
+
+const QUESTIONS = [
+
+  // ─── MATHS: FRACTIONS ───
+  { id:'mf1', t:'m-fractions', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Work out <strong>¾ + ⅖</strong>. Give your answer as a fraction in its simplest form.',
+    scaffold:[
+      'What do fractions need before you can add them? (Think: same ___)',
+      'The LCM of 4 and 5 is 20. Convert both: ¾ = ?/20 and ⅖ = ?/20',
+      'Add the numerators. Can your answer be simplified?'
+    ],
+    hint:'Common denominator = 20. Then: 15/20 + 8/20.',
+    ms:'Common denominator (20) [M1] → 15/20 + 8/20 = 23/20 or 1 3/20 [A1]',
+    check: a => {
+      const c = a.replace(/\s/g,'');
+      const ok = c.includes('23/20') || c.includes('13/20') || (c.includes('1') && c.includes('3/20'));
+      const meth = c.includes('/20') || c.includes('20');
+      if (ok) return { s:2, t:2, earned:['Correct answer ✓', 'Method shown ✓'], missed:[], tip:'Perfect — this is exactly what examiners want to see!' };
+      if (meth) return { s:1, t:2, earned:['Correct method — common denominator found ✓'], missed:['Final answer not quite right'], tip:'You had the right idea. Check your arithmetic when converting.' };
+      return { s:0, t:2, earned:[], missed:['Needed a common denominator first', 'Then add numerators'], tip:'Try: find LCM of the denominators first, then convert both fractions.' };
+    }
+  },
+
+  { id:'mf2', t:'m-fractions', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Work out <strong>2⅓ × 1½</strong>. Give your answer as a mixed number.',
+    scaffold:[
+      'Convert both to improper fractions first: 2⅓ = ?/3 and 1½ = ?/2',
+      'Multiply numerators together, then denominators together',
+      'Simplify your answer and convert back to a mixed number'
+    ],
+    hint:'2⅓ = 7/3 and 1½ = 3/2. Then multiply: 7/3 × 3/2.',
+    ms:'7/3 × 3/2 [M1] = 21/6 = 7/2 [A1] = 3½ [A1]',
+    check: a => {
+      const ok = a.includes('3½') || a.includes('3 1/2') || a.includes('3.5');
+      const meth = a.includes('7/3') || a.includes('3/2') || a.includes('21/6');
+      if (ok && meth) return { s:3, t:3, earned:['Converted to improper fractions ✓','Multiplied correctly ✓','Correct mixed number ✓'], missed:[], tip:'Excellent — all 3 marks!' };
+      if (ok) return { s:2, t:3, earned:['Correct final answer ✓'], missed:['Show the improper fraction step for M1'], tip:'Show your working with 7/3 and 3/2 to pick up method marks.' };
+      if (meth) return { s:1, t:3, earned:['Started correctly ✓'], missed:['Multiplication or simplification needs checking'], tip:'You set it up right — check 7/3 × 3/2 step by step.' };
+      return { s:0, t:3, earned:[], missed:['Convert to improper fractions first','Multiply top × top, bottom × bottom','Convert back to mixed number'], tip:'Start by turning 2⅓ into 7/3.' };
+    }
+  },
+
+  // ─── MATHS: PERCENTAGES ───
+  { id:'mp1', t:'m-percent', marks:2, diff:'easy', year:'AQA 2023',
+    text:'A jacket costs <strong>£80</strong>. It is reduced by <strong>15%</strong>. Work out the sale price.',
+    scaffold:[
+      'What is 15% of 80? (Try: 10% first, then 5%)',
+      'Sale price = original price − discount'
+    ],
+    hint:'10% of £80 = £8. So 5% = £4. 15% = £12.',
+    ms:'15% of 80 = £12 [M1] → £80 − £12 = £68 [A1]',
+    check: a => {
+      const ok = a.includes('68');
+      const meth = a.includes('12') || a.includes('0.85') || a.includes('85');
+      if (ok && meth) return { s:2, t:2, earned:['Correct 15% calculation ✓','Correct sale price ✓'], missed:[], tip:'Nice work — and the "find 10% then 5%" trick works every time!' };
+      if (ok) return { s:2, t:2, earned:['Correct answer ✓'], missed:[], tip:'Great! Just make sure to show the working for the method mark.' };
+      if (meth) return { s:1, t:2, earned:['15% correctly calculated ✓'], missed:['Final price not shown'], tip:'You found 15% — just subtract it from £80.' };
+      return { s:0, t:2, earned:[], missed:['Find 15% of £80 first','Then subtract from £80'], tip:'Start with 10% of £80 = £8. Then add half of that for 5%.' };
+    }
+  },
+
+  { id:'mp2', t:'m-percent', marks:3, diff:'medium', year:'AQA 2022',
+    text:'A TV costs <strong>£450 after a 25% reduction</strong>. What was the original price?',
+    scaffold:[
+      '£450 is what percentage of the original? (100% − 25% = ?)',
+      'If 75% = £450, what is 1%?',
+      'Multiply by 100 to find 100% (the original price)'
+    ],
+    hint:'75% of original = £450. So original = 450 ÷ 0.75.',
+    ms:'75% = £450 [M1] → 1% = £6 [M1] → 100% = £600 [A1]',
+    check: a => {
+      const ok = a.includes('600');
+      const m1 = a.includes('75') || a.includes('0.75');
+      const m2 = a.includes('6') || a.includes('÷');
+      if (ok && m1) return { s:3, t:3, earned:['Identified 75% = £450 ✓','Correct division ✓','Original price = £600 ✓'], missed:[], tip:'Reverse percentages — nailed it!' };
+      if (ok) return { s:2, t:3, earned:['Correct answer ✓'], missed:['Show 75% step explicitly'], tip:'Write "75% = £450" before your division to secure M1.' };
+      if (m1) return { s:1, t:3, earned:['Recognised 75% ✓'], missed:['Division step needed','Final answer needed'], tip:'Good — now divide £450 by 75 to find 1%, then × 100.' };
+      return { s:0, t:3, earned:[], missed:['£450 represents 75%, not 100%','Use unitary method: find 1% first'], tip:'Key insight: after 25% off, £450 is 75% of the original.' };
+    }
+  },
+
+  // ─── MATHS: ALGEBRA ───
+  { id:'ma1', t:'m-algebra', marks:4, diff:'medium', year:'AQA 2022',
+    text:'Solve <strong>5x + 3 = 2x + 15</strong>',
+    scaffold:[
+      'Collect x terms: subtract 2x from both sides',
+      'Collect numbers: subtract 3 from both sides',
+      'Solve for x',
+      'Substitute back in to check — do both sides equal the same number?'
+    ],
+    hint:'After subtracting 2x: 3x + 3 = 15. Then subtract 3 from both sides.',
+    ms:'3x = 12 [M1+A1] → x = 4 [A1] → check: 5(4)+3 = 23 = 2(4)+15 [B1]',
+    check: a => {
+      const ok = a.replace(/\s/g,'').includes('x=4') || a.includes('= 4');
+      const working = a.includes('3x') || a.includes('2x') || a.includes('12');
+      const check = a.includes('23') || a.toLowerCase().includes('check') || a.toLowerCase().includes('sub');
+      if (ok && working && check) return { s:4, t:4, earned:['Collected x terms ✓','Simplified correctly ✓','x = 4 ✓','Checked answer ✓'], missed:[], tip:'Full marks — and checking is worth 1 whole mark, never skip it!' };
+      if (ok && working) return { s:3, t:4, earned:['Correct method ✓','x = 4 ✓'], missed:['Check by substituting back in'], tip:'Substitute x = 4 back: 5(4)+3 = 23 and 2(4)+15 = 23. ✓ That B1 is free marks!' };
+      if (ok) return { s:2, t:4, earned:['Correct answer ✓'], missed:['Show full working','Check your answer'], tip:'Show each step and the check to get all 4 marks.' };
+      if (working) return { s:1, t:4, earned:['Started correctly ✓'], missed:['Complete the algebra to find x'], tip:'You collected terms — keep going to isolate x.' };
+      return { s:0, t:4, earned:[], missed:['Collect x terms to one side','Collect numbers to the other','Solve for x','Check answer'], tip:'Start: 5x − 2x + 3 = 15. What does that give you?' };
+    }
+  },
+
+  { id:'ma2', t:'m-algebra', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Expand and simplify: <strong>(x + 3)(x − 2)</strong>',
+    scaffold:[
+      'Use FOIL or the grid method: First × First, Outer × Inner, Inner × Outer, Last × Last',
+      'Write out all four terms before simplifying',
+      'Collect like terms (the x terms)'
+    ],
+    hint:'FOIL: x² − 2x + 3x − 6. Now collect the x terms.',
+    ms:'x² − 2x + 3x − 6 [M1+A1] → x² + x − 6 [A1]',
+    check: a => {
+      const c = a.replace(/\s/g,'');
+      const ok = c.includes('x²+x-6') || c.includes('x²+x−6') || c.includes('x^2+x-6');
+      const meth = c.includes('x²') || c.includes('x^2');
+      const terms = c.includes('-6') || c.includes('−6');
+      if (ok) return { s:3, t:3, earned:['All four terms correct ✓','Like terms collected ✓','Final answer ✓'], missed:[], tip:'Perfect expansion!' };
+      if (meth && terms) return { s:2, t:3, earned:['x² and constant correct ✓'], missed:['Check the x term: −2x + 3x = +x'], tip:'Nearly there — the middle term should be +x, not −x.' };
+      if (meth) return { s:1, t:3, earned:['Started with x² ✓'], missed:['Check all four FOIL terms','Collect like terms'], tip:'Write out: x²,  −2x,  +3x,  −6 separately, then combine.' };
+      return { s:0, t:3, earned:[], missed:['Multiply every term in first bracket by every term in second'], tip:'Try a grid: put (x+3) across the top and (x−2) down the side.' };
+    }
+  },
+
+  // ─── MATHS: RATIO ───
+  { id:'mr1', t:'m-ratio', marks:3, diff:'easy', year:'AQA 2022',
+    text:'Share <strong>£240</strong> in the ratio <strong>3 : 5</strong>.',
+    scaffold:[
+      'Total number of parts = 3 + 5 = ?',
+      'Value of 1 part = £240 ÷ total parts',
+      'Multiply to find each share'
+    ],
+    hint:'8 parts total. 1 part = £30.',
+    ms:'8 parts [M1] → 1 part = £30 → shares = £90 and £150 [A1 each]',
+    check: a => {
+      const h90 = a.includes('90'); const h150 = a.includes('150'); const work = a.includes('30') || a.includes('8');
+      if (h90 && h150 && work) return { s:3, t:3, earned:['Total parts found ✓','£90 correct ✓','£150 correct ✓'], missed:[], tip:'Spot on — the "find 1 part first" method works for every ratio question.' };
+      if (h90 && h150) return { s:2, t:3, earned:['Both values correct ✓'], missed:['Show the "1 part" step for M1'], tip:'Write "8 parts total, 1 part = £30" to pick up the method mark.' };
+      if (h90 || h150 || work) return { s:1, t:3, earned:['Partial working ✓'], missed:['Need both final answers'], tip:'Check: 3 × £30 = £90 and 5 × £30 = £150. Do they add to £240?' };
+      return { s:0, t:3, earned:[], missed:['Add ratio numbers to find total parts','Divide total by parts to find 1 part','Multiply for each share'], tip:'Step 1: 3 + 5 = 8 parts. Step 2: £240 ÷ 8 = £30 per part.' };
+    }
+  },
+
+  // ─── MATHS: GEOMETRY ───
+  { id:'mg1', t:'m-geometry', marks:5, diff:'hard', year:'AQA 2023',
+    text:'A rectangle has perimeter <strong>36 cm</strong>. Its length is <strong>twice</strong> its width.<br>Work out the area of the rectangle.',
+    scaffold:[
+      'Let width = w. Write an expression for the length in terms of w.',
+      'Write a perimeter equation: 2(length + width) = 36',
+      'Solve your equation to find w',
+      'Find both dimensions',
+      'Area = length × width. Don\'t forget units!'
+    ],
+    hint:'Width = w, length = 2w. Perimeter: 2(2w + w) = 36 → 6w = 36.',
+    ms:'w and 2w [M1] → 6w = 36 [M1] → w = 6 [A1] → area = 12 × 6 [M1] → 72 cm² [A1]',
+    check: a => {
+      const h72 = a.includes('72'); const units = a.includes('cm²') || a.includes('cm2'); const setup = a.includes('2w') || a.includes('6w'); const solved = a.includes('6') && a.includes('12');
+      if (h72 && units && setup) return { s:5, t:5, earned:['Set up with algebra ✓','Equation solved ✓','Both dimensions found ✓','Area calculated ✓','Units included ✓'], missed:[], tip:'5/5 — and showing the equation setup is what earns those M marks!' };
+      if (h72 && units) return { s:4, t:5, earned:['Area = 72 cm² ✓'], missed:['Show equation setup more explicitly'], tip:'Write out "let w = width, length = 2w, 2(3w) = 36" for full marks.' };
+      if (h72) return { s:3, t:5, earned:['Area value correct ✓'], missed:['Add cm² units!','Show algebraic setup'], tip:'Units drop an easy mark — ALWAYS write cm² for area.' };
+      if (setup) return { s:2, t:5, earned:['Correct algebraic setup ✓'], missed:['Solve the equation','Calculate the area'], tip:'Good setup — now solve 6w = 36 to get w = 6.' };
+      return { s:0, t:5, earned:[], missed:['Define w and 2w','Form perimeter equation','Solve for w','Find area','Include units'], tip:'Start with: let width = w, so length = 2w. Perimeter = 2(w + 2w) = 36.' };
+    }
+  },
+
+  // ─── MATHS: STATISTICS ───
+  { id:'ms1', t:'m-stats', marks:3, diff:'easy', year:'AQA 2023',
+    text:'The ages of 5 children are: <strong>7, 9, 9, 11, 14</strong>.<br>Find the <strong>mean</strong>, <strong>median</strong> and <strong>mode</strong>.',
+    scaffold:[
+      'Mean = total ÷ number of values. Add them all up first.',
+      'Median = middle value when in ORDER. Already ordered here!',
+      'Mode = value that appears most often'
+    ],
+    hint:'Sum = 50. Median is the 3rd value. Mode is the repeated one.',
+    ms:'Mean = 50÷5 = 10 [A1] | Median = 9 [A1] | Mode = 9 [A1]',
+    check: a => {
+      const mn = a.includes('10') || a.toLowerCase().includes('mean') && a.includes('10');
+      const md = (a.toLowerCase().includes('median') && a.includes('9')) || a.includes('median = 9');
+      const mo = a.toLowerCase().includes('mode') || a.includes('9');
+      const all3 = a.includes('10') && a.match(/\b9\b/g)?.length >= 1;
+      if (all3 && a.toLowerCase().includes('mean') && a.toLowerCase().includes('median')) return { s:3, t:3, earned:['Mean = 10 ✓','Median = 9 ✓','Mode = 9 ✓'], missed:[], tip:'All three averages — perfect! Note: median and mode are both 9 here.' };
+      if (all3) return { s:2, t:3, earned:['Values correct ✓'], missed:['Label each one clearly (mean/median/mode)'], tip:'Always label — write "mean = 10, median = 9, mode = 9" separately.' };
+      return { s:1, t:3, earned:['Partial ✓'], missed:['All three need to be found and labelled'], tip:'Three separate answers, each labelled. Mean = sum ÷ count.' };
+    }
+  },
+
+  // ─── MATHS: NUMBER ───
+  { id:'mn1', t:'m-number', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Write <strong>0.000 045</strong> in standard form.',
+    scaffold:[
+      'Standard form is: A × 10ⁿ where 1 ≤ A < 10',
+      'Move the decimal point until you get a number between 1 and 10. Count the moves.',
+      'If you moved RIGHT, the power is negative; if LEFT, it\'s positive'
+    ],
+    hint:'4.5 × 10ⁿ. You moved the decimal 5 places to the right, so n = −5.',
+    ms:'4.5 [A1] × 10⁻⁵ [M1+A1]',
+    check: a => {
+      const coeff = a.includes('4.5');
+      const pow = a.includes('10-5') || a.includes('10⁻⁵') || a.includes('10^-5') || (a.includes('10') && a.includes('-5'));
+      if (coeff && pow) return { s:3, t:3, earned:['Correct coefficient 4.5 ✓','Correct power 10⁻⁵ ✓','Standard form notation ✓'], missed:[], tip:'Standard form nailed — remember: small numbers have negative powers.' };
+      if (coeff) return { s:1, t:3, earned:['Coefficient correct ✓'], missed:['Power needs to be 10⁻⁵'], tip:'You have 4.5 — now: how many places did you move? That\'s the power (negative because the original was tiny).' };
+      return { s:0, t:3, earned:[], missed:['Find a number between 1 and 10','Count decimal places moved','Write as × 10ⁿ with correct sign'], tip:'Start: move decimal until you get 4.5. Count: 5 moves right = ×10⁻⁵.' };
+    }
+  },
+
+  // ─── CHEMISTRY: ATOMS ───
+  { id:'ca1', t:'c-atoms', marks:2, diff:'easy', year:'AQA 2023',
+    text:'An atom of carbon-12 has 6 protons. State the number of <strong>neutrons</strong> and <strong>electrons</strong>.',
+    scaffold:[
+      'Mass number = protons + neutrons. So neutrons = mass number − protons.',
+      'A neutral atom has no overall charge. What does that tell you about electrons vs protons?'
+    ],
+    hint:'Neutrons = 12 − 6. Electrons = protons (neutral atom).',
+    ms:'Neutrons = 6 [A1] | Electrons = 6 [A1]',
+    check: a => {
+      const n = a.toLowerCase().includes('neutron') && a.includes('6');
+      const e = a.toLowerCase().includes('electron') && a.includes('6');
+      if (n && e) return { s:2, t:2, earned:['Neutrons = 6 ✓','Electrons = 6 ✓'], missed:[], tip:'Perfect — and this logic applies to any atom: mass − protons = neutrons, electrons = protons.' };
+      if (n || e) return { s:1, t:2, earned:['One value correct ✓'], missed:['State both neutrons AND electrons'], tip:'Both need to be labelled. Write "neutrons = 6, electrons = 6".' };
+      return { s:0, t:2, earned:[], missed:['Neutrons = mass number − protons = 6','Electrons = protons = 6'], tip:'Carbon-12: mass number is 12. 12 − 6 protons = 6 neutrons.' };
+    }
+  },
+
+  // ─── CHEMISTRY: PERIODIC TABLE ───
+  { id:'cp1', t:'c-periodic', marks:3, diff:'easy', year:'AQA 2023',
+    text:'Give <strong>two properties of metals</strong> and explain how the <strong>metallic structure</strong> explains one of these properties.',
+    scaffold:[
+      'Think of things metals can do that most non-metals can\'t: conduct? bend? melt?',
+      'Metallic structure = layers of positive ions + a "sea" of delocalised electrons',
+      'Link ONE property directly to the delocalised electrons or sliding layers'
+    ],
+    hint:'Delocalised electrons carry charge (conducts) or layers slide (malleable).',
+    ms:'Any 2 properties [1 each max 2] | Structure explanation e.g. delocalised electrons allow electrical conduction [1]',
+    check: a => {
+      const props = ['conduct','malleable','ductile','high melting','lustrous','shiny','strong'].filter(w => a.toLowerCase().includes(w));
+      const struct = a.toLowerCase().includes('electron') || a.toLowerCase().includes('delocalised') || a.toLowerCase().includes('layer') || a.toLowerCase().includes('sea of');
+      if (props.length >= 2 && struct) return { s:3, t:3, earned:['Property 1 ✓','Property 2 ✓','Structure explanation ✓'], missed:[], tip:'Excellent — this is a model answer. "Delocalised electrons" is the magic phrase.' };
+      if (props.length >= 2) return { s:2, t:3, earned:['Two properties ✓'], missed:['Explain using metallic structure (delocalised electrons or sliding layers)'], tip:'You have the properties — now link ONE to the structure. "Because delocalised electrons can move freely, metals conduct electricity."' };
+      if (props.length === 1 || struct) return { s:1, t:3, earned:['Partial ✓'], missed:['Need 2 properties','Need structure explanation'], tip:'Name two properties first, then explain one using "delocalised electrons".' };
+      return { s:0, t:3, earned:[], missed:['State 2 properties','Link 1 to metallic structure'], tip:'Properties: conducts electricity, malleable (can be bent). Structure: sea of delocalised electrons.' };
+    }
+  },
+
+  // ─── CHEMISTRY: REACTIONS ───
+  { id:'cr1', t:'c-reactions', marks:4, diff:'medium', year:'AQA 2022',
+    text:'Balance the equation: <strong>___ Mg + ___ O₂ → ___ MgO</strong><br>Then state the type of reaction and what happens to magnesium.',
+    scaffold:[
+      'Count oxygen atoms: O₂ has 2 oxygens. Each MgO has 1 oxygen. So you need 2 MgO.',
+      'Now balance Mg: if you have 2 MgO, how many Mg do you need?',
+      'What type of reaction involves a substance combining with oxygen?',
+      'What is the name for gaining oxygen? (think of iron rusting)'
+    ],
+    hint:'2Mg + O₂ → 2MgO. Magnesium is oxidised.',
+    ms:'2Mg + O₂ → 2MgO [M1+A1] | combustion/oxidation [B1] | Mg is oxidised (gains oxygen) [B1]',
+    check: a => {
+      const balanced = (a.includes('2Mg') || a.includes('2 Mg')) && (a.includes('2MgO') || a.includes('2 MgO'));
+      const type = a.toLowerCase().includes('oxidat') || a.toLowerCase().includes('combust');
+      const oxid = a.toLowerCase().includes('oxidis') || a.toLowerCase().includes('oxidiz') || (a.toLowerCase().includes('mg') && a.toLowerCase().includes('oxygen'));
+      if (balanced && type && oxid) return { s:4, t:4, earned:['Balanced correctly ✓','Reaction type ✓','Mg is oxidised ✓','Full explanation ✓'], missed:[], tip:'4/4 — perfect. Balancing + reaction type + explanation is the full package.' };
+      if (balanced && (type || oxid)) return { s:3, t:4, earned:['Balanced ✓', type?'Reaction type ✓':'Oxidation identified ✓'], missed:[type?'State Mg is oxidised':'Name the reaction type (combustion/oxidation)'], tip:'Almost full marks — add the missing part for 4/4.' };
+      if (balanced) return { s:2, t:4, earned:['Equation balanced ✓'], missed:['State reaction type','Explain Mg is oxidised (gains oxygen)'], tip:'Balanced — now: what do we call a reaction where something combines with oxygen?' };
+      return { s:0, t:4, earned:[], missed:['Balance the equation','Name reaction type','Explain Mg is oxidised'], tip:'Start with oxygen: O₂ = 2 atoms, so you need 2 MgO on the right.' };
+    }
+  },
+
+  // ─── CHEMISTRY: RATES ───
+  { id:'cra1', t:'c-rates', marks:6, diff:'hard', year:'AQA 2022',
+    text:'Explain, using <strong>collision theory</strong>, why increasing the <strong>concentration</strong> of hydrochloric acid increases the rate of its reaction with marble chips. <em>[6 marks — write 6 separate points]</em>',
+    scaffold:[
+      'Higher concentration means more ___ in the same volume',
+      'More particles → more ___ between particles',
+      'More frequent collisions means more chances to react',
+      'BUT — not all collisions work. What determines whether a collision is successful?',
+      'What is activation energy?',
+      'Connect back to rate: more successful collisions per second = ?'
+    ],
+    hint:'Key words needed: particles, collisions, frequency, activation energy, successful collisions, rate increases.',
+    ms:'1.More H⁺ ions/particles in same volume [1] 2.More frequent collisions [1] 3.More collisions have energy ≥ activation energy [1] 4.More successful collisions per second [1] 5.Rate of reaction increases [1] 6.No change to activation energy itself [1]',
+    check: a => {
+      const pts = [
+        /more.*(particle|ion|molecule)/i.test(a) || /particle.*more/i.test(a),
+        /more.*(frequent|collision)/i.test(a) || /collision.*more/i.test(a),
+        /activation energy/i.test(a),
+        /successful collision/i.test(a),
+        /rate.*increas|increas.*rate/i.test(a),
+        a.length > 150
+      ];
+      const sc = pts.filter(Boolean).length;
+      const score = Math.min(sc, 6);
+      if (score >= 5) return { s:score, t:6, earned:[`${score} key points identified ✓`,'Collision theory well applied ✓'], missed:score<6?['Check: no change to activation energy itself']:[],  tip:`${score}/6! For the last mark: state that activation energy itself doesn't change, only the frequency of collisions.` };
+      if (score >= 3) return { s:score, t:6, earned:[`${score} valid points ✓`], missed:['Need more detail on activation energy','State "successful collisions" explicitly','Conclude with "rate increases"'], tip:'Good start. Count your points — you need 6 separate statements. Activation energy is the key one often missed.' };
+      return { s:score||0, t:6, earned:score>0?['Some correct ideas ✓']:[], missed:['More particles in same volume','More frequent collisions','Compare to activation energy','Successful collisions','Rate increases'], tip:'Plan 6 bullet points BEFORE writing. Start: "Higher concentration means more particles in the same volume..."' };
+    }
+  },
+
+  // ─── CHEMISTRY: ENERGY ───
+  { id:'ce1', t:'c-energy', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Is the combustion of methane <strong>exothermic or endothermic</strong>? Give one piece of evidence from everyday life.',
+    scaffold:[
+      'Exothermic = energy released to surroundings (gets hot). Endothermic = energy absorbed (gets cold).',
+      'Think: what do you notice when gas burns on a hob?'
+    ],
+    hint:'Burning releases heat — that\'s how gas cookers work.',
+    ms:'Exothermic [A1] | Evidence: produces heat/light, temperature increases, used for cooking/heating [A1]',
+    check: a => {
+      const ok = a.toLowerCase().includes('exo');
+      const ev = a.toLowerCase().includes('heat') || a.toLowerCase().includes('warm') || a.toLowerCase().includes('cook') || a.toLowerCase().includes('light') || a.toLowerCase().includes('temperature');
+      if (ok && ev) return { s:2, t:2, earned:['Exothermic identified ✓','Valid evidence given ✓'], missed:[], tip:'Spot on — exothermic + evidence = 2 marks. Simple but often rushed.' };
+      if (ok) return { s:1, t:2, earned:['Exothermic ✓'], missed:['Give one piece of evidence (e.g. produces heat)'], tip:'You got the type — just add "because it produces heat" for the second mark.' };
+      return { s:0, t:2, earned:[], missed:['Exothermic (energy is released)','Evidence from everyday life'], tip:'Think: gas hob, bonfire, hand warmers — they all get HOT = exothermic.' };
+    }
+  },
+
+  // ─── CHEMISTRY: EQUATIONS ───
+  { id:'ceq1', t:'c-equations', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Write a <strong>balanced symbol equation</strong> for the reaction between hydrogen and oxygen to form water.',
+    scaffold:[
+      'Write the word equation first: hydrogen + oxygen → water',
+      'Write the formulae: H₂ + O₂ → H₂O',
+      'Count atoms on each side — are they balanced? If not, add numbers in front.'
+    ],
+    hint:'H₂O has 2 H and 1 O. O₂ has 2 O, so you need 2 H₂O. Then you need 2 H₂.',
+    ms:'H₂ + O₂ → H₂O [M1 for attempt] → 2H₂ + O₂ → 2H₂O [A1+A1]',
+    check: a => {
+      const c = a.replace(/\s/g,'');
+      const balanced = (c.includes('2H₂') || c.includes('2H2')) && (c.includes('2H₂O') || c.includes('2H2O'));
+      const attempt = c.toLowerCase().includes('h₂') || c.includes('h2') || c.includes('h2o');
+      if (balanced) return { s:3, t:3, earned:['Correct formulae ✓','Balanced equation ✓','2H₂ + O₂ → 2H₂O ✓'], missed:[], tip:'Perfectly balanced! Count atoms: 4H + 2O on each side ✓' };
+      if (attempt) return { s:1, t:3, earned:['Correct formulae used ✓'], missed:['Balance the equation: need 2H₂ on left, 2H₂O on right'], tip:'H₂O has 1 oxygen but O₂ has 2 — so you need 2 water molecules to use all the oxygen.' };
+      return { s:0, t:3, earned:[], missed:['Write H₂ for hydrogen, O₂ for oxygen, H₂O for water','Balance by adding numbers in front — never change the formula'], tip:'Formula first: H₂ + O₂ → H₂O. Then count and balance.' };
+    }
+  },
+
+  // ─── CHEMISTRY: BONDING ───
+  { id:'cb1', t:'c-bonding', marks:4, diff:'medium', year:'AQA 2022',
+    text:'Explain why <strong>sodium chloride (NaCl) has a high melting point</strong>, using your knowledge of ionic bonding.',
+    scaffold:[
+      'What type of particles are in NaCl? (positive and negative ___)',
+      'What holds them together? (strong ___ attraction)',
+      'What does "giant ionic lattice" mean?',
+      'To melt it, what must you overcome?'
+    ],
+    hint:'Giant lattice of ions. Strong electrostatic forces between opposite charges. Lots of energy needed to break them.',
+    ms:'Ions held in giant lattice [1] | Strong electrostatic attraction between opposite charges [1] | Many bonds must be broken [1] | Requires a lot of energy = high melting point [1]',
+    check: a => {
+      const lattice = a.toLowerCase().includes('lattice');
+      const force = a.toLowerCase().includes('electrostatic') || (a.toLowerCase().includes('attract') && a.toLowerCase().includes('opposi'));
+      const bonds = a.toLowerCase().includes('bond') || a.toLowerCase().includes('break') || a.toLowerCase().includes('overcome');
+      const energy = a.toLowerCase().includes('energy') || a.toLowerCase().includes('melt');
+      const sc = [lattice, force, bonds, energy].filter(Boolean).length;
+      if (sc >= 3) return { s:sc, t:4, earned:[`${sc} key points ✓`], missed:sc<4?['Include all 4: lattice / electrostatic forces / many bonds broken / needs energy']:[], tip:sc===4?'Perfect ionic bonding explanation!':'Add one more point — you\'re very close.' };
+      if (sc >= 2) return { s:sc, t:4, earned:[`${sc} points ✓`], missed:['Mention "giant lattice"','Use "electrostatic attraction"'], tip:'The key phrase is "strong electrostatic attraction between oppositely charged ions in a giant lattice".' };
+      return { s:sc||0, t:4, earned:[], missed:['Giant ionic lattice','Strong electrostatic forces','Many bonds to break','High energy needed'], tip:'Structure: NaCl is a giant lattice → strong electrostatic forces → many bonds → lots of energy to melt.' };
+    }
+  },
+];
+
+// ════════════════════════════════════════════════════════════
+// GAME STATE
+// ════════════════════════════════════════════════════════════
+const G = {
+  pts: 0, xp: 0, level: 3, combo: 1, streak: 0,
+  totalQ: 0, correct: 0,
+  currentTopic: null, currentQ: null,
+  hintUsed: false, scaffoldStep: 0,
+  // per-topic tracking
+  topicQ: {},   // { topicKey: count }
+  topicAcc: {}, // { topicKey: [scored, total] }
+  consecutiveSameTopic: 0,
+  lastTopic: null,
+  sessionAnswered: [],  // [{topicKey, scored, total, diff}]
+};
+Object.keys(TOPICS).forEach(k => { G.topicQ[k] = 0; G.topicAcc[k] = [0, 0]; });
+
+// ════════════════════════════════════════════════════════════
+// PARTICLES
+// ════════════════════════════════════════════════════════════
+(function spawnParticles() {
+  const c = document.getElementById('particles');
+  const colors = ['#8b5cf6','#ec4899','#06b6d4','#10b981','#f59e0b'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 3 + Math.random() * 5;
+    p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${12+Math.random()*18}s;animation-delay:${Math.random()*15}s`;
+    c.appendChild(p);
+  }
+})();
+
+// ════════════════════════════════════════════════════════════
+// CURRICULUM MAP
+// ════════════════════════════════════════════════════════════
+function getHeat(topicKey) {
+  const q = G.topicQ[topicKey] || 0;
+  if (q >= 4) return 'hot';
+  if (q >= 2) return 'warm';
+  if (q >= 1) return 'cool';
+  return 'cold';
+}
+function isNeglected(topicKey) {
+  // neglected if all other topics have >= 2 questions but this one has 0
+  const others = Object.keys(TOPICS).filter(k => k !== topicKey);
+  return G.topicQ[topicKey] === 0 && others.filter(k => G.topicQ[k] >= 1).length >= 4;
+}
+function buildMap() {
+  const map = document.getElementById('topic-map');
+  map.innerHTML = '';
+  Object.entries(TOPICS).forEach(([key, t]) => {
+    const heat = getHeat(key);
+    const node = document.createElement('div');
+    node.className = `topic-node ${heat}${key === G.currentTopic ? ' active' : ''}${isNeglected(key) ? ' neglected' : ''}`;
+    node.onclick = () => selectTopic(key);
+    const acc = G.topicAcc[key];
+    const pct = acc[1] > 0 ? Math.round(acc[0]/acc[1]*100) : 0;
+    const barColor = acc[1] === 0 ? '#444' : pct >= 60 ? '#10b981' : pct >= 40 ? '#f59e0b' : '#ef4444';
+    node.innerHTML = `
+      <div class="t-count">${G.topicQ[key]||''}</div>
+      <div class="t-icon">${t.icon}</div>
+      <div class="t-name">${t.name}</div>
+      <div class="t-bar"><div class="t-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>`;
+    map.appendChild(node);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// COACH MESSAGES
+// ════════════════════════════════════════════════════════════
+const COACH_MSGS = {
+  start: [
+    "Hey Max! 👋 Pick any topic to start — each correct answer earns XP. Let's go! 🚀",
+    "Ready to level up? 🎮 Tap a topic from the map above and let's get moving!",
+  ],
+  correct_easy: [
+    "✅ Yes! That's the way — keep the combo going!",
+    "🔥 Nailed it! You're on fire. Next one!",
+    "💥 Boom! See? You've got this.",
+    "⚡ Fast and correct — that's the combo right there!",
+  ],
+  correct_hard: [
+    "🤯 That was a tough one and you smashed it. HUGE XP bonus incoming!",
+    "🏆 Difficult question, class answer. That's exam-ready stuff!",
+    "🌟 That's the kind of answer that gets you a grade 4 and beyond!",
+  ],
+  partial: [
+    "👍 Solid start! You got the core method — let's look at what the mark scheme wants for every mark.",
+    "💪 More than halfway there! See the tips below — one more step and that'd be full marks.",
+    "🎯 You're getting it! Check what you missed — it's usually just one small detail.",
+  ],
+  zero: [
+    "No worries — that's literally what practice is for! Read the mark scheme carefully 👀",
+    "This one tripped you up — and now you know how to answer it. That's progress! 📈",
+    "Every question you get wrong now is one you'll get right in the exam. Check the breakdown below.",
+  ],
+  hint: [
+    "💡 Hint unlocked — use it to understand the method, not just get the answer!",
+    "🔑 Here's a nudge... understanding *why* this works is the real power move.",
+  ],
+  nudge_topic: [
+    "🗺️ You've been rocking <strong>{topic}</strong>! Time to explore new territory — pick a different topic to unlock bonus XP!",
+    "🎯 <strong>{topic}</strong> is looking strong! Spread the love — other topics need some attention to boost your overall grade.",
+    "🚀 <span class='nudge'>TOPIC SWITCH BONUS!</span> Move to a new topic now for <strong>double XP</strong> on your next question!",
+  ],
+  neglected: [
+    "👀 <strong>{topic}</strong> hasn't had any practice yet — and it WILL come up in the exam. Let's fix that!",
+    "🚨 <span class='nudge'>Gap alert!</span> <strong>{topic}</strong> is untouched. 5 questions there could unlock a whole grade boundary.",
+  ],
+  full_coverage: [
+    "🌍 You've now touched every topic — that's what good revision looks like! Keep cycling through.",
+  ],
+  level_up: [
+    "🎉 <strong>LEVEL UP!</strong> You're now Level {level} — you're getting stronger with every question!",
+  ],
+};
+function coachMsg(type, vars = {}) {
+  let pool = COACH_MSGS[type] || COACH_MSGS.start;
+  let msg = pool[Math.floor(Math.random() * pool.length)];
+  Object.entries(vars).forEach(([k, v]) => { msg = msg.replace(`{${k}}`, v); });
+  const el = document.getElementById('coach-msg');
+  el.style.opacity = '0';
+  setTimeout(() => { el.innerHTML = msg; el.style.opacity = '1'; el.style.transition = 'opacity 0.3s'; }, 150);
+}
+
+// ════════════════════════════════════════════════════════════
+// TOPIC SELECTION
+// ════════════════════════════════════════════════════════════
+function selectTopic(key) {
+  G.currentTopic = key;
+
+  // Check consecutive same-topic
+  if (G.lastTopic === key) {
+    G.consecutiveSameTopic++;
+  } else {
+    G.consecutiveSameTopic = 1;
+    G.lastTopic = key;
+  }
+
+  buildMap();
+  loadQuestion(key);
+}
+
+// ════════════════════════════════════════════════════════════
+// QUESTION LOADING
+// ════════════════════════════════════════════════════════════
+function getQuestionsForTopic(key) {
+  return QUESTIONS.filter(q => q.t === key);
+}
+function loadQuestion(topicKey) {
+  const pool = getQuestionsForTopic(topicKey);
+  if (!pool.length) return;
+
+  // Avoid repeating same question immediately
+  let q;
+  const filtered = pool.filter(x => x.id !== (G.currentQ?.id));
+  q = filtered.length > 0
+    ? filtered[Math.floor(Math.random() * filtered.length)]
+    : pool[Math.floor(Math.random() * pool.length)];
+
+  G.currentQ = q;
+  G.hintUsed = false;
+  G.scaffoldStep = 0;
+
+  renderQuestion(q);
+}
+
+function renderQuestion(q) {
+  const diff = q.marks <= 2 ? 'easy' : q.marks <= 4 ? 'med' : 'hard';
+  const diffLabel = q.marks <= 2 ? 'Quick win' : q.marks <= 4 ? 'Medium' : 'Challenge';
+  const topic = TOPICS[q.t];
+
+  document.getElementById('q-card').innerHTML = `
+    <div class="q-top">
+      <div class="q-tags">
+        <span class="tag tag-topic">${topic.icon} ${topic.name}</span>
+        <span class="tag tag-diff-${diff}">${diffLabel}</span>
+        <span class="tag tag-year">${q.year}</span>
+      </div>
+      <span class="marks-pill">${q.marks} mark${q.marks>1?'s':''}</span>
+    </div>
+    <div class="q-text">${q.text}</div>
+    <div class="scaffold" id="scaffold">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">
+        Step-by-step guide — unlock one step at a time 🔓
+      </div>
+      ${q.scaffold.map((s,i) => `
+        <div class="scaffold-step${i===0?' unlocked':''}" id="step-${i}">
+          <div class="step-num">${i+1}</div>
+          <div>${s}</div>
+        </div>`).join('')}
+    </div>
+    <textarea class="answer-area" id="ans" placeholder="Write your answer here — show ALL your working..." 
+      oninput="onAnswerType(this)"></textarea>
+    <div class="typing-prompt" id="typing-prompt">Start typing to unlock the next step hint...</div>
+    <div class="action-row">
+      <button class="btn btn-submit" id="submit-btn" onclick="submitAnswer()" disabled>Check my answer ✓</button>
+      <button class="btn btn-hint" onclick="showHint()">💡 Hint</button>
+      <button class="btn btn-skip" onclick="skipQuestion()">Skip →</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  `;
+
+  G.scaffoldStep = 0;
+}
+
+function onAnswerType(el) {
+  const val = el.value.trim();
+  const btn = document.getElementById('submit-btn');
+  if (btn) btn.disabled = val.length < 3;
+  el.classList.toggle('has-content', val.length > 0);
+
+  // Unlock next scaffold step as user types
+  const words = val.split(/\s+/).filter(Boolean).length;
+  if (words >= 3 && G.scaffoldStep < G.currentQ.scaffold.length - 1) {
+    G.scaffoldStep = Math.min(Math.floor(words / 4), G.currentQ.scaffold.length - 1);
+    for (let i = 0; i <= G.scaffoldStep; i++) {
+      const s = document.getElementById(`step-${i}`);
+      if (s) s.classList.add('unlocked');
+    }
+    const tp = document.getElementById('typing-prompt');
+    if (tp && G.scaffoldStep > 0) {
+      tp.textContent = `Step ${G.scaffoldStep+1} unlocked! ✓`;
+      tp.classList.add('active');
+    }
+  }
+}
+
+function showHint() {
+  G.hintUsed = true;
+  coachMsg('hint');
+  // Unlock all scaffold steps
+  if (G.currentQ) {
+    G.currentQ.scaffold.forEach((_, i) => {
+      const s = document.getElementById(`step-${i}`);
+      if (s) s.classList.add('unlocked');
+    });
+  }
+}
+
+function skipQuestion() {
+  G.combo = 1;
+  updateHeader();
+  const newQ = getQuestionsForTopic(G.currentTopic);
+  if (newQ.length > 1) {
+    const other = newQ.filter(q => q.id !== G.currentQ?.id);
+    G.currentQ = other[Math.floor(Math.random() * other.length)];
+    renderQuestion(G.currentQ);
+    coachMsg('start');
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// ANSWER SUBMISSION
+// ════════════════════════════════════════════════════════════
+function submitAnswer() {
+  const el = document.getElementById('ans');
+  if (!el || !G.currentQ) return;
+  const ans = el.value.trim();
+  if (ans.length < 3) return;
+
+  const result = G.currentQ.check(ans);
+  const pct = result.s / result.t;
+
+  // Update tracking
+  G.topicQ[G.currentTopic] = (G.topicQ[G.currentTopic] || 0) + 1;
+  G.topicAcc[G.currentTopic][0] += result.s;
+  G.topicAcc[G.currentTopic][1] += result.t;
+  G.totalQ++;
+  G.sessionAnswered.push({ topicKey: G.currentTopic, scored: result.s, total: result.t, diff: G.currentQ.marks });
+
+  // XP and combo
+  let xpGain = result.s * 15;
+  if (pct === 1) {
+    G.combo = Math.min(G.combo + 1, 5);
+    G.streak++;
+    xpGain = Math.round(xpGain * (1 + (G.combo - 1) * 0.3));
+    if (G.hintUsed) xpGain = Math.round(xpGain * 0.8); // small penalty for hint
+  } else if (pct >= 0.5) {
+    G.combo = Math.max(G.combo, 1);
+  } else {
+    G.combo = 1;
+  }
+  G.pts += result.s * 10;
+  G.xp += xpGain;
+
+  // Level up check
+  const xpPerLevel = 400;
+  while (G.xp >= xpPerLevel) {
+    G.xp -= xpPerLevel;
+    G.level++;
+    setTimeout(() => coachMsg('level_up', { level: G.level }), 800);
+    celebrate('⬆️');
+  }
+
+  updateHeader();
+  buildMap();
+  updateMiniProgress();
+
+  // Coach response
+  if (pct === 1) {
+    coachMsg(G.currentQ.marks >= 5 ? 'correct_hard' : 'correct_easy');
+    if (G.combo >= 2) showComboBanner();
+    celebrate(G.combo >= 3 ? '🔥' : '✨');
+    floatXP(`+${xpGain} XP`, pct === 1);
+  } else if (pct >= 0.4) {
+    coachMsg('partial');
+    floatXP(`+${xpGain} XP`, false);
+  } else {
+    coachMsg('zero');
+    G.combo = 1;
+    updateHeader();
+  }
+
+  renderFeedback(result, xpGain);
+
+  // Check if should nudge to different topic
+  const sameTopicCount = G.sessionAnswered.filter(a => a.topicKey === G.currentTopic).length;
+  const dangerEl = document.getElementById('danger-zone');
+  if (sameTopicCount >= 4) {
+    dangerEl.classList.add('show');
+    document.getElementById('dz-msg').textContent = `${TOPICS[G.currentTopic].name}: ${sameTopicCount} questions in a row — time to mix it up!`;
+    setTimeout(() => showNudgeModal(), 2000);
+  } else {
+    dangerEl.classList.remove('show');
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// FEEDBACK RENDER
+// ════════════════════════════════════════════════════════════
+function renderFeedback(result, xpGain) {
+  const fb = document.getElementById('feedback');
+  if (!fb) return;
+  const pct = result.s / result.t;
+  const level = pct === 1 ? 'great' : pct >= 0.4 ? 'good' : 'needs-work';
+  const emoji = pct === 1 ? (G.combo >= 3 ? '🔥' : '🎉') : pct >= 0.4 ? '👍' : '💡';
+  const title = pct === 1 ? (G.combo >= 3 ? `${G.combo}× COMBO — ON FIRE!` : 'Full marks!') : pct >= 0.4 ? 'Good effort!' : 'Keep building!';
+  const sub = pct === 1 ? 'That\'s exactly what examiners want to see.' : pct >= 0.4 ? 'You have the right idea — check what the mark scheme wanted below.' : 'Every wrong answer now means a right answer in the exam!';
+
+  fb.className = `feedback show ${level}`;
+  fb.innerHTML = `
+    <div class="fb-score-row">
+      <div class="fb-score">${result.s}/${result.t}</div>
+      <div>
+        <div class="fb-title">${emoji} ${title}</div>
+        <div class="fb-subtitle">${sub}</div>
+      </div>
+      <div style="margin-left:auto"><div class="xp-gain">+${xpGain} XP</div></div>
+    </div>
+    <div class="mark-breakdown">
+      ${result.earned.map(e => `<div class="mark-line earned"><div class="mark-icon">✅</div><div>${e}</div></div>`).join('')}
+      ${result.missed.map(m => `<div class="mark-line missed"><div class="mark-icon">❌</div><div>${m}</div></div>`).join('')}
+      ${result.tip ? `<div class="mark-line tip"><div class="mark-icon">💡</div><div>${result.tip}</div></div>` : ''}
+    </div>
+    <div class="ms-box">
+      <h4>Mark scheme</h4>
+      <p>${G.currentQ.ms}</p>
+    </div>
+    <div class="next-actions">
+      <button class="btn btn-next" onclick="nextQuestion()">Next question 🚀</button>
+      ${Object.keys(TOPICS).filter(k=>k!==G.currentTopic).length>0 ? `<button class="btn btn-change-topic" onclick="openTopicSwitch()">Switch topic 🗺</button>` : ''}
+    </div>
+  `;
+}
+
+function nextQuestion() {
+  // Check if should auto-nudge
+  const sameCount = G.sessionAnswered.filter(a => a.topicKey === G.currentTopic).length;
+  if (sameCount >= 4) {
+    showNudgeModal();
+  } else {
+    loadQuestion(G.currentTopic);
+  }
+}
+
+function openTopicSwitch() {
+  showNudgeModal(false);
+}
+
+// ════════════════════════════════════════════════════════════
+// NUDGE MODAL
+// ════════════════════════════════════════════════════════════
+function showNudgeModal(isAutoNudge = true) {
+  const modal = document.getElementById('nudge-modal');
+  const choices = document.getElementById('nudge-choices');
+
+  // Find cold/neglected topics
+  const sorted = Object.keys(TOPICS)
+    .filter(k => k !== G.currentTopic)
+    .sort((a, b) => (G.topicQ[a] || 0) - (G.topicQ[b] || 0));
+
+  const topPicks = sorted.slice(0, 4);
+
+  if (isAutoNudge) {
+    document.getElementById('nudge-emoji').textContent = '🎯';
+    document.getElementById('nudge-title').textContent = 'Level up your coverage!';
+    document.getElementById('nudge-msg').textContent = `You've done ${G.sessionAnswered.filter(a=>a.topicKey===G.currentTopic).length} questions on ${TOPICS[G.currentTopic].name}. Switch topic now for a BONUS XP multiplier — and make sure you cover everything for the exam!`;
+  } else {
+    document.getElementById('nudge-emoji').textContent = '🗺️';
+    document.getElementById('nudge-title').textContent = 'Choose your next topic';
+    document.getElementById('nudge-msg').textContent = 'Cold topics = bonus XP! Pick one to explore.';
+  }
+
+  choices.innerHTML = topPicks.map(key => {
+    const t = TOPICS[key];
+    const heat = getHeat(key);
+    const q = G.topicQ[key] || 0;
+    const acc = G.topicAcc[key];
+    const pct = acc[1] > 0 ? Math.round(acc[0]/acc[1]*100) : null;
+    const badge = q === 0 ? '<span class="mc-badge cold">Untouched</span>' : heat === 'cold' ? '<span class="mc-badge cold">Cold</span>' : isNeglected(key) ? '<span class="mc-badge neglected">Needs attention!</span>' : '';
+    const bonusXp = q === 0 ? ' • +50% XP bonus!' : '';
+    return `<div class="modal-choice" onclick="switchToTopic('${key}')">
+      <div class="mc-icon">${t.icon}</div>
+      <div class="mc-text">
+        <div class="mc-name">${t.name} ${badge}</div>
+        <div class="mc-sub">${TOPICS[key].sub === 'maths' ? '📐 Maths' : '⚗️ Chemistry'} • ${q} questions done${pct!==null?' • '+pct+'% accuracy':''}${bonusXp}</div>
+      </div>
+    </div>`;
+  }).join('') +
+  `<div class="modal-choice" onclick="document.getElementById('nudge-modal').classList.remove('show')" style="opacity:0.5">
+    <div class="mc-icon">↩</div>
+    <div class="mc-text"><div class="mc-name">Stay on ${TOPICS[G.currentTopic].name}</div><div class="mc-sub">Continue current topic</div></div>
+  </div>`;
+
+  modal.classList.add('show');
+}
+
+function switchToTopic(key) {
+  document.getElementById('nudge-modal').classList.remove('show');
+  document.getElementById('danger-zone').classList.remove('show');
+
+  // Bonus XP for switching to cold topic
+  const heat = getHeat(key);
+  if (heat === 'cold' || G.topicQ[key] === 0) {
+    G.xp += 25;
+    updateHeader();
+    floatXP('+25 XP BONUS!', true);
+  }
+
+  selectTopic(key);
+  coachMsg(isNeglected(key) ? 'neglected' : 'nudge_topic', { topic: TOPICS[key].name });
+}
+
+// ════════════════════════════════════════════════════════════
+// VISUAL EFFECTS
+// ════════════════════════════════════════════════════════════
+function celebrate(emoji) {
+  const el = document.getElementById('celebration');
+  const txt = document.getElementById('celeb-text');
+  txt.textContent = emoji;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1600);
+}
+
+function floatXP(text, positive) {
+  const div = document.createElement('div');
+  div.className = 'float-xp';
+  div.textContent = text;
+  div.style.cssText = `top:${100 + Math.random()*100}px;left:${20+Math.random()*60}%;color:${positive?'#a78bfa':'#fcd34d'}`;
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), 1600);
+}
+
+function showComboBanner() {
+  const el = document.getElementById('combo-banner');
+  const msgs = ['🔥 2× COMBO!', '⚡ 3× ON FIRE!', '💥 4× UNSTOPPABLE!', '🌟 5× MAX COMBO!!!'];
+  el.textContent = msgs[Math.min(G.combo - 2, 3)];
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ════════════════════════════════════════════════════════════
+// HEADER UPDATE
+// ════════════════════════════════════════════════════════════
+function updateHeader() {
+  document.getElementById('h-pts').textContent = G.pts;
+  document.getElementById('h-streak').textContent = '🔥' + G.streak;
+  document.getElementById('h-combo').textContent = `×${G.combo}`;
+  document.getElementById('h-combo').style.color = G.combo >= 3 ? '#ef4444' : G.combo >= 2 ? '#f59e0b' : '#10b981';
+  document.getElementById('level-num').textContent = G.level;
+
+  const xpMax = 400;
+  const pct = Math.min(100, Math.round(G.xp / xpMax * 100));
+  document.getElementById('xp-fill').style.width = pct + '%';
+  document.getElementById('xp-val').textContent = `${G.xp} / ${xpMax} XP`;
+  document.getElementById('xp-level').textContent = `Level ${G.level}`;
+}
+
+// ════════════════════════════════════════════════════════════
+// MINI PROGRESS
+// ════════════════════════════════════════════════════════════
+function updateMiniProgress() {
+  const mathsKeys = Object.keys(TOPICS).filter(k => TOPICS[k].sub === 'maths');
+  const chemKeys = Object.keys(TOPICS).filter(k => TOPICS[k].sub === 'chem');
+
+  function renderMini(containerId, keys) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = keys.map(k => {
+      const t = TOPICS[k];
+      const acc = G.topicAcc[k];
+      const pct = acc[1] > 0 ? Math.round(acc[0]/acc[1]*100) : 0;
+      const q = G.topicQ[k] || 0;
+      const color = q === 0 ? '#555' : pct >= 60 ? '#10b981' : pct >= 40 ? '#f59e0b' : '#ef4444';
+      return `<div class="mini-topic">
+        <div class="mt-name">${t.icon} ${t.name}</div>
+        <div class="mt-bar"><div class="mt-fill" style="width:${q===0?0:Math.max(pct,5)}%;background:${color}"></div></div>
+        <div class="mt-n">${q}</div>
+      </div>`;
+    }).join('');
+  }
+  renderMini('maths-mini', mathsKeys);
+  renderMini('chem-mini', chemKeys);
+}
+
+// ════════════════════════════════════════════════════════════
+// SEND REPORT
+// ════════════════════════════════════════════════════════════
+function sendReport() {
+  const today = new Date().toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  const totalQ = G.totalQ;
+  const totalPts = G.pts;
+  const streak = G.streak;
+
+  // Per-subject accuracy
+  const mathsKeys = Object.keys(TOPICS).filter(k => TOPICS[k].sub === 'maths');
+  const chemKeys  = Object.keys(TOPICS).filter(k => TOPICS[k].sub === 'chem');
+
+  function subAcc(keys) {
+    let s = 0, t = 0;
+    keys.forEach(k => { s += G.topicAcc[k][0]; t += G.topicAcc[k][1]; });
+    return t > 0 ? Math.round(s / t * 100) : null;
+  }
+  function gradeFromPct(p) {
+    if (p === null) return '—';
+    if (p >= 80) return '7'; if (p >= 70) return '6'; if (p >= 60) return '5';
+    if (p >= 48) return '4'; if (p >= 38) return '3'; if (p >= 28) return '2';
+    return '1';
+  }
+
+  const mp = subAcc(mathsKeys);
+  const cp = subAcc(chemKeys);
+  const mg = gradeFromPct(mp);
+  const cg = gradeFromPct(cp);
+
+  // Topic breakdown
+  function topicLines(keys) {
+    return keys.map(k => {
+      const t = TOPICS[k];
+      const q = G.topicQ[k] || 0;
+      const acc = G.topicAcc[k];
+      const pct = acc[1] > 0 ? Math.round(acc[0]/acc[1]*100) + '%' : 'not started';
+      const flag = q === 0 ? ' ⚠️ not attempted' : pct === 'not started' ? '' : '';
+      return `  ${t.icon} ${t.name}: ${q} questions, accuracy ${pct}${flag}`;
+    }).join('\n');
+  }
+
+  // Cold topics warning
+  const notStarted = Object.keys(TOPICS).filter(k => G.topicQ[k] === 0).map(k => TOPICS[k].name);
+  const coldWarning = notStarted.length > 0
+    ? `\n⚠️  Topics not yet attempted: ${notStarted.join(', ')}\n`
+    : '\n✅ All topics attempted — great coverage!\n';
+
+  const body =
+`Hi Darren,
+
+Here's Max's GCSE study report for ${today}.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SESSION SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Questions completed : ${totalQ}
+Points earned       : ${totalPts}
+Correct answer streak: ${streak}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PREDICTED GRADES  (Grade 4 needs ~48%)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📐 Maths Foundation : Grade ${mg}  (accuracy ${mp !== null ? mp + '%' : '—'})
+⚗️  Chemistry        : Grade ${cg}  (accuracy ${cp !== null ? cp + '%' : '—'})
+${coldWarning}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MATHS — TOPIC BREAKDOWN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${topicLines(mathsKeys)}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHEMISTRY — TOPIC BREAKDOWN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${topicLines(chemKeys)}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Grade 4 requires approximately 48–55% on AQA Foundation tier.
+Report sent from Max's GCSE Quest app.`;
+
+  const subject = encodeURIComponent(`Max's GCSE Report — ${today}`);
+  const bodyEnc = encodeURIComponent(body);
+  const mailto = `mailto:darren.goldsby@gmail.com?subject=${subject}&body=${bodyEnc}`;
+
+  window.location.href = mailto;
+
+  // Show confirmation
+  document.getElementById('report-sent').style.display = 'block';
+  setTimeout(() => { document.getElementById('report-sent').style.display = 'none'; }, 5000);
+}
+
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+buildMap();
+updateMiniProgress();
+updateHeader();
+coachMsg('start');
+</script>
+</body>
+</html>
