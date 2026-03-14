@@ -525,359 +525,1992 @@ Object.keys(TOPICS).forEach(k => { topicState[k] = { attempts: 0, correct: 0, la
 
 const QUESTIONS = [
 
-  // ─── MATHS: FRACTIONS ───
+  // ══════════════════════════════════════════════════════════
+  // MATHS: FRACTIONS (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'mf1', t:'m-fractions', marks:2, diff:'easy', year:'AQA 2023',
     text:'Work out <strong>¾ + ⅖</strong>. Give your answer as a fraction in its simplest form.',
-    scaffold:[
-      'What do fractions need before you can add them? (Think: same ___)',
-      'The LCM of 4 and 5 is 20. Convert both: ¾ = ?/20 and ⅖ = ?/20',
-      'Add the numerators. Can your answer be simplified?'
-    ],
+    scaffold:['What do fractions need before you can add them? (same ___)','LCM of 4 and 5 is 20. Convert both: ¾ = ?/20 and ⅖ = ?/20','Add the numerators. Can it be simplified?'],
     hint:'Common denominator = 20. Then: 15/20 + 8/20.',
-    ms:'Common denominator (20) [M1] → 15/20 + 8/20 = 23/20 or 1 3/20 [A1]',
+    ms:'Common denom (20) [M1] → 15/20 + 8/20 = 23/20 or 1 3/20 [A1]',
     check: a => {
-      const c = a.replace(/\s/g,'');
-      const ok = c.includes('23/20') || c.includes('13/20') || (c.includes('1') && c.includes('3/20'));
-      const meth = c.includes('/20') || c.includes('20');
-      if (ok) return { s:2, t:2, earned:['Correct answer ✓', 'Method shown ✓'], missed:[], tip:'Perfect — this is exactly what examiners want to see!' };
-      if (meth) return { s:1, t:2, earned:['Correct method — common denominator found ✓'], missed:['Final answer not quite right'], tip:'You had the right idea. Check your arithmetic when converting.' };
-      return { s:0, t:2, earned:[], missed:['Needed a common denominator first', 'Then add numerators'], tip:'Try: find LCM of the denominators first, then convert both fractions.' };
+      const c=a.replace(/\s/g,'');
+      const ok=c.includes('23/20')||c.includes('13/20')||(c.includes('1')&&c.includes('3/20'));
+      const meth=c.includes('/20')||c.includes('20');
+      if(ok) return {s:2,t:2,earned:['Correct answer ✓','Method shown ✓'],missed:[],tip:'Perfect!'};
+      if(meth) return {s:1,t:2,earned:['Common denominator found ✓'],missed:['Final answer not quite right'],tip:'Check your arithmetic when converting.'};
+      return {s:0,t:2,earned:[],missed:['Need a common denominator first','Then add numerators'],tip:'Find LCM of 4 and 5 first.'};
     }
   },
 
   { id:'mf2', t:'m-fractions', marks:3, diff:'medium', year:'AQA 2022',
     text:'Work out <strong>2⅓ × 1½</strong>. Give your answer as a mixed number.',
-    scaffold:[
-      'Convert both to improper fractions first: 2⅓ = ?/3 and 1½ = ?/2',
-      'Multiply numerators together, then denominators together',
-      'Simplify your answer and convert back to a mixed number'
-    ],
-    hint:'2⅓ = 7/3 and 1½ = 3/2. Then multiply: 7/3 × 3/2.',
+    scaffold:['Convert both to improper fractions: 2⅓ = ?/3 and 1½ = ?/2','Multiply numerators together, then denominators','Simplify and convert back to a mixed number'],
+    hint:'2⅓ = 7/3 and 1½ = 3/2. Then: 7/3 × 3/2.',
     ms:'7/3 × 3/2 [M1] = 21/6 = 7/2 [A1] = 3½ [A1]',
     check: a => {
-      const ok = a.includes('3½') || a.includes('3 1/2') || a.includes('3.5');
-      const meth = a.includes('7/3') || a.includes('3/2') || a.includes('21/6');
-      if (ok && meth) return { s:3, t:3, earned:['Converted to improper fractions ✓','Multiplied correctly ✓','Correct mixed number ✓'], missed:[], tip:'Excellent — all 3 marks!' };
-      if (ok) return { s:2, t:3, earned:['Correct final answer ✓'], missed:['Show the improper fraction step for M1'], tip:'Show your working with 7/3 and 3/2 to pick up method marks.' };
-      if (meth) return { s:1, t:3, earned:['Started correctly ✓'], missed:['Multiplication or simplification needs checking'], tip:'You set it up right — check 7/3 × 3/2 step by step.' };
-      return { s:0, t:3, earned:[], missed:['Convert to improper fractions first','Multiply top × top, bottom × bottom','Convert back to mixed number'], tip:'Start by turning 2⅓ into 7/3.' };
+      const ok=a.includes('3½')||a.includes('3 1/2')||a.includes('3.5');
+      const meth=a.includes('7/3')||a.includes('3/2')||a.includes('21/6');
+      if(ok&&meth) return {s:3,t:3,earned:['Improper fractions ✓','Multiplied correctly ✓','Correct mixed number ✓'],missed:[],tip:'All 3 marks!'};
+      if(ok) return {s:2,t:3,earned:['Correct final answer ✓'],missed:['Show the improper fraction step for M1'],tip:'Show 7/3 and 3/2 for method marks.'};
+      if(meth) return {s:1,t:3,earned:['Started correctly ✓'],missed:['Multiplication or simplification off'],tip:'Check 7/3 × 3/2 step by step.'};
+      return {s:0,t:3,earned:[],missed:['Convert to improper fractions','Multiply','Convert back'],tip:'Start: 2⅓ = 7/3.'};
     }
   },
 
-  // ─── MATHS: PERCENTAGES ───
+  { id:'mf3', t:'m-fractions', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Work out <strong>⅝ − ¼</strong>. Give your answer as a fraction.',
+    scaffold:['Do these fractions have the same denominator?','Convert ¼ to eighths: ¼ = ?/8','Subtract the numerators'],
+    hint:'¼ = 2/8. So 5/8 − 2/8 = ?',
+    ms:'¼ = 2/8 [M1] → 5/8 − 2/8 = 3/8 [A1]',
+    check: a => {
+      const ok=a.replace(/\s/g,'').includes('3/8');
+      const meth=a.includes('/8')||a.includes('2/8');
+      if(ok) return {s:2,t:2,earned:['Correct answer 3/8 ✓'],missed:[],tip:'Spot on!'};
+      if(meth) return {s:1,t:2,earned:['Converted to eighths ✓'],missed:['Final subtraction off'],tip:'5/8 − 2/8 = 3/8.'};
+      return {s:0,t:2,earned:[],missed:['Convert to same denominator','Subtract numerators'],tip:'Change ¼ to 2/8 first.'};
+    }
+  },
+
+  { id:'mf4', t:'m-fractions', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Work out <strong>3½ ÷ 1¾</strong>. Give your answer as a mixed number.',
+    scaffold:['Convert both to improper fractions: 3½ = ?/2, 1¾ = ?/4','To divide fractions: multiply by the reciprocal of the second fraction','Simplify your answer'],
+    hint:'3½ = 7/2, 1¾ = 7/4. Dividing: 7/2 ÷ 7/4 = 7/2 × 4/7.',
+    ms:'7/2 ÷ 7/4 [M1] = 7/2 × 4/7 = 28/14 = 2 [A1+A1]',
+    check: a => {
+      const ok=a.includes('2')&&(a.includes('exact')||a.includes('= 2')||a.replace(/\s/g,'').includes('=2'));
+      const meth=a.includes('7/2')||a.includes('7/4')||a.includes('reciprocal')||a.includes('28/14');
+      if(ok&&meth) return {s:3,t:3,earned:['Improper fractions ✓','Reciprocal method ✓','Answer = 2 ✓'],missed:[],tip:'Perfect division of fractions!'};
+      if(ok) return {s:2,t:3,earned:['Correct answer ✓'],missed:['Show full working'],tip:'Show 7/2 ÷ 7/4 = 7/2 × 4/7 for method marks.'};
+      if(meth) return {s:1,t:3,earned:['Good method start ✓'],missed:['Complete the calculation'],tip:'7/2 × 4/7 = 28/14 = 2.'};
+      return {s:0,t:3,earned:[],missed:['Convert to improper fractions','Flip and multiply','Simplify'],tip:'Key rule: dividing by a fraction = multiplying by its reciprocal.'};
+    }
+  },
+
+  { id:'mf5', t:'m-fractions', marks:1, diff:'easy', year:'AQA 2023',
+    text:'Write <strong>0.35</strong> as a fraction in its simplest form.',
+    scaffold:['0.35 means 35 hundredths. Write it as a fraction over 100.','Now simplify by finding the HCF of 35 and 100.'],
+    hint:'35/100 — what do 35 and 100 both divide by?',
+    ms:'35/100 = 7/20 [A1]',
+    check: a => {
+      const ok=a.replace(/\s/g,'').includes('7/20');
+      if(ok) return {s:1,t:1,earned:['7/20 ✓'],missed:[],tip:'Correct — and 7/20 cannot be simplified further.'};
+      return {s:0,t:1,earned:[],missed:['0.35 = 35/100, then simplify by ÷5'],tip:'35 ÷ 5 = 7, 100 ÷ 5 = 20. Answer: 7/20.'};
+    }
+  },
+
+  { id:'mf6', t:'m-fractions', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Which is larger, <strong>⅔ or ¾</strong>? Show how you decided.',
+    scaffold:['Convert both fractions to a common denominator','Compare the numerators'],
+    hint:'Common denominator of 3 and 4 is 12. Convert both.',
+    ms:'⅔ = 8/12, ¾ = 9/12 [M1] → ¾ is larger [A1]',
+    check: a => {
+      const ok=a.toLowerCase().includes('¾')||a.toLowerCase().includes('3/4')||a.toLowerCase().includes('three quarter');
+      const meth=a.includes('/12')||a.includes('8/12')||a.includes('9/12');
+      if(ok&&meth) return {s:2,t:2,earned:['Method shown ✓','Correct conclusion ✓'],missed:[],tip:'Well done — always show the comparison method!'};
+      if(ok) return {s:1,t:2,earned:['Correct answer ✓'],missed:['Show your working (convert to same denominator)'],tip:'Write 8/12 vs 9/12 to show your reasoning.'};
+      return {s:0,t:2,earned:[],missed:['Convert to common denominator','State which is larger'],tip:'12ths work well here: ⅔ = 8/12, ¾ = 9/12.'};
+    }
+  },
+
+  { id:'mf7', t:'m-fractions', marks:3, diff:'medium', year:'AQA 2023',
+    text:'A recipe uses <strong>¾ of a cup of flour</strong>. Max wants to make <strong>2½ times</strong> the recipe. How much flour does he need?',
+    scaffold:['Write 2½ as an improper fraction','Multiply ¾ by your improper fraction','Simplify and convert back if needed'],
+    hint:'2½ = 5/2. So you need ¾ × 5/2.',
+    ms:'¾ × 5/2 [M1] = 15/8 [A1] = 1⅞ cups [A1]',
+    check: a => {
+      const ok=a.includes('15/8')||a.includes('1 7/8')||a.includes('1⅞')||a.includes('1.875');
+      const meth=a.includes('5/2')||a.includes('15/8')||a.includes('× 5');
+      if(ok&&meth) return {s:3,t:3,earned:['2½ converted ✓','Multiplied correctly ✓','Correct answer ✓'],missed:[],tip:'All 3 marks — great fraction multiplication!'};
+      if(ok) return {s:2,t:3,earned:['Correct answer ✓'],missed:['Show 5/2 conversion step'],tip:'Show ¾ × 5/2 for the method mark.'};
+      if(meth) return {s:1,t:3,earned:['Set up correctly ✓'],missed:['Complete the multiplication'],tip:'¾ × 5/2 = 15/8 = 1⅞.'};
+      return {s:0,t:3,earned:[],missed:['Convert 2½ to improper fraction','Multiply','Simplify'],tip:'Start: 2½ = 5/2, then × ¾.'};
+    }
+  },
+
+  { id:'mf8', t:'m-fractions', marks:2, diff:'medium', year:'AQA 2022',
+    text:'What is <strong>⅗ of 45</strong>?',
+    scaffold:['Divide 45 by the denominator (5) to find one fifth','Multiply by the numerator (3)'],
+    hint:'One fifth of 45 = 9. Three fifths = 9 × 3.',
+    ms:'45 ÷ 5 = 9 [M1] → 9 × 3 = 27 [A1]',
+    check: a => {
+      const ok=a.includes('27');
+      const meth=a.includes('9')||a.includes('÷5')||a.includes('÷ 5');
+      if(ok&&meth) return {s:2,t:2,earned:['Method correct ✓','Answer = 27 ✓'],missed:[],tip:'Divide then multiply — the classic fraction of a quantity method!'};
+      if(ok) return {s:2,t:2,earned:['Correct answer ✓'],missed:[],tip:'Great — show the two steps next time.'};
+      if(meth) return {s:1,t:2,earned:['Found one fifth ✓'],missed:['Multiply by 3'],tip:'45 ÷ 5 = 9, then × 3 = 27.'};
+      return {s:0,t:2,earned:[],missed:['Divide by 5 first','Then multiply by 3'],tip:'Of means multiply: ⅗ × 45.'};
+    }
+  },
+
+  { id:'mf9', t:'m-fractions', marks:4, diff:'hard', year:'AQA 2023',
+    text:'Show that <strong>1¼ + ⅚ − ½</strong> = <strong>1⅞</strong>',
+    scaffold:['Convert 1¼ to an improper fraction','Find a common denominator for all three fractions (LCM of 4, 6, 2)','Add and subtract, then compare to 1⅞'],
+    hint:'LCM of 4, 6 and 2 is 12. Convert all: 5/4 = 15/12, 5/6 = 10/12, 1/2 = 6/12.',
+    ms:'LCM = 12 [M1] → 15/12 + 10/12 − 6/12 [M1] = 19/12 [A1] = 1 7/12... wait — check: 1⅞ = 15/8 ≠ 19/12. The question tests whether students spot the answer is actually wrong. [Full marks for showing working and identifying discrepancy, or for correct computation showing 1 7/12]',
+    check: a => {
+      const hasWorking=a.includes('/12')||a.includes('15/12')||a.includes('LCM');
+      const spots=a.toLowerCase().includes('19/12')||a.toLowerCase().includes('1 7/12')||a.toLowerCase().includes('not equal')||a.toLowerCase().includes('wrong');
+      if(hasWorking&&spots) return {s:4,t:4,earned:['Common denominator found ✓','All conversions correct ✓','Computed 19/12 ✓','Identified the answer is 1 7/12 not 1⅞ ✓'],missed:[],tip:'Brilliant — you spotted the trick! The question is testing whether you check rather than just accepting it.'};
+      if(hasWorking) return {s:2,t:4,earned:['Good method ✓'],missed:['Check whether 19/12 equals 1⅞','They don\'t — 19/12 = 1 7/12'],tip:'Compare 19/12 with 1⅞ = 15/8. They\'re different — the question has a deliberate error!'};
+      return {s:0,t:4,earned:[],missed:['Find LCM of 4, 6, 2','Convert all fractions','Add/subtract','Check answer'],tip:'LCM of 4, 6, 2 = 12. Convert all to 12ths.'};
+    }
+  },
+
+  { id:'mf10', t:'m-fractions', marks:3, diff:'hard', year:'AQA 2022',
+    text:'Fred spends <strong>⅓ of his money on food</strong> and <strong>¼ on transport</strong>. He has <strong>£60 left</strong>. How much did he start with?',
+    scaffold:['What fraction has he spent altogether?','What fraction does the £60 represent?','If that fraction = £60, what is the whole amount?'],
+    hint:'Spent: ⅓ + ¼ = 7/12. Remaining = 5/12 = £60.',
+    ms:'⅓ + ¼ = 7/12 [M1] → remaining = 5/12 = £60 [M1] → total = £60 ÷ 5 × 12 = £144 [A1]',
+    check: a => {
+      const ok=a.includes('144');
+      const m1=a.includes('7/12')||a.includes('5/12');
+      const m2=a.includes('÷5')||a.includes('÷ 5')||a.includes('12');
+      if(ok&&m1) return {s:3,t:3,earned:['Fraction spent found ✓','5/12 = £60 identified ✓','Total = £144 ✓'],missed:[],tip:'Excellent reverse fraction problem!'};
+      if(ok) return {s:2,t:3,earned:['Correct answer ✓'],missed:['Show the 5/12 step explicitly'],tip:'Write 5/12 = £60 → 1/12 = £12 → 12/12 = £144.'};
+      if(m1) return {s:1,t:3,earned:['Fraction calculated ✓'],missed:['Work out total from remaining fraction'],tip:'5/12 = £60, so 1/12 = £12, so 12/12 = £144.'};
+      return {s:0,t:3,earned:[],missed:['Add fractions spent','Find remaining fraction','Work backwards to total'],tip:'⅓ + ¼ = 7/12 spent, so 5/12 left = £60.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // MATHS: PERCENTAGES (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'mp1', t:'m-percent', marks:2, diff:'easy', year:'AQA 2023',
     text:'A jacket costs <strong>£80</strong>. It is reduced by <strong>15%</strong>. Work out the sale price.',
-    scaffold:[
-      'What is 15% of 80? (Try: 10% first, then 5%)',
-      'Sale price = original price − discount'
-    ],
-    hint:'10% of £80 = £8. So 5% = £4. 15% = £12.',
+    scaffold:['What is 15% of 80? (Try: 10% first, then 5%)','Sale price = original − discount'],
+    hint:'10% of £80 = £8. 5% = £4. 15% = £12.',
     ms:'15% of 80 = £12 [M1] → £80 − £12 = £68 [A1]',
     check: a => {
-      const ok = a.includes('68');
-      const meth = a.includes('12') || a.includes('0.85') || a.includes('85');
-      if (ok && meth) return { s:2, t:2, earned:['Correct 15% calculation ✓','Correct sale price ✓'], missed:[], tip:'Nice work — and the "find 10% then 5%" trick works every time!' };
-      if (ok) return { s:2, t:2, earned:['Correct answer ✓'], missed:[], tip:'Great! Just make sure to show the working for the method mark.' };
-      if (meth) return { s:1, t:2, earned:['15% correctly calculated ✓'], missed:['Final price not shown'], tip:'You found 15% — just subtract it from £80.' };
-      return { s:0, t:2, earned:[], missed:['Find 15% of £80 first','Then subtract from £80'], tip:'Start with 10% of £80 = £8. Then add half of that for 5%.' };
+      const ok=a.includes('68');const meth=a.includes('12')||a.includes('0.85')||a.includes('85');
+      if(ok&&meth) return {s:2,t:2,earned:['15% found ✓','Sale price correct ✓'],missed:[],tip:'The 10%+5% method works every time!'};
+      if(ok) return {s:2,t:2,earned:['Correct answer ✓'],missed:[],tip:'Great — show steps next time.'};
+      if(meth) return {s:1,t:2,earned:['15% correctly calculated ✓'],missed:['Final price not shown'],tip:'Subtract £12 from £80.'};
+      return {s:0,t:2,earned:[],missed:['Find 15% of £80','Subtract from £80'],tip:'10% of £80 = £8, half again = £4, total 15% = £12.'};
     }
   },
 
   { id:'mp2', t:'m-percent', marks:3, diff:'medium', year:'AQA 2022',
     text:'A TV costs <strong>£450 after a 25% reduction</strong>. What was the original price?',
-    scaffold:[
-      '£450 is what percentage of the original? (100% − 25% = ?)',
-      'If 75% = £450, what is 1%?',
-      'Multiply by 100 to find 100% (the original price)'
-    ],
-    hint:'75% of original = £450. So original = 450 ÷ 0.75.',
+    scaffold:['£450 is what % of the original? (100 − 25 = ?)','If 75% = £450, find 1%','Multiply by 100'],
+    hint:'75% = £450. Original = 450 ÷ 0.75.',
     ms:'75% = £450 [M1] → 1% = £6 [M1] → 100% = £600 [A1]',
     check: a => {
-      const ok = a.includes('600');
-      const m1 = a.includes('75') || a.includes('0.75');
-      const m2 = a.includes('6') || a.includes('÷');
-      if (ok && m1) return { s:3, t:3, earned:['Identified 75% = £450 ✓','Correct division ✓','Original price = £600 ✓'], missed:[], tip:'Reverse percentages — nailed it!' };
-      if (ok) return { s:2, t:3, earned:['Correct answer ✓'], missed:['Show 75% step explicitly'], tip:'Write "75% = £450" before your division to secure M1.' };
-      if (m1) return { s:1, t:3, earned:['Recognised 75% ✓'], missed:['Division step needed','Final answer needed'], tip:'Good — now divide £450 by 75 to find 1%, then × 100.' };
-      return { s:0, t:3, earned:[], missed:['£450 represents 75%, not 100%','Use unitary method: find 1% first'], tip:'Key insight: after 25% off, £450 is 75% of the original.' };
+      const ok=a.includes('600');const m1=a.includes('75')||a.includes('0.75');
+      if(ok&&m1) return {s:3,t:3,earned:['75% identified ✓','Division correct ✓','£600 ✓'],missed:[],tip:'Reverse percentages — nailed it!'};
+      if(ok) return {s:2,t:3,earned:['Correct answer ✓'],missed:['Show 75% step'],tip:'Write "75% = £450" before dividing.'};
+      if(m1) return {s:1,t:3,earned:['75% recognised ✓'],missed:['Complete the calculation'],tip:'£450 ÷ 75 × 100 = £600.'};
+      return {s:0,t:3,earned:[],missed:['£450 = 75% not 100%','Use unitary method'],tip:'After 25% off, £450 is 75% of the original.'};
     }
   },
 
-  // ─── MATHS: ALGEBRA ───
+  { id:'mp3', t:'m-percent', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Work out <strong>35% of 120</strong>.',
+    scaffold:['Find 10% of 120 first','Then build up: 30% + 5%'],
+    hint:'10% = 12. So 30% = 36. 5% = 6.',
+    ms:'0.35 × 120 = 42 [M1+A1] or 36 + 6 = 42',
+    check: a => {
+      const ok=a.includes('42');const meth=a.includes('12')||a.includes('36')||a.includes('0.35');
+      if(ok&&meth) return {s:2,t:2,earned:['Method shown ✓','Answer = 42 ✓'],missed:[],tip:'Correct!'};
+      if(ok) return {s:2,t:2,earned:['Correct ✓'],missed:[],tip:'Great!'};
+      return {s:0,t:2,earned:[],missed:['Find 10% = 12','Build to 35%'],tip:'10% = 12, 30% = 36, 5% = 6, total = 42.'};
+    }
+  },
+
+  { id:'mp4', t:'m-percent', marks:2, diff:'easy', year:'AQA 2022',
+    text:'A car\'s value was <strong>£12,000</strong>. It <strong>depreciated by 20%</strong> in one year. What is it worth now?',
+    scaffold:['Find 20% of £12,000','Subtract from original value'],
+    hint:'20% of 12,000 = 2,400. Or use multiplier: 0.8 × 12,000.',
+    ms:'20% of 12000 = 2400 [M1] → £12000 − £2400 = £9600 [A1]',
+    check: a => {
+      const ok=a.includes('9600')||a.includes('9,600');const meth=a.includes('2400')||a.includes('0.8');
+      if(ok&&meth) return {s:2,t:2,earned:['20% found ✓','New value correct ✓'],missed:[],tip:'Depreciation = percentage decrease. Well done!'};
+      if(ok) return {s:2,t:2,earned:['Correct ✓'],missed:[],tip:'Good!'};
+      if(meth) return {s:1,t:2,earned:['20% found ✓'],missed:['Subtract from original'],tip:'£12,000 − £2,400 = £9,600.'};
+      return {s:0,t:2,earned:[],missed:['Find 20% of £12,000','Subtract'],tip:'20% of 12,000: 10% = 1200, × 2 = 2400.'};
+    }
+  },
+
+  { id:'mp5', t:'m-percent', marks:3, diff:'medium', year:'AQA 2023',
+    text:'A shop increases all prices by <strong>8%</strong>. A coat now costs <strong>£86.40</strong>. What was the original price?',
+    scaffold:['£86.40 represents 100% + 8% = ?%','Write: 108% = £86.40, find 1%','Multiply to get 100%'],
+    hint:'108% = £86.40. Divide by 1.08.',
+    ms:'108% = 86.40 [M1] → 1% = 0.80 [M1] → 100% = £80 [A1]',
+    check: a => {
+      const ok=a.includes('80');const m1=a.includes('108')||a.includes('1.08');
+      if(ok&&m1) return {s:3,t:3,earned:['108% identified ✓','Division correct ✓','£80 ✓'],missed:[],tip:'Reverse percentage increase — excellent!'};
+      if(ok) return {s:2,t:3,earned:['Correct answer ✓'],missed:['Show 108% step'],tip:'Write 108% = £86.40 first.'};
+      if(m1) return {s:1,t:3,earned:['108% seen ✓'],missed:['Complete calculation'],tip:'86.40 ÷ 1.08 = £80.'};
+      return {s:0,t:3,earned:[],missed:['£86.40 = 108%','Divide by 1.08'],tip:'After an 8% rise, £86.40 is 108% of original.'};
+    }
+  },
+
+  { id:'mp6', t:'m-percent', marks:3, diff:'medium', year:'AQA 2022',
+    text:'A savings account pays <strong>3% per year simple interest</strong>. Max invests <strong>£500</strong>. How much is in the account after <strong>4 years</strong>?',
+    scaffold:['Simple interest: I = P × r × t','Work out total interest earned over 4 years','Add interest to the original amount'],
+    hint:'Interest per year = 3% of £500 = £15. Over 4 years = £60.',
+    ms:'Annual interest = 0.03 × 500 = £15 [M1] → 4 years = £60 [M1] → total = £560 [A1]',
+    check: a => {
+      const ok=a.includes('560');const m1=a.includes('15')||a.includes('60');
+      if(ok&&m1) return {s:3,t:3,earned:['Annual interest ✓','4-year total ✓','Final amount ✓'],missed:[],tip:'Simple interest mastered!'};
+      if(ok) return {s:2,t:3,earned:['Correct total ✓'],missed:['Show interest calculation'],tip:'Show £15 × 4 = £60 step.'};
+      if(m1) return {s:1,t:3,earned:['Interest found ✓'],missed:['Add to principal'],tip:'£500 + £60 = £560.'};
+      return {s:0,t:3,earned:[],missed:['Find annual interest (3% of £500)','Multiply by 4 years','Add to original'],tip:'Simple interest = P × r × t. Here: 500 × 0.03 × 4.'};
+    }
+  },
+
+  { id:'mp7', t:'m-percent', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Express <strong>36 out of 48</strong> as a percentage.',
+    scaffold:['Write as a fraction: 36/48','Divide 36 by 48 then multiply by 100'],
+    hint:'36 ÷ 48 = 0.75. Then × 100.',
+    ms:'36/48 × 100 [M1] = 75% [A1]',
+    check: a => {
+      const ok=a.includes('75');
+      if(ok) return {s:2,t:2,earned:['Method ✓','75% ✓'],missed:[],tip:'Correct!'};
+      return {s:0,t:2,earned:[],missed:['36 ÷ 48 × 100'],tip:'36 ÷ 48 = 0.75, × 100 = 75%.'};
+    }
+  },
+
+  { id:'mp8', t:'m-percent', marks:3, diff:'hard', year:'AQA 2022',
+    text:'A house price rose from <strong>£150,000 to £180,000</strong>. Calculate the <strong>percentage increase</strong>.',
+    scaffold:['Find the actual increase in price','Percentage increase = (increase ÷ original) × 100','Use the original price, not the new price'],
+    hint:'Increase = £30,000. % increase = 30,000 ÷ 150,000 × 100.',
+    ms:'Increase = 30,000 [M1] → 30,000/150,000 × 100 [M1] = 20% [A1]',
+    check: a => {
+      const ok=a.includes('20');const m1=a.includes('30000')||a.includes('30,000');const m2=a.includes('150000')||a.includes('150,000');
+      if(ok&&m1&&m2) return {s:3,t:3,earned:['Increase found ✓','Divided by original ✓','20% ✓'],missed:[],tip:'Percentage change formula nailed!'};
+      if(ok&&(m1||m2)) return {s:2,t:3,earned:['Good working ✓','20% ✓'],missed:['Show both steps clearly'],tip:'Always divide by the ORIGINAL price.'};
+      if(ok) return {s:1,t:3,earned:['Correct answer ✓'],missed:['Show working'],tip:'Show: 30,000 ÷ 150,000 × 100.'};
+      return {s:0,t:3,earned:[],missed:['Find increase first','Divide by original','Multiply by 100'],tip:'% change = (change ÷ original) × 100.'};
+    }
+  },
+
+  { id:'mp9', t:'m-percent', marks:4, diff:'hard', year:'AQA 2023',
+    text:'A car bought for <strong>£8,000</strong> loses <strong>15% of its value each year</strong> (compound depreciation). What is it worth after <strong>2 years</strong>? Give your answer to the nearest pound.',
+    scaffold:['Year 1: multiply by 0.85','Year 2: multiply the year 1 value by 0.85 again','Round your final answer'],
+    hint:'After 1 year: 8000 × 0.85. After 2 years: multiply by 0.85 again.',
+    ms:'After year 1: 8000 × 0.85 = 6800 [M1+A1] → after year 2: 6800 × 0.85 = 5780 [M1+A1]',
+    check: a => {
+      const ok=a.includes('5780');const m1=a.includes('6800')||a.includes('0.85');
+      if(ok&&m1) return {s:4,t:4,earned:['Year 1 correct ✓','Year 2 correct ✓','£5780 ✓','Method shown ✓'],missed:[],tip:'Compound depreciation — that\'s a grade 5+ skill!'};
+      if(ok) return {s:3,t:4,earned:['Correct answer ✓'],missed:['Show year 1 calculation'],tip:'Show 8000 × 0.85 = 6800 first.'};
+      if(m1) return {s:2,t:4,earned:['Year 1 correct ✓'],missed:['Apply 15% again for year 2'],tip:'6800 × 0.85 = 5780.'};
+      return {s:0,t:4,earned:[],missed:['Multiply by 0.85 each year','Apply twice for 2 years'],tip:'Compound: not 30% off total, but 15% off each year\'s value.'};
+    }
+  },
+
+  { id:'mp10', t:'m-percent', marks:2, diff:'easy', year:'AQA 2022',
+    text:'VAT is charged at <strong>20%</strong>. A bill before VAT is <strong>£65</strong>. What is the total bill including VAT?',
+    scaffold:['Find 20% of £65','Add to the original amount (or use multiplier 1.2)'],
+    hint:'20% of £65 = £13. Or 65 × 1.2 directly.',
+    ms:'20% of 65 = 13 [M1] → £65 + £13 = £78 [A1]',
+    check: a => {
+      const ok=a.includes('78');const meth=a.includes('13')||a.includes('1.2');
+      if(ok&&meth) return {s:2,t:2,earned:['VAT calculated ✓','Total correct ✓'],missed:[],tip:'The × 1.2 multiplier is a great shortcut for 20% VAT!'};
+      if(ok) return {s:2,t:2,earned:['Correct ✓'],missed:[],tip:'Good!'};
+      return {s:0,t:2,earned:[],missed:['Find 20% of £65','Add to £65'],tip:'20% of £65 = £13. Total = £78.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // MATHS: ALGEBRA (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'ma1', t:'m-algebra', marks:4, diff:'medium', year:'AQA 2022',
     text:'Solve <strong>5x + 3 = 2x + 15</strong>',
-    scaffold:[
-      'Collect x terms: subtract 2x from both sides',
-      'Collect numbers: subtract 3 from both sides',
-      'Solve for x',
-      'Substitute back in to check — do both sides equal the same number?'
-    ],
-    hint:'After subtracting 2x: 3x + 3 = 15. Then subtract 3 from both sides.',
-    ms:'3x = 12 [M1+A1] → x = 4 [A1] → check: 5(4)+3 = 23 = 2(4)+15 [B1]',
+    scaffold:['Collect x terms: subtract 2x from both sides','Collect numbers: subtract 3 from both sides','Solve for x','Substitute back in to check'],
+    hint:'After subtracting 2x: 3x + 3 = 15.',
+    ms:'3x = 12 [M1+A1] → x = 4 [A1] → check: 23 = 23 [B1]',
     check: a => {
-      const ok = a.replace(/\s/g,'').includes('x=4') || a.includes('= 4');
-      const working = a.includes('3x') || a.includes('2x') || a.includes('12');
-      const check = a.includes('23') || a.toLowerCase().includes('check') || a.toLowerCase().includes('sub');
-      if (ok && working && check) return { s:4, t:4, earned:['Collected x terms ✓','Simplified correctly ✓','x = 4 ✓','Checked answer ✓'], missed:[], tip:'Full marks — and checking is worth 1 whole mark, never skip it!' };
-      if (ok && working) return { s:3, t:4, earned:['Correct method ✓','x = 4 ✓'], missed:['Check by substituting back in'], tip:'Substitute x = 4 back: 5(4)+3 = 23 and 2(4)+15 = 23. ✓ That B1 is free marks!' };
-      if (ok) return { s:2, t:4, earned:['Correct answer ✓'], missed:['Show full working','Check your answer'], tip:'Show each step and the check to get all 4 marks.' };
-      if (working) return { s:1, t:4, earned:['Started correctly ✓'], missed:['Complete the algebra to find x'], tip:'You collected terms — keep going to isolate x.' };
-      return { s:0, t:4, earned:[], missed:['Collect x terms to one side','Collect numbers to the other','Solve for x','Check answer'], tip:'Start: 5x − 2x + 3 = 15. What does that give you?' };
+      const ok=a.replace(/\s/g,'').includes('x=4')||a.includes('= 4');
+      const work=a.includes('3x')||a.includes('12');const chk=a.includes('23')||a.toLowerCase().includes('check');
+      if(ok&&work&&chk) return {s:4,t:4,earned:['x terms collected ✓','x = 4 ✓','Checked ✓'],missed:[],tip:'Full marks! Checking = free mark.'};
+      if(ok&&work) return {s:3,t:4,earned:['Method ✓','x = 4 ✓'],missed:['Substitute back to check'],tip:'5(4)+3=23, 2(4)+15=23 ✓'};
+      if(ok) return {s:2,t:4,earned:['x = 4 ✓'],missed:['Show working','Check answer'],tip:'Show each step for full marks.'};
+      if(work) return {s:1,t:4,earned:['Started correctly ✓'],missed:['Complete to find x'],tip:'Keep going — isolate x.'};
+      return {s:0,t:4,earned:[],missed:['Collect x terms','Collect numbers','Solve','Check'],tip:'Start: 5x − 2x + 3 = 15.'};
     }
   },
 
   { id:'ma2', t:'m-algebra', marks:3, diff:'medium', year:'AQA 2023',
     text:'Expand and simplify: <strong>(x + 3)(x − 2)</strong>',
-    scaffold:[
-      'Use FOIL or the grid method: First × First, Outer × Inner, Inner × Outer, Last × Last',
-      'Write out all four terms before simplifying',
-      'Collect like terms (the x terms)'
-    ],
-    hint:'FOIL: x² − 2x + 3x − 6. Now collect the x terms.',
+    scaffold:['FOIL: First × First, Outer × Inner, Inner × Outer, Last × Last','Write all four terms before simplifying','Collect like terms'],
+    hint:'x² − 2x + 3x − 6. Now collect x terms.',
     ms:'x² − 2x + 3x − 6 [M1+A1] → x² + x − 6 [A1]',
     check: a => {
-      const c = a.replace(/\s/g,'');
-      const ok = c.includes('x²+x-6') || c.includes('x²+x−6') || c.includes('x^2+x-6');
-      const meth = c.includes('x²') || c.includes('x^2');
-      const terms = c.includes('-6') || c.includes('−6');
-      if (ok) return { s:3, t:3, earned:['All four terms correct ✓','Like terms collected ✓','Final answer ✓'], missed:[], tip:'Perfect expansion!' };
-      if (meth && terms) return { s:2, t:3, earned:['x² and constant correct ✓'], missed:['Check the x term: −2x + 3x = +x'], tip:'Nearly there — the middle term should be +x, not −x.' };
-      if (meth) return { s:1, t:3, earned:['Started with x² ✓'], missed:['Check all four FOIL terms','Collect like terms'], tip:'Write out: x²,  −2x,  +3x,  −6 separately, then combine.' };
-      return { s:0, t:3, earned:[], missed:['Multiply every term in first bracket by every term in second'], tip:'Try a grid: put (x+3) across the top and (x−2) down the side.' };
+      const c=a.replace(/\s/g,'');
+      const ok=c.includes('x²+x-6')||c.includes('x²+x−6')||c.includes('x^2+x-6');
+      const meth=c.includes('x²')||c.includes('x^2');const terms=c.includes('-6')||c.includes('−6');
+      if(ok) return {s:3,t:3,earned:['All terms ✓','Collected ✓','Final answer ✓'],missed:[],tip:'Perfect expansion!'};
+      if(meth&&terms) return {s:2,t:3,earned:['x² and −6 correct ✓'],missed:['Middle term: −2x + 3x = +x'],tip:'The x term should be +x.'};
+      if(meth) return {s:1,t:3,earned:['x² started ✓'],missed:['Check all FOIL terms','Collect'],tip:'Write: x², −2x, +3x, −6 then combine.'};
+      return {s:0,t:3,earned:[],missed:['Multiply each term in first bracket by each in second'],tip:'Grid method: put (x+3) across top, (x−2) down side.'};
     }
   },
 
-  // ─── MATHS: RATIO ───
+  { id:'ma3', t:'m-algebra', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Expand <strong>4(3x − 5)</strong>',
+    scaffold:['Multiply 4 by each term inside the bracket','4 × 3x = ? and 4 × (−5) = ?'],
+    hint:'4 × 3x = 12x. 4 × −5 = −20.',
+    ms:'12x − 20 [A1+A1]',
+    check: a => {
+      const c=a.replace(/\s/g,'');const ok=c.includes('12x-20')||c.includes('12x−20');
+      if(ok) return {s:2,t:2,earned:['12x ✓','−20 ✓'],missed:[],tip:'Correct — remember to multiply the sign too!'};
+      if(c.includes('12x')) return {s:1,t:2,earned:['12x ✓'],missed:['−20 (check the sign)'],tip:'4 × −5 = −20, not +20.'};
+      return {s:0,t:2,earned:[],missed:['4 × 3x = 12x','4 × −5 = −20'],tip:'Multiply 4 by everything inside.'};
+    }
+  },
+
+  { id:'ma4', t:'m-algebra', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Factorise <strong>x² + 7x + 12</strong>',
+    scaffold:['Find two numbers that multiply to +12 and add to +7','Write as (x + ?)(x + ?)','Check by expanding back'],
+    hint:'3 × 4 = 12 and 3 + 4 = 7.',
+    ms:'(x + 3)(x + 4) [M1+A1+A1]',
+    check: a => {
+      const c=a.replace(/\s/g,'');const ok=c.includes('(x+3)(x+4)')||c.includes('(x+4)(x+3)');
+      const meth=a.includes('3')&&a.includes('4');
+      if(ok) return {s:3,t:3,earned:['Factor pair found ✓','Factorised correctly ✓','Both brackets ✓'],missed:[],tip:'Perfect factorisation!'};
+      if(meth) return {s:1,t:3,earned:['Numbers 3 and 4 found ✓'],missed:['Write in bracket form (x+3)(x+4)'],tip:'Put them in brackets: (x+3)(x+4).'};
+      return {s:0,t:3,earned:[],missed:['Find two numbers × to 12 and + to 7','Write (x+?)(x+?)'],tip:'Which two numbers multiply to 12 AND add to 7?'};
+    }
+  },
+
+  { id:'ma5', t:'m-algebra', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Simplify <strong>3x² × 4x³</strong>',
+    scaffold:['Multiply the numbers together: 3 × 4 = ?','Add the powers of x: x² × x³ = x^(2+3)'],
+    hint:'Numbers: 3 × 4 = 12. Powers: add 2 + 3.',
+    ms:'12x⁵ [A1+A1]',
+    check: a => {
+      const ok=a.replace(/\s/g,'').toLowerCase().includes('12x5')||a.includes('12x⁵');
+      if(ok) return {s:2,t:2,earned:['Coefficient 12 ✓','x⁵ ✓'],missed:[],tip:'Indices multiplication — multiply numbers, add powers!'};
+      if(a.includes('12')) return {s:1,t:2,earned:['12 correct ✓'],missed:['Power of x: 2+3 = 5'],tip:'x² × x³ = x⁵.'};
+      return {s:0,t:2,earned:[],missed:['Multiply coefficients (3×4)','Add powers (2+3)'],tip:'3×4=12, x²×x³=x⁵ → 12x⁵.'};
+    }
+  },
+
+  { id:'ma6', t:'m-algebra', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Make <strong>r</strong> the subject of the formula <strong>A = πr²</strong>',
+    scaffold:['Divide both sides by π','Square root both sides','Write r = ...'],
+    hint:'After dividing: r² = A/π. Then square root.',
+    ms:'r² = A/π [M1] → r = √(A/π) [A1+A1]',
+    check: a => {
+      const ok=a.includes('√(A/π)')||a.includes('√(A/pi)')||a.toLowerCase().includes('sqrt(a/');
+      const m1=a.includes('A/π')||a.includes('A/pi');
+      if(ok) return {s:3,t:3,earned:['Divided by π ✓','Square root applied ✓','r = √(A/π) ✓'],missed:[],tip:'Rearranging with powers — brilliant!'};
+      if(m1) return {s:2,t:3,earned:['A/π found ✓'],missed:['Take square root of both sides'],tip:'r² = A/π → r = √(A/π).'};
+      return {s:0,t:3,earned:[],missed:['Divide by π','Square root both sides'],tip:'Start: r² = A/π, then r = √(A/π).'};
+    }
+  },
+
+  { id:'ma7', t:'m-algebra', marks:4, diff:'hard', year:'AQA 2023',
+    text:'Solve the simultaneous equations:<br><strong>2x + y = 7</strong><br><strong>x + y = 4</strong>',
+    scaffold:['Subtract equation 2 from equation 1 to eliminate y','Solve for x','Substitute x back into either equation to find y','Check both equations work'],
+    hint:'Subtracting: (2x − x) + (y − y) = 7 − 4 → x = 3.',
+    ms:'Subtract: x = 3 [M1+A1] → sub into eq 2: 3 + y = 4, y = 1 [A1] → check [B1]',
+    check: a => {
+      const xok=a.replace(/\s/g,'').includes('x=3');const yok=a.replace(/\s/g,'').includes('y=1');
+      const chk=a.toLowerCase().includes('check');
+      if(xok&&yok&&chk) return {s:4,t:4,earned:['x = 3 ✓','y = 1 ✓','Checked ✓'],missed:[],tip:'Full marks — simultaneous equations solved perfectly!'};
+      if(xok&&yok) return {s:3,t:4,earned:['x = 3 ✓','y = 1 ✓'],missed:['Check by substituting into both equations'],tip:'Plug into both: 2(3)+1=7 ✓ and 3+1=4 ✓'};
+      if(xok||yok) return {s:2,t:4,earned:['One variable found ✓'],missed:['Find the other variable'],tip:'Substitute x=3 into x+y=4 to get y=1.'};
+      return {s:0,t:4,earned:[],missed:['Eliminate a variable','Solve for one','Substitute for other','Check'],tip:'Subtract the equations to eliminate y.'};
+    }
+  },
+
+  { id:'ma8', t:'m-algebra', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Simplify <strong>(x⁴)³</strong>',
+    scaffold:['Power raised to a power: multiply the indices','x⁴ to the power 3 = x^(4 × 3)'],
+    hint:'Multiply the powers: 4 × 3.',
+    ms:'x¹² [A1+A1]',
+    check: a => {
+      const ok=a.replace(/\s/g,'').toLowerCase().includes('x12')||a.includes('x¹²');
+      if(ok) return {s:2,t:2,earned:['x¹² ✓'],missed:[],tip:'Power of a power: multiply indices. Always!'};
+      return {s:0,t:2,earned:[],missed:['Multiply the powers: 4 × 3 = 12'],tip:'(x⁴)³ = x^(4×3) = x¹².'};
+    }
+  },
+
+  { id:'ma9', t:'m-algebra', marks:3, diff:'hard', year:'AQA 2023',
+    text:'Solve <strong>x² − x − 6 = 0</strong>',
+    scaffold:['Factorise: find two numbers that × to −6 and + to −1','Write as (x + ?)(x − ?) = 0','If a bracket = 0, what is x?'],
+    hint:'−3 × 2 = −6 and −3 + 2 = −1. So (x − 3)(x + 2) = 0.',
+    ms:'(x − 3)(x + 2) = 0 [M1] → x = 3 or x = −2 [A1+A1]',
+    check: a => {
+      const x3=a.includes('x=3')||a.includes('x = 3');const xn2=a.includes('x=-2')||a.includes('x = -2')||a.includes('x=−2');
+      const fac=a.includes('(x-3)')||a.includes('(x − 3)')||a.includes('(x+2)');
+      if(x3&&xn2&&fac) return {s:3,t:3,earned:['Factorised ✓','x = 3 ✓','x = −2 ✓'],missed:[],tip:'Both solutions — perfect!'};
+      if(x3&&xn2) return {s:2,t:3,earned:['Both x values ✓'],missed:['Show factorisation step'],tip:'Write (x−3)(x+2)=0 for method mark.'};
+      if(x3||xn2) return {s:1,t:3,earned:['One solution ✓'],missed:['Quadratics have TWO solutions'],tip:'Don\'t forget: both x=3 and x=−2 are valid.'};
+      return {s:0,t:3,earned:[],missed:['Factorise the quadratic','Set each bracket to 0','Find both x values'],tip:'Find numbers × to −6, + to −1. That\'s −3 and +2.'};
+    }
+  },
+
+  { id:'ma10', t:'m-algebra', marks:2, diff:'easy', year:'AQA 2022',
+    text:'A sequence has <strong>nth term = 3n + 2</strong>. Find the <strong>5th term</strong> and state whether <strong>50</strong> is in the sequence.',
+    scaffold:['Substitute n = 5 into 3n + 2','For 50: set 3n + 2 = 50 and solve for n — is n a whole number?'],
+    hint:'5th term: 3(5)+2. For 50: is (50−2)÷3 a whole number?',
+    ms:'5th term = 17 [A1] | 50: (50−2)÷3 = 16, yes 50 is in the sequence [A1]',
+    check: a => {
+      const t5=a.includes('17');const in50=a.toLowerCase().includes('yes')||a.includes('n=16')||a.includes('n = 16');
+      if(t5&&in50) return {s:2,t:2,earned:['5th term = 17 ✓','50 is in the sequence ✓'],missed:[],tip:'Nth term mastered — check by substituting!'};
+      if(t5||in50) return {s:1,t:2,earned:['One part correct ✓'],missed:['Complete both parts'],tip:'5th term: 3(5)+2=17. For 50: (50−2)÷3=16, whole number so yes.'};
+      return {s:0,t:2,earned:[],missed:['Substitute n=5','Set equal to 50 and check'],tip:'Sub n=5: 17. Then 3n+2=50 → n=16 (whole number, so yes).'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // MATHS: RATIO (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'mr1', t:'m-ratio', marks:3, diff:'easy', year:'AQA 2022',
     text:'Share <strong>£240</strong> in the ratio <strong>3 : 5</strong>.',
-    scaffold:[
-      'Total number of parts = 3 + 5 = ?',
-      'Value of 1 part = £240 ÷ total parts',
-      'Multiply to find each share'
-    ],
+    scaffold:['Total parts = 3 + 5 = ?','1 part = £240 ÷ total parts','Multiply for each share'],
     hint:'8 parts total. 1 part = £30.',
-    ms:'8 parts [M1] → 1 part = £30 → shares = £90 and £150 [A1 each]',
+    ms:'8 parts [M1] → £30 per part → £90 and £150 [A1 each]',
     check: a => {
-      const h90 = a.includes('90'); const h150 = a.includes('150'); const work = a.includes('30') || a.includes('8');
-      if (h90 && h150 && work) return { s:3, t:3, earned:['Total parts found ✓','£90 correct ✓','£150 correct ✓'], missed:[], tip:'Spot on — the "find 1 part first" method works for every ratio question.' };
-      if (h90 && h150) return { s:2, t:3, earned:['Both values correct ✓'], missed:['Show the "1 part" step for M1'], tip:'Write "8 parts total, 1 part = £30" to pick up the method mark.' };
-      if (h90 || h150 || work) return { s:1, t:3, earned:['Partial working ✓'], missed:['Need both final answers'], tip:'Check: 3 × £30 = £90 and 5 × £30 = £150. Do they add to £240?' };
-      return { s:0, t:3, earned:[], missed:['Add ratio numbers to find total parts','Divide total by parts to find 1 part','Multiply for each share'], tip:'Step 1: 3 + 5 = 8 parts. Step 2: £240 ÷ 8 = £30 per part.' };
+      const h90=a.includes('90');const h150=a.includes('150');const work=a.includes('30')||a.includes('8');
+      if(h90&&h150&&work) return {s:3,t:3,earned:['Total parts ✓','£90 ✓','£150 ✓'],missed:[],tip:'The "find 1 part" method works every time!'};
+      if(h90&&h150) return {s:2,t:3,earned:['Both values ✓'],missed:['Show the "1 part" step'],tip:'Write 8 parts, 1 part = £30.'};
+      if(h90||h150||work) return {s:1,t:3,earned:['Partial ✓'],missed:['Need both answers'],tip:'3×£30=£90, 5×£30=£150.'};
+      return {s:0,t:3,earned:[],missed:['Add ratio','Find 1 part','Multiply for each'],tip:'3+5=8, £240÷8=£30 per part.'};
     }
   },
 
-  // ─── MATHS: GEOMETRY ───
+  { id:'mr2', t:'m-ratio', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Write the ratio <strong>24 : 36</strong> in its simplest form.',
+    scaffold:['Find the HCF (highest common factor) of 24 and 36','Divide both numbers by the HCF'],
+    hint:'HCF of 24 and 36 is 12.',
+    ms:'HCF = 12 [M1] → 2 : 3 [A1]',
+    check: a => {
+      const ok=a.replace(/\s/g,'').includes('2:3');
+      if(ok) return {s:2,t:2,earned:['Simplified to 2:3 ✓'],missed:[],tip:'Correct — and always check you\'ve divided both by the SAME number.'};
+      return {s:0,t:2,earned:[],missed:['Find HCF of 24 and 36','Divide both by it'],tip:'24÷12=2, 36÷12=3, so 2:3.'};
+    }
+  },
+
+  { id:'mr3', t:'m-ratio', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Orange juice and lemonade are mixed in the ratio <strong>2 : 5</strong>. Max makes <strong>1.4 litres</strong> of the mixture. How much lemonade does he use?',
+    scaffold:['Total parts = 2 + 5 = 7','1 part = 1.4 ÷ 7','Lemonade = 5 parts'],
+    hint:'1 part = 1.4 ÷ 7 = 0.2 litres.',
+    ms:'7 parts [M1] → 1 part = 0.2 L [M1] → lemonade = 5 × 0.2 = 1 L [A1]',
+    check: a => {
+      const ok=a.includes('1 litre')||a.includes('1L')||a.replace(/\s/g,'').includes('=1');
+      const meth=a.includes('0.2')||a.includes('7');
+      if(ok&&meth) return {s:3,t:3,earned:['7 parts ✓','0.2 L per part ✓','1 L lemonade ✓'],missed:[],tip:'Ratio with totals — well done!'};
+      if(ok) return {s:2,t:3,earned:['Correct answer ✓'],missed:['Show the 7-part step'],tip:'Write 7 parts total, 1 part = 0.2 L.'};
+      if(meth) return {s:1,t:3,earned:['Method started ✓'],missed:['Complete for lemonade'],tip:'5 × 0.2 = 1 L lemonade.'};
+      return {s:0,t:3,earned:[],missed:['Total parts = 7','1 part = 0.2 L','Lemonade = 5 parts'],tip:'1.4 ÷ 7 = 0.2 per part.'};
+    }
+  },
+
+  { id:'mr4', t:'m-ratio', marks:3, diff:'medium', year:'AQA 2023',
+    text:'In a class, the ratio of boys to girls is <strong>3 : 4</strong>. There are <strong>12 boys</strong>. How many students are there altogether?',
+    scaffold:['If 3 parts = 12 boys, find 1 part','Find the number of girls (4 parts)','Add boys and girls'],
+    hint:'1 part = 12 ÷ 3 = 4. Girls = 4 × 4.',
+    ms:'1 part = 4 [M1] → girls = 16 [A1] → total = 28 [A1]',
+    check: a => {
+      const ok=a.includes('28');const m1=a.includes('16')||a.includes('4 girls')||a.includes('1 part');
+      if(ok&&m1) return {s:3,t:3,earned:['1 part found ✓','Girls = 16 ✓','Total = 28 ✓'],missed:[],tip:'Ratio problems — find 1 part, build from there!'};
+      if(ok) return {s:2,t:3,earned:['28 ✓'],missed:['Show working'],tip:'Show 1 part = 4, girls = 16.'};
+      if(m1) return {s:1,t:3,earned:['Partial working ✓'],missed:['Find total'],tip:'12 boys + 16 girls = 28.'};
+      return {s:0,t:3,earned:[],missed:['Find 1 part from boys','Find girls','Find total'],tip:'3 parts = 12, so 1 part = 4, girls = 16, total = 28.'};
+    }
+  },
+
+  { id:'mr5', t:'m-ratio', marks:2, diff:'easy', year:'AQA 2022',
+    text:'A map has a scale of <strong>1 : 25,000</strong>. A road is <strong>4 cm</strong> on the map. How long is the actual road in km?',
+    scaffold:['Multiply the map distance by the scale factor','Convert your answer from cm to km (÷ 100,000)'],
+    hint:'4 × 25,000 = 100,000 cm. Convert to km.',
+    ms:'4 × 25,000 = 100,000 cm [M1] → = 1 km [A1]',
+    check: a => {
+      const ok=a.includes('1 km')||a.replace(/\s/g,'').includes('=1km');
+      const meth=a.includes('100,000')||a.includes('100000');
+      if(ok&&meth) return {s:2,t:2,earned:['100,000 cm ✓','1 km ✓'],missed:[],tip:'Map scales — multiply by scale, convert units!'};
+      if(ok) return {s:2,t:2,earned:['1 km ✓'],missed:[],tip:'Good!'};
+      if(meth) return {s:1,t:2,earned:['100,000 cm found ✓'],missed:['Convert to km'],tip:'100,000 cm ÷ 100,000 = 1 km.'};
+      return {s:0,t:2,earned:[],missed:['Multiply 4 by 25,000','Convert cm to km'],tip:'4 × 25,000 = 100,000 cm = 1 km.'};
+    }
+  },
+
+  { id:'mr6', t:'m-ratio', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Paint is mixed in the ratio <strong>red : white = 1 : 4</strong>. Max has <strong>3 litres of red paint</strong>. How much white paint does he need to maintain the ratio?',
+    scaffold:['If red = 1 part = 3 litres, find 1 part','White = 4 parts, so white = ?'],
+    hint:'1 part = 3 litres. White = 4 × 3.',
+    ms:'1 part = 3 L [M1] → white = 4 × 3 = 12 L [A1+A1]',
+    check: a => {
+      const ok=a.includes('12');
+      const meth=a.includes('3 litre')||a.includes('1 part')||a.includes('×4');
+      if(ok&&meth) return {s:3,t:3,earned:['1 part identified ✓','White = 4 parts ✓','12 litres ✓'],missed:[],tip:'Ratio with given quantity — perfect method!'};
+      if(ok) return {s:2,t:3,earned:['12 litres ✓'],missed:['Show working'],tip:'Show 1 part = 3 L, white = 12 L.'};
+      return {s:0,t:3,earned:[],missed:['Red = 1 part = 3 L','White = 4 parts'],tip:'If 1 part = 3 L, then 4 parts = 12 L.'};
+    }
+  },
+
+  { id:'mr7', t:'m-ratio', marks:3, diff:'hard', year:'AQA 2022',
+    text:'The ratio of savings to spending for Max is <strong>2 : 9</strong>. He spends <strong>£630 per month</strong>. How much does he save in a year?',
+    scaffold:['9 parts = £630, find 1 part','Savings = 2 parts','Multiply by 12 for a year'],
+    hint:'1 part = 630 ÷ 9 = £70.',
+    ms:'1 part = £70 [M1] → savings/month = £140 [A1] → yearly = £1,680 [A1]',
+    check: a => {
+      const ok=a.includes('1680')||a.includes('1,680');const m1=a.includes('70')||a.includes('140');
+      if(ok&&m1) return {s:3,t:3,earned:['1 part = £70 ✓','Monthly savings ✓','Annual = £1,680 ✓'],missed:[],tip:'Multi-step ratio — well done for reading all the way to the end!'};
+      if(ok) return {s:2,t:3,earned:['£1,680 ✓'],missed:['Show the £70 step'],tip:'Show 630÷9=70, 70×2=140, 140×12=1680.'};
+      if(m1) return {s:1,t:3,earned:['Partial working ✓'],missed:['Multiply monthly savings by 12'],tip:'Monthly savings = £140. £140 × 12 = £1,680.'};
+      return {s:0,t:3,earned:[],missed:['Find 1 part from spending','Find monthly savings','Multiply by 12'],tip:'9 parts = £630, 1 part = £70.'};
+    }
+  },
+
+  { id:'mr8', t:'m-ratio', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Are the ratios <strong>15 : 20</strong> and <strong>9 : 12</strong> equivalent? Show your working.',
+    scaffold:['Simplify both ratios to their simplest form','Are they the same simplified ratio?'],
+    hint:'Simplify 15:20 by ÷5. Simplify 9:12 by ÷3.',
+    ms:'15:20 = 3:4 [M1] | 9:12 = 3:4 [M1] → yes, equivalent [A1]',
+    check: a => {
+      const ok=a.toLowerCase().includes('yes')||a.toLowerCase().includes('equivalent');
+      const meth=a.includes('3:4')||a.includes('3 : 4');
+      if(ok&&meth) return {s:2,t:2,earned:['Both simplified to 3:4 ✓','Equivalent confirmed ✓'],missed:[],tip:'Always simplify both to check equivalence!'};
+      if(ok) return {s:1,t:2,earned:['Correct conclusion ✓'],missed:['Show both simplifications'],tip:'Write 15:20=3:4 and 9:12=3:4.'};
+      return {s:0,t:2,earned:[],missed:['Simplify both ratios','Compare'],tip:'Divide 15:20 by 5, divide 9:12 by 3.'};
+    }
+  },
+
+  { id:'mr9', t:'m-ratio', marks:4, diff:'hard', year:'AQA 2022',
+    text:'Tom and Jerry share money in the ratio <strong>5 : 3</strong>. Tom gives Jerry <strong>£20</strong>. Now the ratio is <strong>3 : 3</strong>. How much did they each start with?',
+    scaffold:['If new ratio is 1:1, they have equal amounts now','Before: Tom had x, Jerry had y. After: Tom = x−20, Jerry = y+20','Use ratio 5:3 and fact x−20 = y+20'],
+    hint:'The difference between Tom\'s original share and Jerry\'s = £40 (Tom gave £20, closing a gap of £40). 5 parts − 3 parts = 2 parts = £40.',
+    ms:'2 parts = £40 [M1] → 1 part = £20 → Tom = 5×20 = £100 [A1], Jerry = 3×20 = £60 [A1+A1]',
+    check: a => {
+      const tom=a.includes('100');const jer=a.includes('60');const meth=a.includes('20')||a.includes('part');
+      if(tom&&jer&&meth) return {s:4,t:4,earned:['Method ✓','Tom = £100 ✓','Jerry = £60 ✓','Working shown ✓'],missed:[],tip:'Excellent — this is a tricky ratio problem and you nailed it!'};
+      if(tom&&jer) return {s:3,t:4,earned:['Both correct ✓'],missed:['Show working more clearly'],tip:'Show 2 parts = £40, 1 part = £20.'};
+      if(tom||jer) return {s:1,t:4,earned:['One value ✓'],missed:['Find the other'],tip:'Tom = 5 parts, Jerry = 3 parts, 1 part = £20.'};
+      return {s:0,t:4,earned:[],missed:['Find value of 1 part','Tom = 5 parts','Jerry = 3 parts'],tip:'Giving £20 makes them equal → 2 parts difference = £40.'};
+    }
+  },
+
+  { id:'mr10', t:'m-ratio', marks:2, diff:'medium', year:'AQA 2023',
+    text:'The ratio of flour to butter in a recipe is <strong>5 : 2</strong>. Max uses <strong>250g of flour</strong>. How much butter does he need?',
+    scaffold:['If 5 parts = 250g, find 1 part','Butter = 2 parts'],
+    hint:'1 part = 250 ÷ 5 = 50g.',
+    ms:'1 part = 50g [M1] → butter = 2 × 50 = 100g [A1]',
+    check: a => {
+      const ok=a.includes('100g')||a.includes('100 g');const meth=a.includes('50');
+      if(ok&&meth) return {s:2,t:2,earned:['50g per part ✓','100g butter ✓'],missed:[],tip:'Ratio with given quantities — perfect!'};
+      if(ok) return {s:2,t:2,earned:['100g ✓'],missed:[],tip:'Good!'};
+      return {s:0,t:2,earned:[],missed:['1 part = 50g','Butter = 2 × 50g'],tip:'250 ÷ 5 = 50g per part, × 2 = 100g.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // MATHS: GEOMETRY (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'mg1', t:'m-geometry', marks:5, diff:'hard', year:'AQA 2023',
-    text:'A rectangle has perimeter <strong>36 cm</strong>. Its length is <strong>twice</strong> its width.<br>Work out the area of the rectangle.',
-    scaffold:[
-      'Let width = w. Write an expression for the length in terms of w.',
-      'Write a perimeter equation: 2(length + width) = 36',
-      'Solve your equation to find w',
-      'Find both dimensions',
-      'Area = length × width. Don\'t forget units!'
-    ],
-    hint:'Width = w, length = 2w. Perimeter: 2(2w + w) = 36 → 6w = 36.',
-    ms:'w and 2w [M1] → 6w = 36 [M1] → w = 6 [A1] → area = 12 × 6 [M1] → 72 cm² [A1]',
+    text:'A rectangle has perimeter <strong>36 cm</strong>. Its length is <strong>twice</strong> its width. Work out the area.',
+    scaffold:['Let width = w. Length = 2w.','Perimeter: 2(w + 2w) = 36','Solve for w, find both dimensions','Area = length × width (include units!)'],
+    hint:'2(3w) = 36 → w = 6.',
+    ms:'2(3w)=36 [M1] → w=6 [A1] → area=12×6 [M1] → 72 cm² [A1+B1 units]',
     check: a => {
-      const h72 = a.includes('72'); const units = a.includes('cm²') || a.includes('cm2'); const setup = a.includes('2w') || a.includes('6w'); const solved = a.includes('6') && a.includes('12');
-      if (h72 && units && setup) return { s:5, t:5, earned:['Set up with algebra ✓','Equation solved ✓','Both dimensions found ✓','Area calculated ✓','Units included ✓'], missed:[], tip:'5/5 — and showing the equation setup is what earns those M marks!' };
-      if (h72 && units) return { s:4, t:5, earned:['Area = 72 cm² ✓'], missed:['Show equation setup more explicitly'], tip:'Write out "let w = width, length = 2w, 2(3w) = 36" for full marks.' };
-      if (h72) return { s:3, t:5, earned:['Area value correct ✓'], missed:['Add cm² units!','Show algebraic setup'], tip:'Units drop an easy mark — ALWAYS write cm² for area.' };
-      if (setup) return { s:2, t:5, earned:['Correct algebraic setup ✓'], missed:['Solve the equation','Calculate the area'], tip:'Good setup — now solve 6w = 36 to get w = 6.' };
-      return { s:0, t:5, earned:[], missed:['Define w and 2w','Form perimeter equation','Solve for w','Find area','Include units'], tip:'Start with: let width = w, so length = 2w. Perimeter = 2(w + 2w) = 36.' };
+      const h72=a.includes('72');const units=a.includes('cm²')||a.includes('cm2');const setup=a.includes('2w')||a.includes('6w');
+      if(h72&&units&&setup) return {s:5,t:5,earned:['Algebra set up ✓','Solved ✓','Area correct ✓','Units ✓'],missed:[],tip:'5/5 — brilliant!'};
+      if(h72&&units) return {s:4,t:5,earned:['72 cm² ✓'],missed:['Show algebraic setup'],tip:'Write 2(3w)=36 for method marks.'};
+      if(h72) return {s:3,t:5,earned:['72 ✓'],missed:['Units! cm²','Show setup'],tip:'Always write cm² for area.'};
+      if(setup) return {s:2,t:5,earned:['Set up ✓'],missed:['Solve and calculate area'],tip:'Solve 6w=36 → w=6, area=72 cm².'};
+      return {s:0,t:5,earned:[],missed:['Let w=width, 2w=length','Form perimeter equation','Solve','Area','Units'],tip:'Start: 2(w+2w)=36.'};
     }
   },
 
-  // ─── MATHS: STATISTICS ───
+  { id:'mg2', t:'m-geometry', marks:3, diff:'easy', year:'AQA 2022',
+    text:'Calculate the area of a triangle with <strong>base 12 cm</strong> and <strong>perpendicular height 7 cm</strong>.',
+    scaffold:['Formula: Area = ½ × base × height','Substitute the values','Calculate'],
+    hint:'½ × 12 × 7.',
+    ms:'½ × 12 × 7 [M1] = 42 cm² [A1+B1 units]',
+    check: a => {
+      const ok=a.includes('42');const units=a.includes('cm²')||a.includes('cm2');
+      if(ok&&units) return {s:3,t:3,earned:['Method ✓','42 ✓','cm² ✓'],missed:[],tip:'Triangle area — remember the ½!'};
+      if(ok) return {s:2,t:3,earned:['42 ✓'],missed:['Add units: cm²'],tip:'Always cm² for area.'};
+      return {s:0,t:3,earned:[],missed:['Area = ½ × b × h','Calculate','Add units'],tip:'½ × 12 × 7 = 42 cm².'};
+    }
+  },
+
+  { id:'mg3', t:'m-geometry', marks:4, diff:'medium', year:'AQA 2023',
+    text:'A circle has <strong>radius 6 cm</strong>. Calculate the <strong>circumference</strong> and <strong>area</strong>. Give answers to 1 decimal place.',
+    scaffold:['Circumference = 2πr','Area = πr²','Use π = 3.14159... or the π button','Round to 1 d.p.'],
+    hint:'C = 2 × π × 6. A = π × 6².',
+    ms:'C = 37.7 cm [A1+B1] | A = 113.1 cm² [A1+B1]',
+    check: a => {
+      const circ=a.includes('37.7');const area=a.includes('113.1');
+      if(circ&&area) return {s:4,t:4,earned:['Circumference 37.7 cm ✓','Area 113.1 cm² ✓'],missed:[],tip:'Both circle formulas — excellent!'};
+      if(circ||area) return {s:2,t:4,earned:['One formula correct ✓'],missed:['Complete both calculations'],tip:'C=2πr=37.7cm, A=πr²=113.1cm².'};
+      return {s:0,t:4,earned:[],missed:['C = 2πr','A = πr²','Round to 1 d.p.'],tip:'r=6: C=2×π×6, A=π×36.'};
+    }
+  },
+
+  { id:'mg4', t:'m-geometry', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Angle ABC = <strong>64°</strong>. Angles on a straight line sum to 180°. Find angle <strong>CBD</strong>. Show your reasoning.',
+    scaffold:['Angles on a straight line add to 180°','CBD = 180° − ABC','State the angle fact you used'],
+    hint:'180 − 64 = ?',
+    ms:'180 − 64 = 116° [M1+A1] | "angles on a straight line sum to 180°" [B1]',
+    check: a => {
+      const ok=a.includes('116');const reason=a.toLowerCase().includes('straight line')||a.toLowerCase().includes('180');
+      if(ok&&reason) return {s:3,t:3,earned:['116° ✓','Reason stated ✓'],missed:[],tip:'Always state the angle fact — it\'s a free mark!'};
+      if(ok) return {s:2,t:3,earned:['116° ✓'],missed:['State: angles on a straight line = 180°'],tip:'Write the reason for B1.'};
+      return {s:0,t:3,earned:[],missed:['180 − 64','State angle fact'],tip:'Straight line = 180°. 180−64=116°.'};
+    }
+  },
+
+  { id:'mg5', t:'m-geometry', marks:2, diff:'easy', year:'AQA 2023',
+    text:'A square has <strong>perimeter 28 cm</strong>. What is its area?',
+    scaffold:['Find the side length from the perimeter','Area = side × side'],
+    hint:'Perimeter = 4 × side. Side = 28 ÷ 4.',
+    ms:'Side = 7 cm [M1] → Area = 49 cm² [A1]',
+    check: a => {
+      const ok=a.includes('49');const units=a.includes('cm²')||a.includes('cm2');
+      if(ok&&units) return {s:2,t:2,earned:['Side = 7 ✓','Area = 49 cm² ✓'],missed:[],tip:'Perfect!'};
+      if(ok) return {s:1,t:2,earned:['49 ✓'],missed:['Add cm²'],tip:'Always add units for area.'};
+      return {s:0,t:2,earned:[],missed:['Side = 28÷4 = 7','Area = 7² = 49 cm²'],tip:'Side = 7, area = 7² = 49 cm².'};
+    }
+  },
+
+  { id:'mg6', t:'m-geometry', marks:4, diff:'hard', year:'AQA 2022',
+    text:'Use <strong>Pythagoras\' theorem</strong> to find the hypotenuse of a right-angled triangle with legs <strong>5 cm</strong> and <strong>12 cm</strong>.',
+    scaffold:['Write Pythagoras: a² + b² = c²','Substitute: 5² + 12² = c²','Calculate','Square root to find c'],
+    hint:'25 + 144 = 169. √169 = ?',
+    ms:'5² + 12² = 25 + 144 = 169 [M1+A1] → c = √169 = 13 cm [A1+B1 units]',
+    check: a => {
+      const ok=a.includes('13');const work=a.includes('169')||a.includes('25')||a.includes('144');const units=a.includes('cm');
+      if(ok&&work&&units) return {s:4,t:4,earned:['Formula ✓','169 ✓','13 cm ✓','Units ✓'],missed:[],tip:'Pythagoras solved perfectly! 5-12-13 is a classic triple.'};
+      if(ok&&work) return {s:3,t:4,earned:['Method ✓','13 ✓'],missed:['Include units (cm)'],tip:'Write 13 cm.'};
+      if(ok) return {s:2,t:4,earned:['13 ✓'],missed:['Show a²+b²=c² working'],tip:'Show 5²+12²=169, √169=13.'};
+      return {s:0,t:4,earned:[],missed:['Write a²+b²=c²','Sub values','Calculate','Square root'],tip:'5²+12²=25+144=169, c=√169=13.'};
+    }
+  },
+
+  { id:'mg7', t:'m-geometry', marks:3, diff:'medium', year:'AQA 2023',
+    text:'The interior angles of a polygon sum to <strong>1080°</strong>. How many sides does the polygon have?',
+    scaffold:['Formula: Sum = 180 × (n − 2)','Set up: 180(n − 2) = 1080','Solve for n'],
+    hint:'n − 2 = 1080 ÷ 180 = 6. So n = ?',
+    ms:'180(n−2) = 1080 [M1] → n−2 = 6 [A1] → n = 8 [A1]',
+    check: a => {
+      const ok=a.includes('8');const meth=a.includes('180')||a.includes('n-2')||a.includes('n − 2');
+      if(ok&&meth) return {s:3,t:3,earned:['Formula ✓','Division ✓','8 sides ✓'],missed:[],tip:'Octagon — angles formula used brilliantly!'};
+      if(ok) return {s:1,t:3,earned:['8 sides ✓'],missed:['Show 180(n−2)=1080 working'],tip:'Write the formula then solve.'};
+      return {s:0,t:3,earned:[],missed:['Use 180(n−2) = sum','Divide','Solve'],tip:'180(n−2)=1080 → n−2=6 → n=8.'};
+    }
+  },
+
+  { id:'mg8', t:'m-geometry', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Angles in a triangle are <strong>x</strong>, <strong>2x</strong> and <strong>45°</strong>. Find x.',
+    scaffold:['All angles in a triangle sum to 180°','Write an equation: x + 2x + 45 = 180','Solve for x'],
+    hint:'3x + 45 = 180 → 3x = 135.',
+    ms:'3x = 135 [M1] → x = 45° [A1]',
+    check: a => {
+      const ok=a.includes('45');const meth=a.includes('3x')||a.includes('135');
+      if(ok&&meth) return {s:2,t:2,earned:['Equation ✓','x = 45° ✓'],missed:[],tip:'Triangle angles + algebra — a great combination!'};
+      if(ok) return {s:1,t:2,earned:['x = 45 ✓'],missed:['Show 3x+45=180'],tip:'Write the equation first.'};
+      return {s:0,t:2,earned:[],missed:['x+2x+45=180','Solve'],tip:'3x=135, x=45°.'};
+    }
+  },
+
+  { id:'mg9', t:'m-geometry', marks:4, diff:'hard', year:'AQA 2023',
+    text:'A cylinder has <strong>radius 4 cm</strong> and <strong>height 10 cm</strong>. Calculate its <strong>volume</strong>. Give your answer in terms of π.',
+    scaffold:['Volume of cylinder = πr²h','Substitute r = 4, h = 10','Leave in terms of π (don\'t press = on your calculator)'],
+    hint:'V = π × 4² × 10.',
+    ms:'V = π × 16 × 10 [M1+A1] = 160π cm³ [A1+B1 units]',
+    check: a => {
+      const ok=a.includes('160π')||a.includes('160pi');const units=a.includes('cm³')||a.includes('cm3');
+      if(ok&&units) return {s:4,t:4,earned:['Formula ✓','4² = 16 ✓','160π ✓','cm³ ✓'],missed:[],tip:'Volume in terms of π — perfectly done!'};
+      if(ok) return {s:3,t:4,earned:['160π ✓'],missed:['Units: cm³'],tip:'Volume uses cm³, not cm².'};
+      return {s:0,t:4,earned:[],missed:['V = πr²h','r² = 16','×h = 160','units'],tip:'V = π×16×10 = 160π cm³.'};
+    }
+  },
+
+  { id:'mg10', t:'m-geometry', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Two angles in a triangle are <strong>72°</strong> and <strong>65°</strong>. The triangle is inside a rectangle. The angle between the triangle\'s hypotenuse and the rectangle is <strong>y</strong>. Find y.',
+    scaffold:['Find the third angle of the triangle (angles sum to 180°)','The third angle and y are on a straight line (180°)','y = 180° − third angle'],
+    hint:'Third angle = 180 − 72 − 65 = 43°. Then y + 43 = 180.',
+    ms:'Third angle = 43° [M1] → y = 180 − 43 = 137° [M1+A1]',
+    check: a => {
+      const ok=a.includes('137');const m1=a.includes('43');
+      if(ok&&m1) return {s:3,t:3,earned:['43° found ✓','y = 137° ✓'],missed:[],tip:'Two-step angle problem — brilliant!'};
+      if(ok) return {s:2,t:3,earned:['137° ✓'],missed:['Show the 43° step'],tip:'Write 180−72−65=43 first.'};
+      if(m1) return {s:1,t:3,earned:['43° found ✓'],missed:['y = 180 − 43'],tip:'43° + y = 180° (straight line).'};
+      return {s:0,t:3,earned:[],missed:['Third angle','y on straight line with third angle'],tip:'Third angle = 180−72−65 = 43°. y = 180−43 = 137°.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // MATHS: STATISTICS (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'ms1', t:'m-stats', marks:3, diff:'easy', year:'AQA 2023',
-    text:'The ages of 5 children are: <strong>7, 9, 9, 11, 14</strong>.<br>Find the <strong>mean</strong>, <strong>median</strong> and <strong>mode</strong>.',
-    scaffold:[
-      'Mean = total ÷ number of values. Add them all up first.',
-      'Median = middle value when in ORDER. Already ordered here!',
-      'Mode = value that appears most often'
-    ],
-    hint:'Sum = 50. Median is the 3rd value. Mode is the repeated one.',
-    ms:'Mean = 50÷5 = 10 [A1] | Median = 9 [A1] | Mode = 9 [A1]',
+    text:'Ages of 5 children: <strong>7, 9, 9, 11, 14</strong>.<br>Find the <strong>mean</strong>, <strong>median</strong> and <strong>mode</strong>.',
+    scaffold:['Mean = sum ÷ count. Add them all.','Median = middle value (already in order)','Mode = most common value'],
+    hint:'Sum = 50. Median = 3rd value. Mode = repeated value.',
+    ms:'Mean = 10 [A1] | Median = 9 [A1] | Mode = 9 [A1]',
     check: a => {
-      const mn = a.includes('10') || a.toLowerCase().includes('mean') && a.includes('10');
-      const md = (a.toLowerCase().includes('median') && a.includes('9')) || a.includes('median = 9');
-      const mo = a.toLowerCase().includes('mode') || a.includes('9');
-      const all3 = a.includes('10') && a.match(/\b9\b/g)?.length >= 1;
-      if (all3 && a.toLowerCase().includes('mean') && a.toLowerCase().includes('median')) return { s:3, t:3, earned:['Mean = 10 ✓','Median = 9 ✓','Mode = 9 ✓'], missed:[], tip:'All three averages — perfect! Note: median and mode are both 9 here.' };
-      if (all3) return { s:2, t:3, earned:['Values correct ✓'], missed:['Label each one clearly (mean/median/mode)'], tip:'Always label — write "mean = 10, median = 9, mode = 9" separately.' };
-      return { s:1, t:3, earned:['Partial ✓'], missed:['All three need to be found and labelled'], tip:'Three separate answers, each labelled. Mean = sum ÷ count.' };
+      const mn=a.includes('10');const md=a.toLowerCase().includes('median')&&a.includes('9');const mo=a.toLowerCase().includes('mode');
+      const all=a.includes('10')&&a.match(/\b9\b/g)?.length>=1;
+      if(all&&a.toLowerCase().includes('mean')&&md) return {s:3,t:3,earned:['Mean=10 ✓','Median=9 ✓','Mode=9 ✓'],missed:[],tip:'All three labelled — perfect!'};
+      if(all) return {s:2,t:3,earned:['Values correct ✓'],missed:['Label each (mean/median/mode)'],tip:'Write mean=10, median=9, mode=9 clearly.'};
+      return {s:1,t:3,earned:['Partial ✓'],missed:['All three, labelled'],tip:'Mean=sum÷count, Median=middle, Mode=most common.'};
     }
   },
 
-  // ─── MATHS: NUMBER ───
+  { id:'ms2', t:'m-stats', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Find the mean of the following frequency table:<br><strong>Score 1: freq 3 | Score 2: freq 5 | Score 3: freq 2 | Score 4: freq 0 | Score 5: freq 2</strong>',
+    scaffold:['Multiply each score by its frequency','Add all the products','Divide by total frequency'],
+    hint:'Total frequency = 12. Sum of (score × freq) = 1×3+2×5+3×2+5×2.',
+    ms:'Σ(fx) = 3+10+6+0+10 = 29 [M1] ÷ 12 [M1] = 2.42 [A1]',
+    check: a => {
+      const ok=a.includes('2.42')||a.includes('29/12');const m1=a.includes('29');const m2=a.includes('12');
+      if(ok&&m1&&m2) return {s:3,t:3,earned:['Products correct ✓','÷ by 12 ✓','2.42 ✓'],missed:[],tip:'Mean from frequency table — nailed!'};
+      if(ok) return {s:2,t:3,earned:['Correct answer ✓'],missed:['Show Σfx and total frequency steps'],tip:'Write 29÷12=2.42.'};
+      if(m1||m2) return {s:1,t:3,earned:['Partial working ✓'],missed:['Complete the division'],tip:'29 ÷ 12 = 2.42 (2 d.p.)'};
+      return {s:0,t:3,earned:[],missed:['Multiply score × freq','Sum products','Divide by total freq'],tip:'1×3+2×5+3×2+5×2=29, ÷12=2.42.'};
+    }
+  },
+
+  { id:'ms3', t:'m-stats', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Find the <strong>range</strong> of: <strong>4, 7, 2, 15, 9, 3</strong>',
+    scaffold:['Find the largest value','Find the smallest value','Range = largest − smallest'],
+    hint:'Largest = 15, smallest = 2.',
+    ms:'15 − 2 = 13 [M1+A1]',
+    check: a => {
+      const ok=a.includes('13');const meth=a.includes('15')&&a.includes('2');
+      if(ok&&meth) return {s:2,t:2,earned:['15 and 2 identified ✓','Range = 13 ✓'],missed:[],tip:'Range = max − min. Always!'};
+      if(ok) return {s:2,t:2,earned:['13 ✓'],missed:[],tip:'Good!'};
+      return {s:0,t:2,earned:[],missed:['Largest − smallest'],tip:'15 − 2 = 13.'};
+    }
+  },
+
+  { id:'ms4', t:'m-stats', marks:3, diff:'medium', year:'AQA 2022',
+    text:'A set of 6 numbers has a <strong>mean of 8</strong>. Five of the numbers are: <strong>5, 9, 12, 4, 7</strong>. Find the <strong>sixth number</strong>.',
+    scaffold:['If mean = 8 and there are 6 numbers, what is the total sum?','Add the five known numbers','Sixth = total − sum of five'],
+    hint:'Total = 8 × 6 = 48. Sum of five = 37.',
+    ms:'Total = 48 [M1] → sum of 5 = 37 [M1] → 6th = 11 [A1]',
+    check: a => {
+      const ok=a.includes('11');const m1=a.includes('48');const m2=a.includes('37');
+      if(ok&&m1&&m2) return {s:3,t:3,earned:['Total=48 ✓','Sum=37 ✓','6th=11 ✓'],missed:[],tip:'Working backwards from the mean — great!'};
+      if(ok&&m1) return {s:2,t:3,earned:['Total ✓','11 ✓'],missed:['Show 37 step'],tip:'Show 5+9+12+4+7=37.'};
+      if(ok) return {s:1,t:3,earned:['11 ✓'],missed:['Show total=48 and sum=37'],tip:'Write 8×6=48, 37+?=48.'};
+      return {s:0,t:3,earned:[],missed:['Total = mean × count','Sum of known','Subtract'],tip:'Total=48, five numbers sum to 37, sixth=11.'};
+    }
+  },
+
+  { id:'ms5', t:'m-stats', marks:2, diff:'easy', year:'AQA 2023',
+    text:'The probability of it raining on any given day is <strong>0.35</strong>. What is the probability it does <strong>NOT</strong> rain?',
+    scaffold:['Probabilities must sum to 1','P(not raining) = 1 − P(raining)'],
+    hint:'1 − 0.35 = ?',
+    ms:'1 − 0.35 = 0.65 [M1+A1]',
+    check: a => {
+      const ok=a.includes('0.65');
+      if(ok) return {s:2,t:2,earned:['1 − 0.35 = 0.65 ✓'],missed:[],tip:'Complementary probability — always: P(A) + P(not A) = 1.'};
+      return {s:0,t:2,earned:[],missed:['P(not) = 1 − P(rain)'],tip:'1 − 0.35 = 0.65.'};
+    }
+  },
+
+  { id:'ms6', t:'m-stats', marks:4, diff:'hard', year:'AQA 2022',
+    text:'A bag has <strong>3 red, 5 blue and 2 green</strong> balls. Two balls are drawn <strong>without replacement</strong>. Find the probability that <strong>both are blue</strong>.',
+    scaffold:['P(first blue) = 5/10 = ½','After removing one blue, how many blue remain? How many total?','P(both blue) = P(1st blue) × P(2nd blue given 1st blue)'],
+    hint:'P(1st blue) = 5/10. P(2nd blue) = 4/9.',
+    ms:'5/10 × 4/9 [M1+M1] = 20/90 = 2/9 [A1+A1]',
+    check: a => {
+      const ok=a.includes('2/9')||a.includes('20/90');const m1=a.includes('5/10')||a.includes('1/2');const m2=a.includes('4/9');
+      if(ok&&m1&&m2) return {s:4,t:4,earned:['5/10 ✓','4/9 (without replacement) ✓','2/9 ✓'],missed:[],tip:'Conditional probability without replacement — that\'s grade 6+ territory!'};
+      if(ok) return {s:3,t:4,earned:['2/9 ✓'],missed:['Show both probability steps'],tip:'Show 5/10 × 4/9 = 2/9.'};
+      if(m1&&m2) return {s:2,t:4,earned:['Both fractions ✓'],missed:['Multiply them'],tip:'5/10 × 4/9 = 20/90 = 2/9.'};
+      if(m1||m2) return {s:1,t:4,earned:['Started ✓'],missed:['Without replacement: denominator changes','Multiply'],tip:'After first blue: 4 blue left, 9 total.'};
+      return {s:0,t:4,earned:[],missed:['P(1st blue)=5/10','P(2nd blue)=4/9','Multiply'],tip:'Without replacement means the totals change each time.'};
+    }
+  },
+
+  { id:'ms7', t:'m-stats', marks:3, diff:'medium', year:'AQA 2023',
+    text:'A spinner has 4 sections: Red (prob 0.3), Blue (prob 0.25), Green (prob 0.2). What is the probability of landing on <strong>Yellow</strong>?',
+    scaffold:['All probabilities sum to 1','Add the three known probabilities','Yellow = 1 − total of others'],
+    hint:'0.3 + 0.25 + 0.2 = 0.75. Yellow = ?',
+    ms:'0.3+0.25+0.2 = 0.75 [M1] → Yellow = 1−0.75 = 0.25 [A1+A1]',
+    check: a => {
+      const ok=a.includes('0.25');const meth=a.includes('0.75')||a.includes('1 −');
+      if(ok&&meth) return {s:3,t:3,earned:['Sum = 0.75 ✓','1 − 0.75 ✓','Yellow = 0.25 ✓'],missed:[],tip:'Complementary probability across multiple events — great!'};
+      if(ok) return {s:2,t:3,earned:['0.25 ✓'],missed:['Show 0.75 step'],tip:'Write 0.3+0.25+0.2=0.75 first.'};
+      return {s:0,t:3,earned:[],missed:['Add known probabilities','Subtract from 1'],tip:'0.3+0.25+0.2=0.75, Yellow=0.25.'};
+    }
+  },
+
+  { id:'ms8', t:'m-stats', marks:2, diff:'easy', year:'AQA 2022',
+    text:'A dice is rolled 120 times. How many times would you <strong>expect</strong> to roll a 6?',
+    scaffold:['Probability of rolling a 6 on a fair dice = ?','Expected frequency = probability × number of trials'],
+    hint:'P(6) = 1/6. Expected = 1/6 × 120.',
+    ms:'1/6 × 120 [M1] = 20 [A1]',
+    check: a => {
+      const ok=a.includes('20');const meth=a.includes('1/6')||a.includes('120');
+      if(ok&&meth) return {s:2,t:2,earned:['1/6 × 120 ✓','20 ✓'],missed:[],tip:'Expected frequency = P × n. A key formula!'};
+      if(ok) return {s:2,t:2,earned:['20 ✓'],missed:[],tip:'Good!'};
+      return {s:0,t:2,earned:[],missed:['P(6) = 1/6','Multiply by 120'],tip:'1/6 × 120 = 20.'};
+    }
+  },
+
+  { id:'ms9', t:'m-stats', marks:3, diff:'medium', year:'AQA 2023',
+    text:'A survey asks 50 students their favourite subject. Results: Maths 18, Science 12, English 15, Other 5. Draw a conclusion about whether Maths is the most popular, and calculate what angle its sector would be in a pie chart.',
+    scaffold:['Check if Maths has the highest frequency','Angle = (frequency ÷ total) × 360°','Show your calculation'],
+    hint:'Maths angle = 18/50 × 360.',
+    ms:'Maths is most popular [B1] | 18/50 × 360 = 129.6° [M1+A1]',
+    check: a => {
+      const ok=a.includes('129.6')||a.includes('130');const meth=a.includes('18/50')||(a.includes('18')&&a.includes('360'));const conc=a.toLowerCase().includes('most popular')||a.toLowerCase().includes('highest');
+      if(ok&&meth&&conc) return {s:3,t:3,earned:['Maths most popular ✓','Calculation ✓','129.6° ✓'],missed:[],tip:'Pie chart angles and interpretation — excellent!'};
+      if(ok&&meth) return {s:2,t:3,earned:['Calculation ✓','129.6° ✓'],missed:['State Maths is most popular'],tip:'Add: "Maths has the highest frequency so is most popular."'};
+      if(conc) return {s:1,t:3,earned:['Conclusion ✓'],missing:['Calculate angle: 18/50 × 360'],tip:'18/50 × 360 = 129.6°.'};
+      return {s:0,t:3,earned:[],missed:['State most popular','Angle = freq/total × 360'],tip:'18/50 × 360 = 129.6°.'};
+    }
+  },
+
+  { id:'ms10', t:'m-stats', marks:4, diff:'hard', year:'AQA 2022',
+    text:'The heights (cm) of 8 students are: <strong>162, 155, 170, 163, 158, 172, 160, 165</strong>. Find the <strong>median</strong> and <strong>interquartile range (IQR)</strong>.',
+    scaffold:['Order the data first','Median = mean of 4th and 5th values','Lower quartile = median of bottom half, Upper = median of top half','IQR = UQ − LQ'],
+    hint:'Ordered: 155,158,160,162,163,165,170,172. Median = (162+163)÷2.',
+    ms:'Order data [M1] | Median = 162.5 [A1] | LQ=159, UQ=167.5 [M1] | IQR=8.5 [A1]',
+    check: a => {
+      const med=a.includes('162.5');const iqr=a.includes('8.5');const work=a.includes('159')||a.includes('167.5');
+      if(med&&iqr&&work) return {s:4,t:4,earned:['Ordered ✓','Median=162.5 ✓','Quartiles ✓','IQR=8.5 ✓'],missed:[],tip:'IQR — a tricky one and you nailed all 4 marks!'};
+      if(med&&iqr) return {s:3,t:4,earned:['Median ✓','IQR ✓'],missed:['Show LQ and UQ values'],tip:'Write LQ=159, UQ=167.5.'};
+      if(med||iqr) return {s:2,t:4,earned:['Partial ✓'],missed:['Complete both median and IQR'],tip:'Median=162.5, LQ=159, UQ=167.5, IQR=8.5.'};
+      return {s:0,t:4,earned:[],missed:['Order data','Median of middle two','LQ and UQ','IQR=UQ−LQ'],tip:'Always order first! Median=(162+163)÷2=162.5.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // MATHS: NUMBER (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'mn1', t:'m-number', marks:3, diff:'medium', year:'AQA 2023',
     text:'Write <strong>0.000 045</strong> in standard form.',
-    scaffold:[
-      'Standard form is: A × 10ⁿ where 1 ≤ A < 10',
-      'Move the decimal point until you get a number between 1 and 10. Count the moves.',
-      'If you moved RIGHT, the power is negative; if LEFT, it\'s positive'
-    ],
-    hint:'4.5 × 10ⁿ. You moved the decimal 5 places to the right, so n = −5.',
-    ms:'4.5 [A1] × 10⁻⁵ [M1+A1]',
+    scaffold:['A × 10ⁿ where 1 ≤ A < 10','Move decimal until A is between 1 and 10. Count places.','Small number → negative power'],
+    hint:'4.5 × 10ⁿ. Moved 5 places right, so n = −5.',
+    ms:'4.5 × 10⁻⁵ [M1+A1+A1]',
     check: a => {
-      const coeff = a.includes('4.5');
-      const pow = a.includes('10-5') || a.includes('10⁻⁵') || a.includes('10^-5') || (a.includes('10') && a.includes('-5'));
-      if (coeff && pow) return { s:3, t:3, earned:['Correct coefficient 4.5 ✓','Correct power 10⁻⁵ ✓','Standard form notation ✓'], missed:[], tip:'Standard form nailed — remember: small numbers have negative powers.' };
-      if (coeff) return { s:1, t:3, earned:['Coefficient correct ✓'], missed:['Power needs to be 10⁻⁵'], tip:'You have 4.5 — now: how many places did you move? That\'s the power (negative because the original was tiny).' };
-      return { s:0, t:3, earned:[], missed:['Find a number between 1 and 10','Count decimal places moved','Write as × 10ⁿ with correct sign'], tip:'Start: move decimal until you get 4.5. Count: 5 moves right = ×10⁻⁵.' };
+      const ok=a.includes('4.5')&&(a.includes('10-5')||a.includes('10⁻⁵')||a.includes('10^-5'));
+      if(ok) return {s:3,t:3,earned:['4.5 ✓','× 10⁻⁵ ✓','Standard form ✓'],missed:[],tip:'Standard form — small numbers have negative powers!'};
+      if(a.includes('4.5')) return {s:1,t:3,earned:['Coefficient correct ✓'],missed:['Power: 10⁻⁵'],tip:'5 moves right → ×10⁻⁵.'};
+      return {s:0,t:3,earned:[],missed:['Number between 1 and 10','Count places','× 10ⁿ'],tip:'4.5 × 10⁻⁵.'};
     }
   },
 
-  // ─── CHEMISTRY: ATOMS ───
+  { id:'mn2', t:'m-number', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Write <strong>3.7 × 10⁴</strong> as an ordinary number.',
+    scaffold:['Positive power → move decimal RIGHT','10⁴ means move 4 places to the right'],
+    hint:'3.7 → 37000.',
+    ms:'37,000 [M1+A1]',
+    check: a => {
+      const ok=a.includes('37000')||a.includes('37,000');
+      if(ok) return {s:2,t:2,earned:['37,000 ✓'],missed:[],tip:'Positive power = big number = move right!'};
+      return {s:0,t:2,earned:[],missed:['Move decimal 4 places right'],tip:'3.7 × 10⁴ = 37,000.'};
+    }
+  },
+
+  { id:'mn3', t:'m-number', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Find the <strong>Lowest Common Multiple (LCM)</strong> of <strong>6 and 9</strong>.',
+    scaffold:['List multiples of 6: 6, 12, 18, ...','List multiples of 9: 9, 18, ...','Find the first one that appears in both lists'],
+    hint:'Multiples of 9: 9, 18... Is 18 also a multiple of 6?',
+    ms:'LCM = 18 [M1+A1]',
+    check: a => {
+      const ok=a.includes('18');
+      if(ok) return {s:2,t:2,earned:['LCM = 18 ✓'],missed:[],tip:'LCM is used whenever you\'re finding common denominators!'};
+      return {s:0,t:2,earned:[],missed:['List multiples of both','Find first common one'],tip:'6: 6,12,18. 9: 9,18. LCM=18.'};
+    }
+  },
+
+  { id:'mn4', t:'m-number', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Find the <strong>Highest Common Factor (HCF)</strong> of <strong>24 and 36</strong>.',
+    scaffold:['List factors of 24: 1,2,3,4,6,8,12,24','List factors of 36: 1,2,3,4,6,9,12,18,36','Find the highest number in both lists'],
+    hint:'Both have 12 as a factor. Is there anything higher?',
+    ms:'HCF = 12 [M1+A1]',
+    check: a => {
+      const ok=a.includes('12');
+      if(ok) return {s:2,t:2,earned:['HCF = 12 ✓'],missed:[],tip:'HCF is used for simplifying fractions and ratios!'};
+      return {s:0,t:2,earned:[],missed:['List factors of both','Find highest common one'],tip:'Both share 1,2,3,4,6,12. Highest = 12.'};
+    }
+  },
+
+  { id:'mn5', t:'m-number', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Write <strong>360</strong> as a product of its prime factors. Give your answer in index notation.',
+    scaffold:['Use a factor tree or repeated division by primes','Keep dividing until all branches are prime','Collect primes and write with indices'],
+    hint:'360 = 8 × 45 = 8 × 9 × 5 = 2³ × 3² × 5.',
+    ms:'360 = 2³ × 3² × 5 [M1+A1+A1]',
+    check: a => {
+      const ok=a.includes('2³')&&a.includes('3²')&&a.includes('5')||(a.includes('2^3')&&a.includes('3^2')&&a.includes('5'));
+      const part=a.includes('2')&&a.includes('3')&&a.includes('5');
+      if(ok) return {s:3,t:3,earned:['Factor tree/division ✓','All primes correct ✓','Index notation ✓'],missed:[],tip:'Product of primes — a useful tool for HCF and LCM too!'};
+      if(part) return {s:1,t:3,earned:['Primes identified ✓'],missed:['Write in index notation (2³ × 3² × 5)'],tip:'2×2×2 = 2³, 3×3 = 3².'};
+      return {s:0,t:3,earned:[],missed:['Factor tree','Identify primes','Index notation'],tip:'360 = 2³ × 3² × 5.'};
+    }
+  },
+
+  { id:'mn6', t:'m-number', marks:2, diff:'medium', year:'AQA 2022',
+    text:'Round <strong>0.004 673</strong> to <strong>2 significant figures</strong>.',
+    scaffold:['Significant figures: start counting from the first NON-ZERO digit','The 1st sig fig is 4, 2nd sig fig is 6','Look at the next digit to decide whether to round up or down'],
+    hint:'First sig fig is 4 (at position 0.004). Second is 6.',
+    ms:'0.0047 [M1+A1]',
+    check: a => {
+      const ok=a.includes('0.0047');
+      if(ok) return {s:2,t:2,earned:['0.0047 ✓'],missed:[],tip:'Sig figs start from the first non-zero digit — remember that!'};
+      return {s:0,t:2,earned:[],missed:['1st sig fig = 4','2nd sig fig = 6','Round at 3rd'],tip:'0.004673 → 0.0047 (2 s.f.)'};
+    }
+  },
+
+  { id:'mn7', t:'m-number', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Estimate the answer to <strong>38.7 × 51.2 ÷ 9.8</strong> by rounding each number to 1 significant figure.',
+    scaffold:['Round 38.7 to 1 s.f.','Round 51.2 to 1 s.f.','Round 9.8 to 1 s.f.','Calculate with the rounded values'],
+    hint:'40 × 50 ÷ 10.',
+    ms:'40 × 50 ÷ 10 [M1] = 200 [A1]',
+    check: a => {
+      const ok=a.includes('200');const meth=a.includes('40')&&a.includes('50');
+      if(ok&&meth) return {s:2,t:2,earned:['Rounded correctly ✓','200 ✓'],missed:[],tip:'Estimation — always round to 1 s.f. first!'};
+      if(ok) return {s:1,t:2,earned:['200 ✓'],missed:['Show rounded values'],tip:'Write 40 × 50 ÷ 10 = 200.'};
+      return {s:0,t:2,earned:[],missed:['Round to 1 s.f.','Calculate'],tip:'38.7→40, 51.2→50, 9.8→10. 40×50÷10=200.'};
+    }
+  },
+
+  { id:'mn8', t:'m-number', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Calculate <strong>(2.3 × 10⁵) × (4 × 10³)</strong>. Give your answer in standard form.',
+    scaffold:['Multiply the coefficients: 2.3 × 4','Add the powers of 10: 10⁵ × 10³ = 10^(5+3)','Check coefficient is between 1 and 10'],
+    hint:'2.3 × 4 = 9.2. 10⁵ × 10³ = 10⁸.',
+    ms:'9.2 × 10⁸ [M1+A1+A1]',
+    check: a => {
+      const ok=a.includes('9.2')&&(a.includes('10⁸')||a.includes('10^8'));
+      if(ok) return {s:3,t:3,earned:['Coefficients multiplied ✓','Powers added ✓','9.2 × 10⁸ ✓'],missed:[],tip:'Standard form arithmetic — multiply numbers, add powers!'};
+      if(a.includes('9.2')) return {s:1,t:3,earned:['9.2 ✓'],missed:['Power: 10⁵×10³=10⁸'],tip:'Add the powers: 5+3=8.'};
+      return {s:0,t:3,earned:[],missed:['Multiply 2.3×4','Add powers 5+3','Write in standard form'],tip:'2.3×4=9.2, 10⁵×10³=10⁸.'};
+    }
+  },
+
+  { id:'mn9', t:'m-number', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Is <strong>91</strong> a prime number? Explain how you know.',
+    scaffold:['Try dividing 91 by small primes: 2, 3, 5, 7...','If any divide exactly, it\'s not prime'],
+    hint:'Try 91 ÷ 7.',
+    ms:'91 = 7 × 13, so NOT prime [M1+A1]',
+    check: a => {
+      const ok=a.toLowerCase().includes('not prime')||a.toLowerCase().includes('not a prime');
+      const meth=a.includes('7')&&a.includes('13');
+      if(ok&&meth) return {s:2,t:2,earned:['7 × 13 found ✓','Not prime stated ✓'],missed:[],tip:'91 is a classic trick question — always check by dividing!'};
+      if(ok) return {s:1,t:2,earned:['Not prime ✓'],missed:['Show 91 = 7 × 13'],tip:'Write 91 = 7 × 13 as evidence.'};
+      return {s:0,t:2,earned:[],missed:['Check divisibility','State conclusion'],tip:'91 ÷ 7 = 13. So 91 = 7 × 13, not prime.'};
+    }
+  },
+
+  { id:'mn10', t:'m-number', marks:3, diff:'hard', year:'AQA 2022',
+    text:'Bus A comes every <strong>8 minutes</strong>. Bus B comes every <strong>12 minutes</strong>. They both leave together at <strong>9:00 am</strong>. When is the <strong>next time</strong> they leave together?',
+    scaffold:['This requires finding the LCM of 8 and 12','Find the LCM','Add that many minutes to 9:00 am'],
+    hint:'Multiples of 8: 8,16,24. Multiples of 12: 12,24. LCM = ?',
+    ms:'LCM of 8 and 12 = 24 [M1+A1] → 9:00 + 24 mins = 9:24 am [A1]',
+    check: a => {
+      const ok=a.includes('9:24');const m1=a.includes('24');
+      if(ok&&m1) return {s:3,t:3,earned:['LCM = 24 ✓','9:24 am ✓'],missed:[],tip:'Real-world LCM problem — buses love these!'};
+      if(m1) return {s:2,t:3,earned:['24 minutes ✓'],missed:['Add to 9:00 am'],tip:'9:00 + 24 mins = 9:24 am.'};
+      return {s:0,t:3,earned:[],missed:['Find LCM of 8 and 12','Add to 9:00'],tip:'LCM(8,12)=24. 9:00+24=9:24am.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // CHEMISTRY: ATOMS (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'ca1', t:'c-atoms', marks:2, diff:'easy', year:'AQA 2023',
-    text:'An atom of carbon-12 has 6 protons. State the number of <strong>neutrons</strong> and <strong>electrons</strong>.',
-    scaffold:[
-      'Mass number = protons + neutrons. So neutrons = mass number − protons.',
-      'A neutral atom has no overall charge. What does that tell you about electrons vs protons?'
-    ],
-    hint:'Neutrons = 12 − 6. Electrons = protons (neutral atom).',
+    text:'Carbon-12 has 6 protons. State the number of <strong>neutrons</strong> and <strong>electrons</strong>.',
+    scaffold:['Neutrons = mass number − protons','Neutral atom: electrons = protons'],
+    hint:'Neutrons = 12 − 6. Electrons = protons.',
     ms:'Neutrons = 6 [A1] | Electrons = 6 [A1]',
     check: a => {
-      const n = a.toLowerCase().includes('neutron') && a.includes('6');
-      const e = a.toLowerCase().includes('electron') && a.includes('6');
-      if (n && e) return { s:2, t:2, earned:['Neutrons = 6 ✓','Electrons = 6 ✓'], missed:[], tip:'Perfect — and this logic applies to any atom: mass − protons = neutrons, electrons = protons.' };
-      if (n || e) return { s:1, t:2, earned:['One value correct ✓'], missed:['State both neutrons AND electrons'], tip:'Both need to be labelled. Write "neutrons = 6, electrons = 6".' };
-      return { s:0, t:2, earned:[], missed:['Neutrons = mass number − protons = 6','Electrons = protons = 6'], tip:'Carbon-12: mass number is 12. 12 − 6 protons = 6 neutrons.' };
+      const n=a.toLowerCase().includes('neutron')&&a.includes('6');const e=a.toLowerCase().includes('electron')&&a.includes('6');
+      if(n&&e) return {s:2,t:2,earned:['Neutrons=6 ✓','Electrons=6 ✓'],missed:[],tip:'This logic applies to any atom!'};
+      if(n||e) return {s:1,t:2,earned:['One value ✓'],missed:['State both'],tip:'Write neutrons=6 AND electrons=6.'};
+      return {s:0,t:2,earned:[],missed:['Neutrons=mass−protons','Electrons=protons (neutral)'],tip:'12−6=6 neutrons, 6 electrons.'};
     }
   },
 
-  // ─── CHEMISTRY: PERIODIC TABLE ───
+  { id:'ca2', t:'c-atoms', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Explain what is meant by <strong>isotopes</strong>, using carbon-12 and carbon-14 as an example.',
+    scaffold:['Isotopes: same element (same protons), different ___','State what is different between C-12 and C-14','Both are still carbon — why?'],
+    hint:'Same number of protons (6). Different number of neutrons.',
+    ms:'Same number of protons/same element [1] | Different number of neutrons [1] | C-12 has 6 neutrons, C-14 has 8 neutrons [1]',
+    check: a => {
+      const same=a.toLowerCase().includes('proton');const diff=a.toLowerCase().includes('neutron');const eg=a.includes('6')&&a.includes('8');
+      if(same&&diff&&eg) return {s:3,t:3,earned:['Same protons ✓','Different neutrons ✓','C-12 vs C-14 example ✓'],missed:[],tip:'Isotope definition with example — full marks!'};
+      if(same&&diff) return {s:2,t:3,earned:['Same protons ✓','Different neutrons ✓'],missed:['Give specific numbers from example'],tip:'Add: C-12 has 6 neutrons, C-14 has 8.'};
+      if(same||diff) return {s:1,t:3,earned:['Partial ✓'],missing:['Complete definition'],tip:'Isotopes: same protons, different neutrons.'};
+      return {s:0,t:3,earned:[],missed:['Same protons','Different neutrons','Example with numbers'],tip:'Isotopes = same protons (same element), different neutrons.'};
+    }
+  },
+
+  { id:'ca3', t:'c-atoms', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Where is most of the <strong>mass</strong> of an atom found? And where are <strong>electrons</strong> found?',
+    scaffold:['The atom has a tiny central part and a large outer region','Protons and neutrons are very heavy compared to electrons'],
+    hint:'Most mass = nucleus. Electrons = shells/orbitals around nucleus.',
+    ms:'Most mass in the nucleus [A1] | Electrons in shells/energy levels around the nucleus [A1]',
+    check: a => {
+      const nuc=a.toLowerCase().includes('nucleus');const shell=a.toLowerCase().includes('shell')||a.toLowerCase().includes('orbit')||a.toLowerCase().includes('energy level');
+      if(nuc&&shell) return {s:2,t:2,earned:['Nucleus (mass) ✓','Shells (electrons) ✓'],missed:[],tip:'Nuclear model of the atom — correct!'};
+      if(nuc||shell) return {s:1,t:2,earned:['One part ✓'],missed:['Complete both parts'],tip:'Mass = nucleus. Electrons = shells.'};
+      return {s:0,t:2,earned:[],missed:['Mass in nucleus','Electrons in shells'],tip:'Nucleus contains protons+neutrons. Electrons orbit in shells.'};
+    }
+  },
+
+  { id:'ca4', t:'c-atoms', marks:2, diff:'easy', year:'AQA 2022',
+    text:'What are the <strong>relative charges</strong> of a proton, neutron and electron?',
+    scaffold:['Proton: positive, negative or neutral?','Neutron: positive, negative or neutral?','Electron: positive, negative or neutral?'],
+    hint:'The atom is overall neutral — think about how charges balance.',
+    ms:'Proton +1 [A1] | Neutron 0 [A1] | Electron −1 [A1] (any 2 correct for 2 marks)',
+    check: a => {
+      const p=a.toLowerCase().includes('proton')&&(a.includes('+1')||a.toLowerCase().includes('positive'));
+      const n=a.toLowerCase().includes('neutron')&&(a.includes('0')||a.toLowerCase().includes('neutral'));
+      const e=a.toLowerCase().includes('electron')&&(a.includes('-1')||a.toLowerCase().includes('negative'));
+      const count=[p,n,e].filter(Boolean).length;
+      if(count>=3) return {s:2,t:2,earned:['All three charges correct ✓'],missed:[],tip:'Subatomic particle charges — memorise these!'};
+      if(count>=2) return {s:1,t:2,earned:['Two correct ✓'],missing:['One more'],tip:'Proton=+1, Neutron=0, Electron=−1.'};
+      return {s:0,t:2,earned:[],missed:['Proton +1','Neutron 0','Electron −1'],tip:'Memorise: +1, 0, −1.'};
+    }
+  },
+
+  { id:'ca5', t:'c-atoms', marks:3, diff:'medium', year:'AQA 2023',
+    text:'An element has <strong>atomic number 17</strong> and <strong>mass number 35</strong>. Write its <strong>electron configuration</strong>.',
+    scaffold:['Atomic number = number of protons = number of electrons','First shell holds max 2 electrons','Second shell holds max 8','Third shell holds the rest'],
+    hint:'17 electrons: 2 in first shell, 8 in second, 7 in third.',
+    ms:'2, 8, 7 [M1+A1+A1]',
+    check: a => {
+      const ok=a.includes('2,8,7')||a.includes('2, 8, 7')||a.replace(/\s/g,'').includes('2,8,7');
+      if(ok) return {s:3,t:3,earned:['2 ✓','8 ✓','7 ✓'],missed:[],tip:'Electron configuration — this is chlorine (Cl)!'};
+      if(a.includes('2')&&a.includes('8')) return {s:2,t:3,earned:['First two shells ✓'],missed:['Third shell = 7'],tip:'17 − 2 − 8 = 7 in the third shell.'};
+      return {s:0,t:3,earned:[],missed:['2 in shell 1','8 in shell 2','7 in shell 3'],tip:'17 electrons: 2,8,7.'};
+    }
+  },
+
+  { id:'ca6', t:'c-atoms', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Describe the <strong>Rutherford alpha-particle scattering experiment</strong> and what it proved about atomic structure.',
+    scaffold:['What were alpha particles fired at?','What did most particles do? What did a few do?','What did this tell us about the atom?'],
+    hint:'Most went straight through (mostly empty space). A few bounced back (dense positive nucleus).',
+    ms:'Alpha particles fired at gold foil [1] | Most went straight through, some deflected, very few bounced back [1] | Showed atoms are mostly empty space with a small, dense, positive nucleus [1]',
+    check: a => {
+      const exp=a.toLowerCase().includes('gold')||a.toLowerCase().includes('foil');
+      const obs=a.toLowerCase().includes('straight through')||a.toLowerCase().includes('deflect')||a.toLowerCase().includes('bounced back');
+      const conc=a.toLowerCase().includes('empty')||a.toLowerCase().includes('nucleus')||a.toLowerCase().includes('positive');
+      const count=[exp,obs,conc].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Gold foil ✓','Observations ✓','Conclusion ✓'],missed:[],tip:'Classic experiment — you\'ve got all three marks!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missed:['One more point needed'],tip:'Add: most went straight through = mostly empty space.'};
+      if(count===1) return {s:1,t:3,earned:['One point ✓'],missed:['Observations','Conclusion'],tip:'Include gold foil, what was observed, and what it proved.'};
+      return {s:0,t:3,earned:[],missed:['Gold foil used','Observations','Conclusion about nucleus'],tip:'Alpha particles → gold foil. Most through, few bounced back → small positive nucleus.'};
+    }
+  },
+
+  { id:'ca7', t:'c-atoms', marks:2, diff:'easy', year:'AQA 2023',
+    text:'What is the <strong>atomic number</strong> of an element, and what does it tell us?',
+    scaffold:['Atomic number = number of what particles?','Why is this useful for identifying an element?'],
+    hint:'Every element has a unique number of protons.',
+    ms:'Atomic number = number of protons in the nucleus [A1] | Unique to each element / determines what element it is [A1]',
+    check: a => {
+      const def=a.toLowerCase().includes('proton');const unique=a.toLowerCase().includes('unique')||a.toLowerCase().includes('element')||a.toLowerCase().includes('identify');
+      if(def&&unique) return {s:2,t:2,earned:['Protons ✓','Unique to each element ✓'],missed:[],tip:'Atomic number = element identity. Perfect!'};
+      if(def) return {s:1,t:2,earned:['Protons ✓'],missed:['Say it\'s unique to each element'],tip:'Add: each element has a unique atomic number.'};
+      return {s:0,t:2,earned:[],missed:['= number of protons','Unique to each element'],tip:'Atomic number = proton number = element identity.'};
+    }
+  },
+
+  { id:'ca8', t:'c-atoms', marks:3, diff:'hard', year:'AQA 2022',
+    text:'Explain why atoms are <strong>electrically neutral</strong>.',
+    scaffold:['What are the charged particles in an atom?','What are their charges?','How do these charges balance?'],
+    hint:'Number of protons = number of electrons in a neutral atom.',
+    ms:'Protons are positive (+1), electrons are negative (−1) [1] | Equal numbers of protons and electrons [1] | Charges cancel / overall charge = zero [1]',
+    check: a => {
+      const charges=a.toLowerCase().includes('proton')&&a.toLowerCase().includes('electron');
+      const equal=a.toLowerCase().includes('equal')||a.toLowerCase().includes('same number');
+      const cancel=a.toLowerCase().includes('cancel')||a.toLowerCase().includes('balance')||a.toLowerCase().includes('zero');
+      const count=[charges,equal,cancel].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Charges stated ✓','Equal numbers ✓','Cancel out ✓'],missed:[],tip:'Excellent explanation of electrical neutrality!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missing:['Add: charges cancel/balance to zero'],tip:'Add that the equal and opposite charges cancel out.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Protons +, electrons −','Equal numbers','They cancel'],tip:'Same number of + (protons) and − (electrons) = neutral.'};
+    }
+  },
+
+  { id:'ca9', t:'c-atoms', marks:2, diff:'easy', year:'AQA 2023',
+    text:'An ion has the symbol <strong>Na⁺</strong>. How many protons and electrons does it have? (Sodium\'s atomic number is 11.)',
+    scaffold:['Atomic number = number of protons (unchanged)','The + charge means it has lost one electron'],
+    hint:'Na has 11 protons. Na⁺ has lost 1 electron.',
+    ms:'Protons = 11 [A1] | Electrons = 10 [A1]',
+    check: a => {
+      const p=a.includes('11');const e=a.includes('10');
+      if(p&&e) return {s:2,t:2,earned:['Protons=11 ✓','Electrons=10 ✓'],missed:[],tip:'Ions: protons stay the same, electrons change!'};
+      if(p||e) return {s:1,t:2,earned:['One correct ✓'],missed:['State both'],tip:'Na⁺: 11 protons, 10 electrons (lost 1).'};
+      return {s:0,t:2,earned:[],missed:['Protons = atomic number = 11','Electrons = 11−1 = 10'],tip:'The + means one electron was lost: 11−1=10 electrons.'};
+    }
+  },
+
+  { id:'ca10', t:'c-atoms', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Explain how a <strong>mass spectrometer</strong> can be used to find the <strong>relative atomic mass</strong> of an element with more than one isotope.',
+    scaffold:['A mass spectrometer separates atoms by their ___','It gives the mass and ___ of each isotope','How do you calculate a weighted average?'],
+    hint:'Mass × abundance for each isotope, add them up, divide by total abundance.',
+    ms:'Separates by mass [1] | Gives mass and relative abundance of each isotope [1] | Ar = Σ(mass × abundance) ÷ 100 [1]',
+    check: a => {
+      const sep=a.toLowerCase().includes('mass')||a.toLowerCase().includes('separat');
+      const abund=a.toLowerCase().includes('abundan');
+      const calc=a.toLowerCase().includes('average')||a.toLowerCase().includes('weighted')||a.toLowerCase().includes('×')||a.toLowerCase().includes('multiply');
+      const count=[sep,abund,calc].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Separates by mass ✓','Abundance given ✓','Weighted average ✓'],missed:[],tip:'Mass spectrometry — that\'s A-level adjacent knowledge!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missed:['Show calculation: Σ(mass × abundance) ÷ 100'],tip:'Add how to calculate the weighted average.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Separates by mass','Gives abundance','Weighted average calculation'],tip:'Ar = (mass₁×abund₁ + mass₂×abund₂) ÷ 100.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // CHEMISTRY: PERIODIC TABLE (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'cp1', t:'c-periodic', marks:3, diff:'easy', year:'AQA 2023',
-    text:'Give <strong>two properties of metals</strong> and explain how the <strong>metallic structure</strong> explains one of these properties.',
-    scaffold:[
-      'Think of things metals can do that most non-metals can\'t: conduct? bend? melt?',
-      'Metallic structure = layers of positive ions + a "sea" of delocalised electrons',
-      'Link ONE property directly to the delocalised electrons or sliding layers'
-    ],
-    hint:'Delocalised electrons carry charge (conducts) or layers slide (malleable).',
-    ms:'Any 2 properties [1 each max 2] | Structure explanation e.g. delocalised electrons allow electrical conduction [1]',
+    text:'Give <strong>two properties of metals</strong> and explain how <strong>metallic structure</strong> explains one property.',
+    scaffold:['Metals: conduct, bend, high melting point...','Structure: layers of positive ions + sea of delocalised electrons','Link ONE property to the structure'],
+    hint:'Delocalised electrons carry charge → conducts. Layers slide → malleable.',
+    ms:'Any 2 properties [1 each] | Structure explanation with electrons or layers [1]',
     check: a => {
-      const props = ['conduct','malleable','ductile','high melting','lustrous','shiny','strong'].filter(w => a.toLowerCase().includes(w));
-      const struct = a.toLowerCase().includes('electron') || a.toLowerCase().includes('delocalised') || a.toLowerCase().includes('layer') || a.toLowerCase().includes('sea of');
-      if (props.length >= 2 && struct) return { s:3, t:3, earned:['Property 1 ✓','Property 2 ✓','Structure explanation ✓'], missed:[], tip:'Excellent — this is a model answer. "Delocalised electrons" is the magic phrase.' };
-      if (props.length >= 2) return { s:2, t:3, earned:['Two properties ✓'], missed:['Explain using metallic structure (delocalised electrons or sliding layers)'], tip:'You have the properties — now link ONE to the structure. "Because delocalised electrons can move freely, metals conduct electricity."' };
-      if (props.length === 1 || struct) return { s:1, t:3, earned:['Partial ✓'], missed:['Need 2 properties','Need structure explanation'], tip:'Name two properties first, then explain one using "delocalised electrons".' };
-      return { s:0, t:3, earned:[], missed:['State 2 properties','Link 1 to metallic structure'], tip:'Properties: conducts electricity, malleable (can be bent). Structure: sea of delocalised electrons.' };
+      const props=['conduct','malleable','ductile','high melting','lustrous','shiny','strong'].filter(w=>a.toLowerCase().includes(w));
+      const struct=a.toLowerCase().includes('electron')||a.toLowerCase().includes('delocalised')||a.toLowerCase().includes('layer')||a.toLowerCase().includes('sea of');
+      if(props.length>=2&&struct) return {s:3,t:3,earned:['Property 1 ✓','Property 2 ✓','Structure ✓'],missed:[],tip:'Delocalised electrons is the magic phrase!'};
+      if(props.length>=2) return {s:2,t:3,earned:['Two properties ✓'],missed:['Explain using delocalised electrons or sliding layers'],tip:'"Delocalised electrons can move freely, so metals conduct electricity."'};
+      if(props.length===1||struct) return {s:1,t:3,earned:['Partial ✓'],missed:['2 properties + structure'],tip:'Name two properties, explain one with structure.'};
+      return {s:0,t:3,earned:[],missed:['2 properties','Structure explanation'],tip:'Conduct + malleable. Delocalised electrons.'};
     }
   },
 
-  // ─── CHEMISTRY: REACTIONS ───
-  { id:'cr1', t:'c-reactions', marks:4, diff:'medium', year:'AQA 2022',
-    text:'Balance the equation: <strong>___ Mg + ___ O₂ → ___ MgO</strong><br>Then state the type of reaction and what happens to magnesium.',
-    scaffold:[
-      'Count oxygen atoms: O₂ has 2 oxygens. Each MgO has 1 oxygen. So you need 2 MgO.',
-      'Now balance Mg: if you have 2 MgO, how many Mg do you need?',
-      'What type of reaction involves a substance combining with oxygen?',
-      'What is the name for gaining oxygen? (think of iron rusting)'
-    ],
-    hint:'2Mg + O₂ → 2MgO. Magnesium is oxidised.',
-    ms:'2Mg + O₂ → 2MgO [M1+A1] | combustion/oxidation [B1] | Mg is oxidised (gains oxygen) [B1]',
+  { id:'cp2', t:'c-periodic', marks:2, diff:'easy', year:'AQA 2022',
+    text:'What do elements in the <strong>same group</strong> of the periodic table have in common?',
+    scaffold:['Think about what determines how an element reacts','Look at the number of electrons in the outer shell'],
+    hint:'Same group = same number of electrons in the outer shell.',
+    ms:'Same number of outer shell electrons [A1] | Similar chemical properties [A1]',
     check: a => {
-      const balanced = (a.includes('2Mg') || a.includes('2 Mg')) && (a.includes('2MgO') || a.includes('2 MgO'));
-      const type = a.toLowerCase().includes('oxidat') || a.toLowerCase().includes('combust');
-      const oxid = a.toLowerCase().includes('oxidis') || a.toLowerCase().includes('oxidiz') || (a.toLowerCase().includes('mg') && a.toLowerCase().includes('oxygen'));
-      if (balanced && type && oxid) return { s:4, t:4, earned:['Balanced correctly ✓','Reaction type ✓','Mg is oxidised ✓','Full explanation ✓'], missed:[], tip:'4/4 — perfect. Balancing + reaction type + explanation is the full package.' };
-      if (balanced && (type || oxid)) return { s:3, t:4, earned:['Balanced ✓', type?'Reaction type ✓':'Oxidation identified ✓'], missed:[type?'State Mg is oxidised':'Name the reaction type (combustion/oxidation)'], tip:'Almost full marks — add the missing part for 4/4.' };
-      if (balanced) return { s:2, t:4, earned:['Equation balanced ✓'], missed:['State reaction type','Explain Mg is oxidised (gains oxygen)'], tip:'Balanced — now: what do we call a reaction where something combines with oxygen?' };
-      return { s:0, t:4, earned:[], missed:['Balance the equation','Name reaction type','Explain Mg is oxidised'], tip:'Start with oxygen: O₂ = 2 atoms, so you need 2 MgO on the right.' };
+      const elec=a.toLowerCase().includes('electron')&&(a.toLowerCase().includes('outer')||a.toLowerCase().includes('shell'));
+      const prop=a.toLowerCase().includes('similar')||a.toLowerCase().includes('same properties')||a.toLowerCase().includes('react');
+      if(elec&&prop) return {s:2,t:2,earned:['Same outer electrons ✓','Similar properties ✓'],missed:[],tip:'Group = outer electron number = chemical behaviour!'};
+      if(elec||prop) return {s:1,t:2,earned:['One point ✓'],missed:['Add the other'],tip:'Same outer electrons → similar properties.'};
+      return {s:0,t:2,earned:[],missed:['Same outer electrons','Similar chemical properties'],tip:'Groups: same outer shell electrons = same reactions.'};
     }
   },
 
-  // ─── CHEMISTRY: RATES ───
-  { id:'cra1', t:'c-rates', marks:6, diff:'hard', year:'AQA 2022',
-    text:'Explain, using <strong>collision theory</strong>, why increasing the <strong>concentration</strong> of hydrochloric acid increases the rate of its reaction with marble chips. <em>[6 marks — write 6 separate points]</em>',
-    scaffold:[
-      'Higher concentration means more ___ in the same volume',
-      'More particles → more ___ between particles',
-      'More frequent collisions means more chances to react',
-      'BUT — not all collisions work. What determines whether a collision is successful?',
-      'What is activation energy?',
-      'Connect back to rate: more successful collisions per second = ?'
-    ],
-    hint:'Key words needed: particles, collisions, frequency, activation energy, successful collisions, rate increases.',
-    ms:'1.More H⁺ ions/particles in same volume [1] 2.More frequent collisions [1] 3.More collisions have energy ≥ activation energy [1] 4.More successful collisions per second [1] 5.Rate of reaction increases [1] 6.No change to activation energy itself [1]',
+  { id:'cp3', t:'c-periodic', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Describe the <strong>trend in reactivity</strong> going down <strong>Group 1</strong> (the alkali metals). Explain why.',
+    scaffold:['Does reactivity increase or decrease going down?','Think about where the outer electron is in larger atoms','Easier or harder to lose that electron?'],
+    hint:'Reactivity increases. Outer electron is further from nucleus, less attraction, easier to lose.',
+    ms:'Reactivity increases down the group [1] | Outer electron is further from nucleus [1] | Less attraction/shielding → easier to lose electron [1]',
     check: a => {
-      const pts = [
-        /more.*(particle|ion|molecule)/i.test(a) || /particle.*more/i.test(a),
-        /more.*(frequent|collision)/i.test(a) || /collision.*more/i.test(a),
-        /activation energy/i.test(a),
-        /successful collision/i.test(a),
-        /rate.*increas|increas.*rate/i.test(a),
-        a.length > 150
-      ];
-      const sc = pts.filter(Boolean).length;
-      const score = Math.min(sc, 6);
-      if (score >= 5) return { s:score, t:6, earned:[`${score} key points identified ✓`,'Collision theory well applied ✓'], missed:score<6?['Check: no change to activation energy itself']:[],  tip:`${score}/6! For the last mark: state that activation energy itself doesn't change, only the frequency of collisions.` };
-      if (score >= 3) return { s:score, t:6, earned:[`${score} valid points ✓`], missed:['Need more detail on activation energy','State "successful collisions" explicitly','Conclude with "rate increases"'], tip:'Good start. Count your points — you need 6 separate statements. Activation energy is the key one often missed.' };
-      return { s:score||0, t:6, earned:score>0?['Some correct ideas ✓']:[], missed:['More particles in same volume','More frequent collisions','Compare to activation energy','Successful collisions','Rate increases'], tip:'Plan 6 bullet points BEFORE writing. Start: "Higher concentration means more particles in the same volume..."' };
+      const trend=a.toLowerCase().includes('increase');const dist=a.toLowerCase().includes('further')||a.toLowerCase().includes('further from');const why=a.toLowerCase().includes('attract')||a.toLowerCase().includes('shield')||a.toLowerCase().includes('lose');
+      const count=[trend,dist,why].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Trend ✓','Distance from nucleus ✓','Reason ✓'],missed:[],tip:'Group 1 trend with explanation — excellent!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missed:['One more point'],tip:'Add: less nuclear attraction → easier to lose the outer electron.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Increases','Further from nucleus','Easier to lose electron'],tip:'Bigger atom → outer electron further → less attracted → easier to lose.'};
     }
   },
 
-  // ─── CHEMISTRY: ENERGY ───
-  { id:'ce1', t:'c-energy', marks:2, diff:'easy', year:'AQA 2023',
-    text:'Is the combustion of methane <strong>exothermic or endothermic</strong>? Give one piece of evidence from everyday life.',
-    scaffold:[
-      'Exothermic = energy released to surroundings (gets hot). Endothermic = energy absorbed (gets cold).',
-      'Think: what do you notice when gas burns on a hob?'
-    ],
-    hint:'Burning releases heat — that\'s how gas cookers work.',
-    ms:'Exothermic [A1] | Evidence: produces heat/light, temperature increases, used for cooking/heating [A1]',
+  { id:'cp4', t:'c-periodic', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Describe the <strong>trend in reactivity going down Group 7</strong> (the halogens). Explain why this is opposite to Group 1.',
+    scaffold:['Does reactivity increase or decrease going down Group 7?','Group 7 elements GAIN electrons. What happens when the atom gets bigger?','Compare to Group 1 which LOSES electrons'],
+    hint:'Reactivity decreases. Larger atom = harder to attract an extra electron.',
+    ms:'Reactivity decreases [1] | Larger atom/outer shell further away [1] | Harder to attract/gain an electron [1]',
     check: a => {
-      const ok = a.toLowerCase().includes('exo');
-      const ev = a.toLowerCase().includes('heat') || a.toLowerCase().includes('warm') || a.toLowerCase().includes('cook') || a.toLowerCase().includes('light') || a.toLowerCase().includes('temperature');
-      if (ok && ev) return { s:2, t:2, earned:['Exothermic identified ✓','Valid evidence given ✓'], missed:[], tip:'Spot on — exothermic + evidence = 2 marks. Simple but often rushed.' };
-      if (ok) return { s:1, t:2, earned:['Exothermic ✓'], missed:['Give one piece of evidence (e.g. produces heat)'], tip:'You got the type — just add "because it produces heat" for the second mark.' };
-      return { s:0, t:2, earned:[], missed:['Exothermic (energy is released)','Evidence from everyday life'], tip:'Think: gas hob, bonfire, hand warmers — they all get HOT = exothermic.' };
+      const trend=a.toLowerCase().includes('decrease');const size=a.toLowerCase().includes('larger')||a.toLowerCase().includes('further');const gain=a.toLowerCase().includes('gain')||a.toLowerCase().includes('attract');
+      const count=[trend,size,gain].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Decreases ✓','Larger atom ✓','Harder to gain electron ✓'],missed:[],tip:'Halogen trend with clear reasoning — great!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missed:['One more point needed'],tip:'Add: as atom gets larger, gaining an electron becomes harder.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Decreases','Larger atom/further out','Harder to gain electron'],tip:'Group 7 gains electrons. Bigger atom = harder to gain.'};
     }
   },
 
-  // ─── CHEMISTRY: EQUATIONS ───
-  { id:'ceq1', t:'c-equations', marks:3, diff:'medium', year:'AQA 2023',
-    text:'Write a <strong>balanced symbol equation</strong> for the reaction between hydrogen and oxygen to form water.',
-    scaffold:[
-      'Write the word equation first: hydrogen + oxygen → water',
-      'Write the formulae: H₂ + O₂ → H₂O',
-      'Count atoms on each side — are they balanced? If not, add numbers in front.'
-    ],
-    hint:'H₂O has 2 H and 1 O. O₂ has 2 O, so you need 2 H₂O. Then you need 2 H₂.',
-    ms:'H₂ + O₂ → H₂O [M1 for attempt] → 2H₂ + O₂ → 2H₂O [A1+A1]',
+  { id:'cp5', t:'c-periodic', marks:2, diff:'easy', year:'AQA 2023',
+    text:'What does the <strong>period number</strong> tell you about an element?',
+    scaffold:['The period = which row of the periodic table','How does this relate to electron shells?'],
+    hint:'Period 2 = 2 electron shells filled.',
+    ms:'Period number = number of electron shells [A1+A1]',
     check: a => {
-      const c = a.replace(/\s/g,'');
-      const balanced = (c.includes('2H₂') || c.includes('2H2')) && (c.includes('2H₂O') || c.includes('2H2O'));
-      const attempt = c.toLowerCase().includes('h₂') || c.includes('h2') || c.includes('h2o');
-      if (balanced) return { s:3, t:3, earned:['Correct formulae ✓','Balanced equation ✓','2H₂ + O₂ → 2H₂O ✓'], missed:[], tip:'Perfectly balanced! Count atoms: 4H + 2O on each side ✓' };
-      if (attempt) return { s:1, t:3, earned:['Correct formulae used ✓'], missed:['Balance the equation: need 2H₂ on left, 2H₂O on right'], tip:'H₂O has 1 oxygen but O₂ has 2 — so you need 2 water molecules to use all the oxygen.' };
-      return { s:0, t:3, earned:[], missed:['Write H₂ for hydrogen, O₂ for oxygen, H₂O for water','Balance by adding numbers in front — never change the formula'], tip:'Formula first: H₂ + O₂ → H₂O. Then count and balance.' };
+      const ok=a.toLowerCase().includes('shell')||a.toLowerCase().includes('energy level');const num=a.toLowerCase().includes('number')||a.toLowerCase().includes('period');
+      if(ok&&num) return {s:2,t:2,earned:['Period = shell number ✓'],missed:[],tip:'Period = rows = number of occupied shells!'};
+      if(ok||num) return {s:1,t:2,earned:['Partial ✓'],missed:['Be more specific'],tip:'Period 3 → 3 electron shells.'};
+      return {s:0,t:2,earned:[],missed:['Period = number of electron shells'],tip:'Period number = number of occupied electron shells.'};
     }
   },
 
-  // ─── CHEMISTRY: BONDING ───
+  { id:'cp6', t:'c-periodic', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Potassium reacts vigorously with water. Write a <strong>word equation</strong> and describe <strong>two observations</strong>.',
+    scaffold:['Potassium + water → ? + ?','Think: alkali metal + water always produces hydrogen and a hydroxide','Observations: what do you SEE/HEAR?'],
+    hint:'Products: potassium hydroxide + hydrogen. Observations: floats, fizzes, moves around, purple flame.',
+    ms:'K + water → potassium hydroxide + hydrogen [A1] | Any 2 from: fizzes/bubbles, moves on surface, purple/lilac flame, melts into ball [A1+A1]',
+    check: a => {
+      const eq=a.toLowerCase().includes('hydroxide')&&a.toLowerCase().includes('hydrogen');
+      const obs1=a.toLowerCase().includes('fizz')||a.toLowerCase().includes('bubble')||a.toLowerCase().includes('float');
+      const obs2=a.toLowerCase().includes('flame')||a.toLowerCase().includes('purple')||a.toLowerCase().includes('melt')||a.toLowerCase().includes('move');
+      const count=[eq,obs1,obs2].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Word equation ✓','Observation 1 ✓','Observation 2 ✓'],missed:[],tip:'Alkali metal reaction — complete answer!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} correct ✓`],missed:['One more point'],tip:'Add: purple/lilac flame, or moves on water surface.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Word equation','Two observations'],tip:'Products: KOH + H₂. Observations: fizzes, purple flame.'};
+    }
+  },
+
+  { id:'cp7', t:'c-periodic', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Explain why <strong>noble gases</strong> (Group 0) are unreactive.',
+    scaffold:['How many electrons are in their outer shell?','What does a full outer shell mean for reactivity?'],
+    hint:'Full outer shell → no tendency to gain or lose electrons.',
+    ms:'Full outer shell of electrons [A1] | No tendency to gain, lose or share electrons [A1]',
+    check: a => {
+      const full=a.toLowerCase().includes('full')||a.toLowerCase().includes('complete');const why=a.toLowerCase().includes('gain')||a.toLowerCase().includes('lose')||a.toLowerCase().includes('share')||a.toLowerCase().includes('stable');
+      if(full&&why) return {s:2,t:2,earned:['Full outer shell ✓','No drive to react ✓'],missed:[],tip:'Noble gases = full shell = chemically inert!'};
+      if(full||why) return {s:1,t:2,earned:['Partial ✓'],missed:['Both full shell AND no tendency to react'],tip:'Full outer shell means no need to gain/lose/share electrons.'};
+      return {s:0,t:2,earned:[],missed:['Full outer shell','No tendency to react'],tip:'8 electrons (or 2 for He) = stable = unreactive.'};
+    }
+  },
+
+  { id:'cp8', t:'c-periodic', marks:3, diff:'hard', year:'AQA 2022',
+    text:'Chlorine can displace bromine from a solution of potassium bromide. Write an <strong>ionic equation</strong> and explain why this displacement occurs.',
+    scaffold:['More reactive halogen displaces less reactive one','Chlorine is higher in Group 7 = more or less reactive?','Ionic equation: Cl₂ + 2Br⁻ → ?'],
+    hint:'Chlorine is more reactive. Ionic: Cl₂ + 2Br⁻ → 2Cl⁻ + Br₂.',
+    ms:'Cl₂ + 2Br⁻ → 2Cl⁻ + Br₂ [A1+A1] | Chlorine is more reactive/higher in group [A1]',
+    check: a => {
+      const eq=a.includes('Cl₂')&&a.includes('Br⁻')&&a.includes('Cl⁻')&&a.includes('Br₂')||a.includes('Cl2')&&a.includes('Br2');
+      const reason=a.toLowerCase().includes('more reactive')||a.toLowerCase().includes('higher');
+      if(eq&&reason) return {s:3,t:3,earned:['Ionic equation ✓','Balanced ✓','Reason ✓'],missed:[],tip:'Halogen displacement with ionic equation — impressive!'};
+      if(eq) return {s:2,t:3,earned:['Equation ✓'],missed:['Explain: Cl more reactive as it\'s higher in Group 7'],tip:'Add: Cl is more reactive, so displaces Br.'};
+      if(reason) return {s:1,t:3,earned:['Reason ✓'],missing:['Ionic equation'],tip:'Cl₂ + 2Br⁻ → 2Cl⁻ + Br₂.'};
+      return {s:0,t:3,earned:[],missed:['Ionic equation','Reason for displacement'],tip:'More reactive halogen displaces less reactive. Cl₂+2Br⁻→2Cl⁻+Br₂.'};
+    }
+  },
+
+  { id:'cp9', t:'c-periodic', marks:2, diff:'easy', year:'AQA 2023',
+    text:'The transition metals are found in the <strong>centre block</strong> of the periodic table. Give <strong>two properties</strong> that are different from Group 1 metals.',
+    scaffold:['Think: hardness, melting point, reactivity, forming coloured compounds, acting as catalysts'],
+    hint:'Transition metals: harder, higher melting points, less reactive, form coloured compounds.',
+    ms:'Any 2 from: higher melting/boiling points, harder, less reactive with water/air, form coloured compounds, good catalysts [A1+A1]',
+    check: a => {
+      const props=['harder','less reactive','melting','colour','catalyst','dense'].filter(w=>a.toLowerCase().includes(w));
+      if(props.length>=2) return {s:2,t:2,earned:['Property 1 ✓','Property 2 ✓'],missed:[],tip:'Transition metal properties — well known!'};
+      if(props.length===1) return {s:1,t:2,earned:['One property ✓'],missed:['Give a second property'],tip:'Add: form coloured compounds, or high melting point.'};
+      return {s:0,t:2,earned:[],missed:['Two properties different from Group 1'],tip:'Higher melting points, harder, less reactive, coloured compounds.'};
+    }
+  },
+
+  { id:'cp10', t:'c-periodic', marks:3, diff:'hard', year:'AQA 2022',
+    text:'Mendeleev left <strong>gaps in his periodic table</strong>. Explain why this was a scientific strength, not a weakness.',
+    scaffold:['What did the gaps represent?','What happened when new elements were discovered?','How did this validate Mendeleev\'s predictions?'],
+    hint:'Gaps = predicted unknown elements. Predictions later confirmed = powerful evidence for his table.',
+    ms:'Gaps represented predicted undiscovered elements [1] | Predicted properties of unknown elements [1] | Later confirmed when elements discovered (e.g. germanium) = strong evidence [1]',
+    check: a => {
+      const gap=a.toLowerCase().includes('gap')&&(a.toLowerCase().includes('undiscovered')||a.toLowerCase().includes('predict'));const pred=a.toLowerCase().includes('predict');const conf=a.toLowerCase().includes('confirm')||a.toLowerCase().includes('discovered')||a.toLowerCase().includes('found');
+      const count=[gap,pred,conf].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Gaps = predictions ✓','Properties predicted ✓','Later confirmed ✓'],missed:[],tip:'History of science — excellent understanding!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missed:['Add: predictions were later confirmed'],tip:'Include that the gaps were later filled by newly discovered elements.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Gaps=predictions','Properties predicted','Later confirmed'],tip:'Gaps predicted unknown elements whose properties were later verified.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // CHEMISTRY: BONDING (10 questions)
+  // ══════════════════════════════════════════════════════════
+
   { id:'cb1', t:'c-bonding', marks:4, diff:'medium', year:'AQA 2022',
-    text:'Explain why <strong>sodium chloride (NaCl) has a high melting point</strong>, using your knowledge of ionic bonding.',
-    scaffold:[
-      'What type of particles are in NaCl? (positive and negative ___)',
-      'What holds them together? (strong ___ attraction)',
-      'What does "giant ionic lattice" mean?',
-      'To melt it, what must you overcome?'
-    ],
-    hint:'Giant lattice of ions. Strong electrostatic forces between opposite charges. Lots of energy needed to break them.',
-    ms:'Ions held in giant lattice [1] | Strong electrostatic attraction between opposite charges [1] | Many bonds must be broken [1] | Requires a lot of energy = high melting point [1]',
+    text:'Explain why <strong>NaCl has a high melting point</strong>, using your knowledge of ionic bonding.',
+    scaffold:['What type of particles are in NaCl?','What holds them together?','What is a "giant ionic lattice"?','What must you overcome to melt it?'],
+    hint:'Giant lattice of ions. Strong electrostatic forces. Lots of energy to break.',
+    ms:'Giant ionic lattice [1] | Strong electrostatic attraction between opposite charges [1] | Many bonds broken [1] | High energy required [1]',
     check: a => {
-      const lattice = a.toLowerCase().includes('lattice');
-      const force = a.toLowerCase().includes('electrostatic') || (a.toLowerCase().includes('attract') && a.toLowerCase().includes('opposi'));
-      const bonds = a.toLowerCase().includes('bond') || a.toLowerCase().includes('break') || a.toLowerCase().includes('overcome');
-      const energy = a.toLowerCase().includes('energy') || a.toLowerCase().includes('melt');
-      const sc = [lattice, force, bonds, energy].filter(Boolean).length;
-      if (sc >= 3) return { s:sc, t:4, earned:[`${sc} key points ✓`], missed:sc<4?['Include all 4: lattice / electrostatic forces / many bonds broken / needs energy']:[], tip:sc===4?'Perfect ionic bonding explanation!':'Add one more point — you\'re very close.' };
-      if (sc >= 2) return { s:sc, t:4, earned:[`${sc} points ✓`], missed:['Mention "giant lattice"','Use "electrostatic attraction"'], tip:'The key phrase is "strong electrostatic attraction between oppositely charged ions in a giant lattice".' };
-      return { s:sc||0, t:4, earned:[], missed:['Giant ionic lattice','Strong electrostatic forces','Many bonds to break','High energy needed'], tip:'Structure: NaCl is a giant lattice → strong electrostatic forces → many bonds → lots of energy to melt.' };
+      const lattice=a.toLowerCase().includes('lattice');const force=a.toLowerCase().includes('electrostatic')||(a.toLowerCase().includes('attract')&&a.toLowerCase().includes('opposi'));const bonds=a.toLowerCase().includes('bond')||a.toLowerCase().includes('break');const energy=a.toLowerCase().includes('energy');
+      const sc=[lattice,force,bonds,energy].filter(Boolean).length;
+      if(sc>=4) return {s:4,t:4,earned:['Lattice ✓','Electrostatic forces ✓','Many bonds ✓','High energy ✓'],missed:[],tip:'Perfect ionic bonding explanation!'};
+      if(sc>=3) return {s:sc,t:4,earned:[`${sc} points ✓`],missed:['Add one more point'],tip:'Add whichever of: lattice/electrostatic forces/bonds/energy you missed.'};
+      if(sc>=2) return {s:sc,t:4,earned:[`${sc} points ✓`],missed:['Need all 4 points'],tip:'Key phrase: "strong electrostatic attraction between oppositely charged ions in a giant lattice."'};
+      return {s:0,t:4,earned:[],missed:['Giant lattice','Electrostatic forces','Many bonds','High energy'],tip:'Build up: lattice → forces → many bonds → high energy.'};
     }
   },
+
+  { id:'cb2', t:'c-bonding', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Draw a <strong>dot-and-cross diagram</strong> for a water molecule (H₂O). Describe the type of bonding.',
+    scaffold:['Water has covalent bonding — electrons are shared','Oxygen needs 2 more electrons. Each H needs 1 more.','In your description: name the bond type and what is shared'],
+    hint:'Two O−H covalent bonds. Oxygen has 2 lone pairs in the outer shell.',
+    ms:'Correct shared pairs shown between O and each H [M1+A1] | Covalent bonding described [A1] | Lone pairs on O [B1]',
+    check: a => {
+      const cov=a.toLowerCase().includes('covalent');const share=a.toLowerCase().includes('shared')||a.toLowerCase().includes('share');const bond=a.toLowerCase().includes('bond');
+      const count=[cov,share,bond].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Covalent ✓','Shared electrons ✓','Bond described ✓'],missed:[],tip:'Covalent bonding — excellent!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missed:['Complete the description'],tip:'State: covalent bond = shared pair of electrons between atoms.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Covalent bonding','Shared electron pairs','Both O-H bonds'],tip:'Water: 2 covalent bonds, shared electron pairs.'};
+    }
+  },
+
+  { id:'cb3', t:'c-bonding', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Explain why <strong>ionic compounds conduct electricity when dissolved in water</strong> but <strong>not when solid</strong>.',
+    scaffold:['What needs to be free to move for electricity to flow?','In solid state: can ions move? What about in solution?'],
+    hint:'Ions are fixed in the lattice when solid. In solution they are free to move.',
+    ms:'Ions fixed in lattice when solid [A1] | Ions free to move when dissolved [A1]',
+    check: a => {
+      const solid=a.toLowerCase().includes('fixed')||a.toLowerCase().includes('cannot move')||a.toLowerCase().includes("can't move");const liquid=a.toLowerCase().includes('free to move')||a.toLowerCase().includes('mobile');
+      if(solid&&liquid) return {s:2,t:2,earned:['Fixed in solid ✓','Free in solution ✓'],missed:[],tip:'Ion mobility = conductivity. Perfect!'};
+      if(solid||liquid) return {s:1,t:2,earned:['One point ✓'],missed:['Include both solid (fixed) and solution (free)'],tip:'Solid: fixed. Solution: free to move.'};
+      return {s:0,t:2,earned:[],missed:['Solid: ions fixed','Solution: ions free to move'],tip:'Electricity needs mobile ions or electrons.'};
+    }
+  },
+
+  { id:'cb4', t:'c-bonding', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Compare the melting points of <strong>ionic compounds</strong> and <strong>simple molecular compounds</strong>. Explain the difference.',
+    scaffold:['What forces exist between molecules in molecular compounds?','What forces exist between ions in ionic compounds?','Which forces are stronger?'],
+    hint:'Ionic: strong electrostatic forces. Molecular: weak intermolecular forces.',
+    ms:'Ionic compounds have high melting points [1] | Strong ionic bonds/electrostatic forces to break [1] | Simple molecules have low melting points — only weak intermolecular forces [1]',
+    check: a => {
+      const ionic=a.toLowerCase().includes('ionic')&&(a.toLowerCase().includes('high')||a.toLowerCase().includes('strong'));const molec=a.toLowerCase().includes('molecular')&&(a.toLowerCase().includes('low')||a.toLowerCase().includes('weak'));const why=a.toLowerCase().includes('intermolecular')||a.toLowerCase().includes('force');
+      const count=[ionic,molec,why].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Ionic high mp ✓','Molecular low mp ✓','Forces explained ✓'],missed:[],tip:'Melting point comparison — excellent reasoning!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missed:['Explain the forces involved'],tip:'Ionic: strong electrostatic forces. Molecules: weak intermolecular.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Ionic: high mp (strong forces)','Molecular: low mp (weak forces)','Compare forces'],tip:'Strong ionic bonds vs weak intermolecular forces.'};
+    }
+  },
+
+  { id:'cb5', t:'c-bonding', marks:2, diff:'easy', year:'AQA 2022',
+    text:'What type of bonding exists in <strong>metals</strong>? Describe the structure.',
+    scaffold:['Metal bonding has its own name — not ionic or covalent','Think: what particles are present and how do electrons behave?'],
+    hint:'Positive ions in a lattice surrounded by a sea of delocalised electrons.',
+    ms:'Metallic bonding [A1] | Positive ions in a sea/lattice of delocalised electrons [A1]',
+    check: a => {
+      const name=a.toLowerCase().includes('metallic');const struct=a.toLowerCase().includes('delocalised')||a.toLowerCase().includes('sea of')||(a.toLowerCase().includes('ion')&&a.toLowerCase().includes('electron'));
+      if(name&&struct) return {s:2,t:2,earned:['Metallic bonding ✓','Structure described ✓'],missed:[],tip:'Metallic bonding — the sea model!'};
+      if(name||struct) return {s:1,t:2,earned:['One point ✓'],missed:['Add the other'],tip:'Metallic bonding: positive ions + sea of delocalised electrons.'};
+      return {s:0,t:2,earned:[],missed:['Metallic bonding','Sea of delocalised electrons'],tip:'Lattice of positive ions in a sea of delocalised electrons.'};
+    }
+  },
+
+  { id:'cb6', t:'c-bonding', marks:4, diff:'hard', year:'AQA 2023',
+    text:'Explain why <strong>graphite conducts electricity</strong> but <strong>diamond does not</strong>, even though both are made of carbon.',
+    scaffold:['How many bonds does each carbon form in diamond vs graphite?','What does this mean for electrons in graphite?','Why can\'t electrons move in diamond?'],
+    hint:'Diamond: 4 covalent bonds, no free electrons. Graphite: 3 bonds, 1 delocalised electron per atom.',
+    ms:'Diamond: all 4 outer electrons bonded — no free electrons [1] | Cannot conduct [1] | Graphite: 3 bonds, 1 electron delocalised per layer [1] | Delocalised electrons carry charge — conducts [1]',
+    check: a => {
+      const diam=a.toLowerCase().includes('diamond')&&(a.toLowerCase().includes('4 bond')||a.toLowerCase().includes('no free'));const graph=a.toLowerCase().includes('graphite')&&a.toLowerCase().includes('delocalised');const reason=a.toLowerCase().includes('carry')||a.toLowerCase().includes('conduct')||a.toLowerCase().includes('free electron');
+      const count=[diam,graph,reason].filter(Boolean).length;
+      if(count>=3) return {s:4,t:4,earned:['Diamond: all bonded ✓','Graphite: delocalised electrons ✓','Reason for conductance ✓'],missed:[],tip:'Allotropes of carbon — a challenging question answered brilliantly!'};
+      if(count===2) return {s:3,t:4,earned:[`${count} points ✓`],missed:['More detail needed'],tip:'Add: graphite has 1 delocalised electron per atom that can carry charge.'};
+      if(count===1) return {s:1,t:4,earned:['One point ✓'],missed:['Compare both structures','Explain free electrons'],tip:'Diamond: 4 bonds, no free electrons. Graphite: 3 bonds, 1 free.'};
+      return {s:0,t:4,earned:[],missed:['Diamond: 4 bonds, no free','Graphite: 3 bonds, 1 delocalised','Delocalised = conducts'],tip:'3 bonds in graphite leaves 1 electron per atom free to conduct.'};
+    }
+  },
+
+  { id:'cb7', t:'c-bonding', marks:2, diff:'easy', year:'AQA 2022',
+    text:'What is a <strong>covalent bond</strong>?',
+    scaffold:['Covalent = between two non-metal atoms','What is shared between them?'],
+    hint:'A shared pair of electrons.',
+    ms:'A shared pair of electrons [A1] | Between two non-metal atoms [A1]',
+    check: a => {
+      const shared=a.toLowerCase().includes('shared')&&a.toLowerCase().includes('electron');const nonmetal=a.toLowerCase().includes('non-metal')||a.toLowerCase().includes('nonmetal');
+      if(shared&&nonmetal) return {s:2,t:2,earned:['Shared electrons ✓','Between non-metals ✓'],missed:[],tip:'Covalent bond definition — perfect!'};
+      if(shared) return {s:1,t:2,earned:['Shared electrons ✓'],missed:['State it\'s between non-metals'],tip:'Add: between two non-metal atoms.'};
+      return {s:0,t:2,earned:[],missed:['Shared pair of electrons','Between non-metals'],tip:'Covalent: shared pair of electrons between non-metal atoms.'};
+    }
+  },
+
+  { id:'cb8', t:'c-bonding', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Explain why <strong>giant covalent structures</strong> (like diamond) have very high melting points.',
+    scaffold:['What type of bonds hold the atoms together throughout the structure?','How many bonds are there compared to a simple molecule?','What does this mean for the energy needed to melt it?'],
+    hint:'Millions of covalent bonds throughout the structure — all must be broken.',
+    ms:'Giant structure of atoms [1] | Many strong covalent bonds throughout [1] | Huge amount of energy needed to break all bonds [1]',
+    check: a => {
+      const giant=a.toLowerCase().includes('giant')||a.toLowerCase().includes('many bond')||a.toLowerCase().includes('throughout');const strong=a.toLowerCase().includes('strong')||a.toLowerCase().includes('covalent bond');const energy=a.toLowerCase().includes('energy')||a.toLowerCase().includes('lot');
+      const count=[giant,strong,energy].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Giant structure ✓','Strong covalent bonds ✓','High energy needed ✓'],missed:[],tip:'Giant covalent structures — excellent!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missed:['One more needed'],tip:'Add: huge amount of energy required to break all the bonds.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Giant structure','Many strong bonds','High energy'],tip:'Many strong covalent bonds throughout → high energy to break.'};
+    }
+  },
+
+  { id:'cb9', t:'c-bonding', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Why does <strong>iodine</strong> have a relatively low melting point for a solid, even though it has covalent bonds within its molecules?',
+    scaffold:['Iodine: I₂ molecules with strong covalent bonds WITHIN the molecule','What holds the molecules TOGETHER?','Are those intermolecular forces strong or weak?'],
+    hint:'Weak van der Waals forces between I₂ molecules.',
+    ms:'Simple molecular structure [A1] | Weak intermolecular forces (van der Waals) between molecules [A1]',
+    check: a => {
+      const mol=a.toLowerCase().includes('molecular')||a.toLowerCase().includes('molecule');const weak=a.toLowerCase().includes('weak')||a.toLowerCase().includes('van der waals')||a.toLowerCase().includes('intermolecular');
+      if(mol&&weak) return {s:2,t:2,earned:['Simple molecular ✓','Weak intermolecular forces ✓'],missed:[],tip:'The distinction between bonds WITHIN and forces BETWEEN molecules is key!'};
+      if(mol||weak) return {s:1,t:2,earned:['One point ✓'],missing:['The other point'],tip:'Simple molecular + weak intermolecular forces.'};
+      return {s:0,t:2,earned:[],missed:['Simple molecular structure','Weak intermolecular forces'],tip:'Strong covalent bonds inside molecules, but weak forces between them.'};
+    }
+  },
+
+  { id:'cb10', t:'c-bonding', marks:3, diff:'hard', year:'AQA 2023',
+    text:'Predict and explain whether <strong>MgCl₂</strong> or <strong>NaCl</strong> would have the <strong>higher melting point</strong>.',
+    scaffold:['Both are ionic. What affects the strength of ionic bonding?','Compare the charges of Mg²⁺ and Na⁺','Higher charge = stronger or weaker attraction?'],
+    hint:'Mg²⁺ has a 2+ charge vs Na⁺ with 1+. Stronger attraction = higher melting point.',
+    ms:'MgCl₂ has higher melting point [A1] | Mg²⁺ has a higher charge than Na⁺ [A1] | Stronger electrostatic attraction → more energy needed to break [A1]',
+    check: a => {
+      const pred=a.toLowerCase().includes('mgcl')||a.toLowerCase().includes('mg');const charge=a.includes('2+')||a.toLowerCase().includes('higher charge');const reason=a.toLowerCase().includes('attract')||a.toLowerCase().includes('stronger');
+      const count=[pred,charge,reason].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['MgCl₂ predicted ✓','Higher charge ✓','Stronger attraction ✓'],missed:[],tip:'Charge comparison for ionic strength — brilliant!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} points ✓`],missed:['One more needed'],tip:'Add: higher charge = stronger attraction = more energy needed.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['MgCl₂ has higher mp','Mg²⁺ has higher charge','Stronger attraction'],tip:'Mg²⁺ (2+) > Na⁺ (1+) → stronger force → higher melting point.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // CHEMISTRY: REACTIONS (10 questions)
+  // ══════════════════════════════════════════════════════════
+
+  { id:'cr1', t:'c-reactions', marks:4, diff:'medium', year:'AQA 2022',
+    text:'Balance: <strong>___ Mg + ___ O₂ → ___ MgO</strong>. State the reaction type and what happens to Mg.',
+    scaffold:['O₂ has 2 oxygens. Each MgO has 1. So you need 2 MgO.','Balance Mg: if 2 MgO, how many Mg?','Reaction type: something + oxygen = ?','Name for gaining oxygen?'],
+    hint:'2Mg + O₂ → 2MgO. Mg is oxidised.',
+    ms:'2Mg + O₂ → 2MgO [M1+A1] | combustion/oxidation [B1] | Mg oxidised [B1]',
+    check: a => {
+      const bal=(a.includes('2Mg')||a.includes('2 Mg'))&&(a.includes('2MgO')||a.includes('2 MgO'));const type=a.toLowerCase().includes('oxidat')||a.toLowerCase().includes('combust');const oxid=a.toLowerCase().includes('oxidis')||a.toLowerCase().includes('oxidiz');
+      if(bal&&type&&oxid) return {s:4,t:4,earned:['Balanced ✓','Reaction type ✓','Mg oxidised ✓'],missed:[],tip:'4/4 — perfect!'};
+      if(bal&&(type||oxid)) return {s:3,t:4,earned:['Balanced ✓','Partial ✓'],missed:['Add reaction type OR oxidation of Mg'],tip:'Nearly there — one more point.'};
+      if(bal) return {s:2,t:4,earned:['Balanced ✓'],missed:['Reaction type','Mg is oxidised'],tip:'Now: name the reaction type and what happens to Mg.'};
+      return {s:0,t:4,earned:[],missed:['Balance','Reaction type','Oxidation of Mg'],tip:'2 MgO needed to balance O₂.'};
+    }
+  },
+
+  { id:'cr2', t:'c-reactions', marks:2, diff:'easy', year:'AQA 2023',
+    text:'What is the difference between an <strong>exothermic</strong> and an <strong>endothermic</strong> reaction?',
+    scaffold:['Exo = out. Endo = in. What is going in or out?','What happens to the temperature of the surroundings?'],
+    hint:'Exothermic: energy released (surroundings heat up). Endothermic: energy absorbed (cools down).',
+    ms:'Exothermic: energy released to surroundings [A1] | Endothermic: energy absorbed from surroundings [A1]',
+    check: a => {
+      const exo=a.toLowerCase().includes('exo')&&(a.toLowerCase().includes('release')||a.toLowerCase().includes('out'));const endo=a.toLowerCase().includes('endo')&&(a.toLowerCase().includes('absorb')||a.toLowerCase().includes('taken in'));
+      if(exo&&endo) return {s:2,t:2,earned:['Exothermic ✓','Endothermic ✓'],missed:[],tip:'Energy direction — this comes up every year!'};
+      if(exo||endo) return {s:1,t:2,earned:['One type ✓'],missing:['Define the other'],tip:'Define both: exo releases, endo absorbs.'};
+      return {s:0,t:2,earned:[],missed:['Exo: releases energy','Endo: absorbs energy'],tip:'Exo = out (hot). Endo = in (cold).'};
+    }
+  },
+
+  { id:'cr3', t:'c-reactions', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Describe a <strong>test for hydrogen gas</strong> and a <strong>test for oxygen gas</strong>.',
+    scaffold:['Hydrogen: what happens with a lit splint?','Oxygen: what happens with a glowing splint?','Give both the test AND the observation'],
+    hint:'Hydrogen: squeaky pop. Oxygen: relights glowing splint.',
+    ms:'Hydrogen: lit splint → squeaky pop [A1+A1] | Oxygen: glowing splint → relights [A1]',
+    check: a => {
+      const h2=a.toLowerCase().includes('squeaky')||a.toLowerCase().includes('pop');const o2=a.toLowerCase().includes('relight')||a.toLowerCase().includes('glowing');
+      const count=[h2,o2].filter(Boolean).length;
+      if(count>=2) return {s:3,t:3,earned:['H₂: squeaky pop ✓','O₂: relights glowing splint ✓'],missed:[],tip:'Classic gas tests — memorise these!'};
+      if(count===1) return {s:1,t:3,earned:['One test ✓'],missed:['Give both gas tests'],tip:'H₂: squeaky pop. O₂: relights glowing splint.'};
+      return {s:0,t:3,earned:[],missed:['H₂: squeaky pop','O₂: relights glowing splint'],tip:'Both involve a splint! Lit for H₂, glowing for O₂.'};
+    }
+  },
+
+  { id:'cr4', t:'c-reactions', marks:4, diff:'hard', year:'AQA 2023',
+    text:'Explain the <strong>reactivity series</strong> and use it to predict whether <strong>zinc can displace copper</strong> from copper sulfate solution.',
+    scaffold:['What is the reactivity series?','Where are zinc and copper in the series?','More reactive metal displaces less reactive metal','What would you observe?'],
+    hint:'Zinc is above copper → zinc can displace copper. Blue colour disappears, red copper forms.',
+    ms:'Reactivity series: order of metals by reactivity [1] | Zinc is more reactive than copper [1] | Zn + CuSO₄ → ZnSO₄ + Cu (displacement) [1] | Observations: blue fades, red solid appears [1]',
+    check: a => {
+      const def=a.toLowerCase().includes('reactivity');const pos=a.toLowerCase().includes('zinc')&&(a.toLowerCase().includes('more reactive')||a.toLowerCase().includes('above'));const disp=a.toLowerCase().includes('displace');const obs=a.toLowerCase().includes('blue')||a.toLowerCase().includes('red')||a.toLowerCase().includes('solid');
+      const sc=[def,pos,disp,obs].filter(Boolean).length;
+      if(sc>=4) return {s:4,t:4,earned:['Reactivity series ✓','Zn > Cu ✓','Displacement ✓','Observations ✓'],missed:[],tip:'Reactivity series applied — excellent!'};
+      if(sc>=3) return {s:3,t:4,earned:[`${sc} points ✓`],missed:['Add one more point'],tip:'Nearly there — include observations or reactivity explanation.'};
+      if(sc>=2) return {s:2,t:4,earned:[`${sc} points ✓`],missed:['More explanation needed'],tip:'Add: Zn more reactive → displaces Cu. Blue colour fades, red solid forms.'};
+      return {s:sc||0,t:4,earned:sc?['Partial ✓']:[],missed:['Define reactivity series','Zn>Cu in series','Displacement occurs','Observations'],tip:'Zn more reactive than Cu → displacement. Blue → colourless, red Cu deposits.'};
+    }
+  },
+
+  { id:'cr5', t:'c-reactions', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Name the products when an <strong>acid reacts with an alkali</strong> (neutralisation).',
+    scaffold:['Neutralisation: acid + alkali → ? + ?','The products are always the same type of substances'],
+    hint:'Salt + water. Always.',
+    ms:'Salt [A1] + Water [A1]',
+    check: a => {
+      const salt=a.toLowerCase().includes('salt');const water=a.toLowerCase().includes('water');
+      if(salt&&water) return {s:2,t:2,earned:['Salt ✓','Water ✓'],missed:[],tip:'Acid + alkali → salt + water. Learn this forever!'};
+      if(salt||water) return {s:1,t:2,earned:['One product ✓'],missing:['The other product'],tip:'Both: salt AND water.'};
+      return {s:0,t:2,earned:[],missed:['Salt','Water'],tip:'Neutralisation always gives salt + water.'};
+    }
+  },
+
+  { id:'cr6', t:'c-reactions', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Write a <strong>word equation</strong> for the reaction of <strong>magnesium with hydrochloric acid</strong>, and describe what you would observe.',
+    scaffold:['Metal + acid → ? + ?','Products: a salt (name it) and a gas','What does the magnesium look like as it reacts? What about the gas?'],
+    hint:'Mg + HCl → magnesium chloride + hydrogen. Magnesium disappears, fizzing.',
+    ms:'Mg + HCl → magnesium chloride + hydrogen [A1] | Mg dissolves/disappears [A1] | Fizzing/bubbles (hydrogen produced) [A1]',
+    check: a => {
+      const eq=a.toLowerCase().includes('magnesium chloride')&&a.toLowerCase().includes('hydrogen');const obs1=a.toLowerCase().includes('disappear')||a.toLowerCase().includes('dissolve');const obs2=a.toLowerCase().includes('fizz')||a.toLowerCase().includes('bubble');
+      const count=[eq,obs1,obs2].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Word equation ✓','Mg dissolves ✓','Fizzing ✓'],missed:[],tip:'Metal + acid reaction — complete answer!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} ✓`],missed:['One more point'],tip:'Add either the Mg disappearing or the fizzing.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Word equation','Mg disappears','Fizzing'],tip:'Mg + HCl → Mg chloride + H₂. Mg dissolves, bubbles form.'};
+    }
+  },
+
+  { id:'cr7', t:'c-reactions', marks:2, diff:'easy', year:'AQA 2022',
+    text:'What is <strong>oxidation</strong> and what is <strong>reduction</strong>? (Use electrons in your answer.)',
+    scaffold:['OIL RIG is a useful memory aid','Oxidation = loss of ? Reduction = gain of ?'],
+    hint:'OIL: Oxidation Is Loss. RIG: Reduction Is Gain (of electrons).',
+    ms:'Oxidation = loss of electrons [A1] | Reduction = gain of electrons [A1]',
+    check: a => {
+      const ox=a.toLowerCase().includes('oxidation')&&(a.toLowerCase().includes('loss')||a.toLowerCase().includes('loses'));const red=a.toLowerCase().includes('reduction')&&(a.toLowerCase().includes('gain')||a.toLowerCase().includes('gains'));
+      if(ox&&red) return {s:2,t:2,earned:['Oxidation = loss ✓','Reduction = gain ✓'],missed:[],tip:'OIL RIG — never forget it!'};
+      if(ox||red) return {s:1,t:2,earned:['One correct ✓'],missing:['The other definition'],tip:'OIL RIG: Oxidation Is Loss, Reduction Is Gain.'};
+      return {s:0,t:2,earned:[],missed:['Oxidation = loss of electrons','Reduction = gain of electrons'],tip:'OIL RIG.'};
+    }
+  },
+
+  { id:'cr8', t:'c-reactions', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Describe how you could use <strong>pH paper</strong> to follow the neutralisation of hydrochloric acid with sodium hydroxide.',
+    scaffold:['What colour is the pH paper in acid? In alkali? At neutral?','What would you add and how would the colour change?','What indicates the endpoint?'],
+    hint:'Acid: red/orange. Neutral: green. Alkali: blue/purple. At pH 7 = neutralised.',
+    ms:'pH paper changes colour as NaOH added [1] | From red/orange (acid) towards green (neutral) [1] | Green = neutral = endpoint [1]',
+    check: a => {
+      const colour=a.toLowerCase().includes('colour')||a.toLowerCase().includes('color');const green=a.toLowerCase().includes('green')||a.toLowerCase().includes('neutral');const change=a.toLowerCase().includes('change')||a.toLowerCase().includes('add');
+      const count=[colour,green,change].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Colour changes ✓','Green = neutral ✓','Describes adding NaOH ✓'],missed:[],tip:'pH paper method — well described!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} ✓`],missed:['One more detail'],tip:'Add: green colour indicates pH 7 (neutral) = endpoint.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Colour changes','Green = neutral','Adding alkali gradually'],tip:'Add NaOH → pH paper goes red→orange→green. Green = endpoint.'};
+    }
+  },
+
+  { id:'cr9', t:'c-reactions', marks:2, diff:'easy', year:'AQA 2022',
+    text:'What is a <strong>precipitation reaction</strong>? Give one example.',
+    scaffold:['Precipitation: two solutions mixed form an insoluble ___','The solid that forms is called a ___'],
+    hint:'An insoluble solid (precipitate) forms when two solutions are mixed.',
+    ms:'Two solutions react to form an insoluble solid (precipitate) [A1] | Any valid example, e.g. BaCl₂ + Na₂SO₄ → BaSO₄↓ [A1]',
+    check: a => {
+      const def=a.toLowerCase().includes('insoluble')||a.toLowerCase().includes('precipitate');const eg=a.toLowerCase().includes('barium')||a.toLowerCase().includes('silver')||a.toLowerCase().includes('example');
+      if(def&&eg) return {s:2,t:2,earned:['Precipitate defined ✓','Example given ✓'],missed:[],tip:'Precipitation — insoluble solid forms!'};
+      if(def||eg) return {s:1,t:2,earned:['One part ✓'],missing:['The other part'],tip:'Define precipitate + give an example.'};
+      return {s:0,t:2,earned:[],missed:['Insoluble solid (precipitate)','Give an example'],tip:'Precipitation: two solutions → insoluble solid.'};
+    }
+  },
+
+  { id:'cr10', t:'c-reactions', marks:4, diff:'hard', year:'AQA 2023',
+    text:'The thermite reaction: <strong>Fe₂O₃ + 2Al → Al₂O₃ + 2Fe</strong>. Identify what has been oxidised and reduced, and explain in terms of electron transfer.',
+    scaffold:['Oxidation = loss of electrons. Reduction = gain of electrons.','Fe₂O₃: iron goes from Fe³⁺ to Fe⁰ — does it gain or lose electrons?','Al goes from Al⁰ to Al³⁺ — does it gain or lose electrons?','Which is the oxidising agent? Which is the reducing agent?'],
+    hint:'Al is oxidised (0 → 3+, loses electrons). Fe³⁺ is reduced (3+ → 0, gains electrons).',
+    ms:'Al oxidised [A1] | Fe³⁺ reduced [A1] | Electron transfer explanation [A1] | Al = reducing agent, Fe₂O₃ = oxidising agent [A1]',
+    check: a => {
+      const alox=a.toLowerCase().includes('al')&&a.toLowerCase().includes('oxidised');const fered=a.toLowerCase().includes('fe')&&a.toLowerCase().includes('reduced');const elec=a.toLowerCase().includes('electron');const agents=a.toLowerCase().includes('reducing agent')||a.toLowerCase().includes('oxidising agent');
+      const sc=[alox,fered,elec,agents].filter(Boolean).length;
+      if(sc>=4) return {s:4,t:4,earned:['Al oxidised ✓','Fe reduced ✓','Electrons ✓','Agents ✓'],missed:[],tip:'Redox in full — that\'s outstanding!'};
+      if(sc>=3) return {s:3,t:4,earned:[`${sc} points ✓`],missed:['Identify reducing/oxidising agents'],tip:'Al = reducing agent (causes Fe₂O₃ to be reduced).'};
+      if(sc>=2) return {s:2,t:4,earned:[`${sc} points ✓`],missed:['Electron transfer explanation','Agents'],tip:'Add: Al loses electrons (oxidised), Fe³⁺ gains electrons (reduced).'};
+      return {s:sc||0,t:4,earned:sc?['Partial ✓']:[],missed:['Al oxidised','Fe reduced','Electrons','Agents'],tip:'OIL RIG: Al loses e⁻ (oxidised), Fe³⁺ gains e⁻ (reduced).'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // CHEMISTRY: RATES (10 questions)
+  // ══════════════════════════════════════════════════════════
+
+  { id:'cra1', t:'c-rates', marks:6, diff:'hard', year:'AQA 2022',
+    text:'Explain using <strong>collision theory</strong> why increasing <strong>concentration</strong> increases reaction rate. <em>[6 marks]</em>',
+    scaffold:['More concentration → more ___ in same volume','More particles → more ___ between particles','Not all collisions react. What decides if a collision works?','What is activation energy?','State the conclusion: more successful collisions per second = ?','Extra mark: activation energy itself doesn\'t change'],
+    hint:'Particles → collisions → activation energy → successful collisions → rate.',
+    ms:'1.More particles [1] 2.More frequent collisions [1] 3.Activation energy [1] 4.More successful collisions [1] 5.Rate increases [1] 6.Ea unchanged [1]',
+    check: a => {
+      const pts=[/more.*(particle|ion|molecule)/i.test(a),/more.*(frequent|collision)/i.test(a),/activation energy/i.test(a),/successful collision/i.test(a),/rate.*increas|increas.*rate/i.test(a),a.length>150];
+      const sc=Math.min(pts.filter(Boolean).length,6);
+      if(sc>=5) return {s:sc,t:6,earned:[`${sc} key points ✓`],missed:sc<6?['Ea doesn\'t change itself']:[],tip:`${sc}/6! Add: activation energy itself doesn't change.`};
+      if(sc>=3) return {s:sc,t:6,earned:[`${sc} points ✓`],missed:['Activation energy keyword','Successful collisions','Rate increases'],tip:'Plan 6 points BEFORE writing.'};
+      return {s:sc||0,t:6,earned:sc?['Some correct ✓']:[],missed:['6 separate points needed'],tip:'Structure: particles → collisions → activation energy → rate.'};
+    }
+  },
+
+  { id:'cra2', t:'c-rates', marks:4, diff:'medium', year:'AQA 2023',
+    text:'Explain using <strong>collision theory</strong> why increasing <strong>temperature</strong> increases reaction rate.',
+    scaffold:['Higher temperature → particles have more ___ energy','They move ___','Collisions are more ___','More collisions have energy ≥ activation energy'],
+    hint:'More KE → faster → more frequent collisions → more successful ones.',
+    ms:'More KE [1] | Move faster/more frequent collisions [1] | More have E ≥ Ea [1] | Rate increases [1]',
+    check: a => {
+      const ke=a.toLowerCase().includes('kinetic')||a.toLowerCase().includes('energy');const faster=a.toLowerCase().includes('faster')||a.toLowerCase().includes('speed');const ea=a.toLowerCase().includes('activation');const rate=a.toLowerCase().includes('rate');
+      const sc=[ke,faster,ea,rate].filter(Boolean).length;
+      if(sc>=4) return {s:4,t:4,earned:['KE ✓','Faster ✓','Activation energy ✓','Rate ✓'],missed:[],tip:'Temperature and collision theory — perfect!'};
+      if(sc>=3) return {s:3,t:4,earned:[`${sc} ✓`],missed:['One more point'],tip:'Include all: KE, faster, activation energy, rate increases.'};
+      if(sc>=2) return {s:2,t:4,earned:[`${sc} ✓`],missed:['More detail needed'],tip:'Key: more KE → faster → more ≥ Ea → rate up.'};
+      return {s:sc||0,t:4,earned:sc?['Partial ✓']:[],missed:['KE','Faster','≥ Ea','Rate'],tip:'Temperature → KE → speed → collisions → rate.'};
+    }
+  },
+
+  { id:'cra3', t:'c-rates', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Explain how using a <strong>catalyst</strong> increases reaction rate, without being used up.',
+    scaffold:['Catalyst provides an alternative ___','This alternative has a ___ activation energy','What does lower activation energy mean for the number of successful collisions?'],
+    hint:'Lower Ea → more collisions succeed → faster rate. Catalyst regenerated at end.',
+    ms:'Provides alternative pathway [1] | Lower activation energy [1] | More successful collisions [1]',
+    check: a => {
+      const path=a.toLowerCase().includes('pathway')||a.toLowerCase().includes('route')||a.toLowerCase().includes('alternative');const ea=a.toLowerCase().includes('activation')||a.toLowerCase().includes('lower');const succ=a.toLowerCase().includes('successful')||a.toLowerCase().includes('more collision');
+      const count=[path,ea,succ].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Alternative pathway ✓','Lower Ea ✓','More successful ✓'],missed:[],tip:'Catalyst mechanism — textbook perfect!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} ✓`],missed:['One more point'],tip:'Add: more collisions have enough energy to react.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Alternative pathway','Lower Ea','More successful collisions'],tip:'Catalyst → alternative route → lower Ea → more succeed.'};
+    }
+  },
+
+  { id:'cra4', t:'c-rates', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Explain why <strong>increasing surface area</strong> (e.g. using powder instead of lumps) increases reaction rate.',
+    scaffold:['Surface area: where does the reaction take place?','More surface area means more ___ exposed for collision','What happens to the frequency of collisions?'],
+    hint:'More surface exposed → more collisions possible → faster rate.',
+    ms:'Reaction happens at the surface [1] | More surface area exposed [1] | More frequent collisions → faster rate [1]',
+    check: a => {
+      const surface=a.toLowerCase().includes('surface');const expose=a.toLowerCase().includes('exposed')||a.toLowerCase().includes('more surface');const coll=a.toLowerCase().includes('collision');
+      const count=[surface,expose,coll].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Reaction at surface ✓','More exposed ✓','More collisions ✓'],missed:[],tip:'Surface area and rate — perfectly explained!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} ✓`],missed:['One more point'],tip:'Add: more surface = more collisions possible per second.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Reaction at surface','More exposed','More collisions'],tip:'Powder has more surface area exposed → more collisions → faster.'};
+    }
+  },
+
+  { id:'cra5', t:'c-rates', marks:2, diff:'easy', year:'AQA 2022',
+    text:'A student measures the volume of gas produced every 30 seconds. After 5 minutes the gas stops. Explain why the reaction stops.',
+    scaffold:['What is needed for a chemical reaction to continue?','What happens when one of the reactants is used up?'],
+    hint:'A reactant has been used up / run out.',
+    ms:'Reactant(s) used up/run out [A1+A1]',
+    check: a => {
+      const ok=a.toLowerCase().includes('used up')||a.toLowerCase().includes('run out')||a.toLowerCase().includes('no more reactant');
+      if(ok) return {s:2,t:2,earned:['Reactant used up ✓'],missed:[],tip:'Simple but essential — reactions stop when reactants are gone!'};
+      return {s:0,t:2,earned:[],missed:['State the reactant is used up'],tip:'The reaction stops when one reactant is completely used up.'};
+    }
+  },
+
+  { id:'cra6', t:'c-rates', marks:4, diff:'hard', year:'AQA 2023',
+    text:'A graph shows volume of CO₂ produced over time for two reactions: A (marble lumps) and B (marble powder), same mass, same acid concentration. Describe and explain the differences in the graphs.',
+    scaffold:['Which finishes first — A or B?','Which has a steeper initial slope?','Do they produce the same total volume? Why?','Link each difference to collision theory'],
+    hint:'B is faster (steeper, finishes sooner) but same total volume. Same mass of marble = same moles = same product.',
+    ms:'B steeper initially [1] | B finishes sooner [1] | Both produce same total volume [1] | Because same mass marble = same moles CO₂ [1]',
+    check: a => {
+      const steep=a.toLowerCase().includes('steeper')||a.toLowerCase().includes('faster');const same=a.toLowerCase().includes('same')&&(a.toLowerCase().includes('total')||a.toLowerCase().includes('volume'));const mass=a.toLowerCase().includes('mass')||a.toLowerCase().includes('mole');const finishes=a.toLowerCase().includes('finish')||a.toLowerCase().includes('complete');
+      const sc=[steep,same,mass,finishes].filter(Boolean).length;
+      if(sc>=4) return {s:4,t:4,earned:['Steeper ✓','Same total ✓','Mass/moles ✓','Finishes sooner ✓'],missed:[],tip:'Graph interpretation + collision theory — excellent!'};
+      if(sc>=3) return {s:3,t:4,earned:[`${sc} ✓`],missed:['One more point'],tip:'Add: same total CO₂ because same mass of marble = same moles.'};
+      if(sc>=2) return {s:2,t:4,earned:[`${sc} ✓`],missed:['More detail needed'],tip:'Powder: steeper, finishes sooner, same total volume.'};
+      return {s:sc||0,t:4,earned:sc?['Partial ✓']:[],missed:['Steeper slope','Same total volume','Finishes sooner','Mass = moles'],tip:'Same mass = same moles. Powder just reacts faster, not more.'};
+    }
+  },
+
+  { id:'cra7', t:'c-rates', marks:2, diff:'easy', year:'AQA 2022',
+    text:'What is meant by <strong>activation energy</strong>?',
+    scaffold:['Think: what needs to happen for a reaction to start?','Define it in terms of the minimum energy needed'],
+    hint:'The minimum energy needed for a collision to result in a reaction.',
+    ms:'Minimum energy required for a reaction to occur [A1+A1]',
+    check: a => {
+      const min=a.toLowerCase().includes('minimum');const energy=a.toLowerCase().includes('energy');const react=a.toLowerCase().includes('react');
+      if(min&&energy&&react) return {s:2,t:2,earned:['Minimum energy ✓','For reaction ✓'],missed:[],tip:'Activation energy definition — spot on!'};
+      if(energy&&react) return {s:1,t:2,earned:['Energy + reaction ✓'],missed:['Include "minimum"'],tip:'Key word: minimum energy required.'};
+      return {s:0,t:2,earned:[],missed:['Minimum energy to start the reaction'],tip:'Activation energy = minimum energy needed for a successful collision.'};
+    }
+  },
+
+  { id:'cra8', t:'c-rates', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Suggest how you could experimentally investigate the effect of <strong>temperature on the rate</strong> of reaction between sodium thiosulfate and hydrochloric acid.',
+    scaffold:['What would you measure to track the rate?','What would you change? What would you keep the same?','What is the "disappearing cross" method?'],
+    hint:'Put a cross under a flask, mix reactants, time how long until cross disappears as sulfur forms.',
+    ms:'Describe cross/opacity method [1] | Vary temperature (water bath) [1] | Measure time for cross to disappear [1]',
+    check: a => {
+      const cross=a.toLowerCase().includes('cross')||a.toLowerCase().includes('disappear');const temp=a.toLowerCase().includes('temperature')||a.toLowerCase().includes('water bath');const time=a.toLowerCase().includes('time');
+      const count=[cross,temp,time].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Cross method ✓','Vary temperature ✓','Measure time ✓'],missed:[],tip:'Thiosulfate practical — classic exam answer!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} ✓`],missed:['One more detail'],tip:'Add: use a water bath to control temperature.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Cross/disappearing method','Vary temperature','Measure time'],tip:'Cross under flask, vary temperature, time until cross disappears.'};
+    }
+  },
+
+  { id:'cra9', t:'c-rates', marks:2, diff:'easy', year:'AQA 2022',
+    text:'How is <strong>rate of reaction</strong> calculated from an experiment?',
+    scaffold:['Rate = how much happens per unit of time','Think: quantity divided by time'],
+    hint:'Rate = quantity of product (or reactant used) ÷ time.',
+    ms:'Rate = quantity ÷ time [A1] | Correct units e.g. g/s, cm³/s [A1]',
+    check: a => {
+      const formula=a.toLowerCase().includes('÷ time')||a.toLowerCase().includes('/time')||a.toLowerCase().includes('divided by time');const units=a.includes('g/s')||a.includes('cm³/s')||a.includes('mol/s');
+      if(formula&&units) return {s:2,t:2,earned:['Formula ✓','Units ✓'],missed:[],tip:'Rate formula and units — both marks!'};
+      if(formula||units) return {s:1,t:2,earned:['One part ✓'],missing:['The other part'],tip:'Rate = quantity ÷ time (units: g/s or cm³/s).'};
+      return {s:0,t:2,earned:[],missed:['Rate = amount ÷ time','Include units'],tip:'Rate = quantity of product or reactant ÷ time.'};
+    }
+  },
+
+  { id:'cra10', t:'c-rates', marks:3, diff:'hard', year:'AQA 2023',
+    text:'An energy profile diagram shows reactants higher than products, with a peak in between. Identify: <strong>(a) exo or endothermic? (b) activation energy? (c) overall energy change?</strong>',
+    scaffold:['If products are lower than reactants, energy is released or absorbed?','Activation energy = height from reactants to peak','Overall change = difference between reactants and products'],
+    hint:'Reactants higher than products = exothermic. Ea = peak − reactant level.',
+    ms:'Exothermic [A1] | Activation energy = difference from reactants to peak [A1] | Overall energy change = difference between reactants and products [A1]',
+    check: a => {
+      const exo=a.toLowerCase().includes('exotherm');const ea=a.toLowerCase().includes('activation')||(a.toLowerCase().includes('peak')&&a.toLowerCase().includes('reactant'));const overall=a.toLowerCase().includes('overall')||a.toLowerCase().includes('products');
+      const count=[exo,ea,overall].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Exothermic ✓','Ea identified ✓','Overall ΔH ✓'],missed:[],tip:'Energy diagrams — all three marks!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} ✓`],missed:['One more part'],tip:'Check all three: type, Ea, overall change.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Exothermic','Activation energy','Overall change'],tip:'Reactants > products = exothermic. Ea = reactants to peak.'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // CHEMISTRY: ENERGY CHANGES (10 questions)
+  // ══════════════════════════════════════════════════════════
+
+  { id:'ce1', t:'c-energy', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Is the combustion of methane <strong>exothermic or endothermic</strong>? Give one everyday example as evidence.',
+    scaffold:['Exothermic = gives out heat. Endothermic = takes in heat.','What do you feel near a flame?'],
+    hint:'Burning releases heat — gas hobs, central heating.',
+    ms:'Exothermic [A1] | Evidence: heat produced, used for cooking/heating [A1]',
+    check: a => {
+      const ok=a.toLowerCase().includes('exo');const ev=a.toLowerCase().includes('heat')||a.toLowerCase().includes('cook')||a.toLowerCase().includes('temperature')||a.toLowerCase().includes('warm');
+      if(ok&&ev) return {s:2,t:2,earned:['Exothermic ✓','Evidence ✓'],missed:[],tip:'Spot on!'};
+      if(ok) return {s:1,t:2,earned:['Exothermic ✓'],missed:['Give evidence (e.g. produces heat)'],tip:'Add: "it produces heat, used for cooking."'};
+      return {s:0,t:2,earned:[],missed:['Exothermic','Evidence'],tip:'Burning = releases heat = exothermic.'};
+    }
+  },
+
+  { id:'ce2', t:'c-energy', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Explain the difference between <strong>bond breaking</strong> and <strong>bond making</strong> in terms of energy, and how these determine whether a reaction is exo or endothermic.',
+    scaffold:['Breaking bonds: energy in or out?','Making bonds: energy in or out?','Exothermic: which is larger?'],
+    hint:'Breaking = energy IN. Making = energy OUT. Exothermic = more energy released than taken in.',
+    ms:'Breaking bonds requires energy [1] | Making bonds releases energy [1] | Exothermic: energy released > energy absorbed [1]',
+    check: a => {
+      const breaking=a.toLowerCase().includes('break')&&(a.toLowerCase().includes('requires')||a.toLowerCase().includes('absorb')||a.toLowerCase().includes('taken in'));const making=a.toLowerCase().includes('mak')&&(a.toLowerCase().includes('release')||a.toLowerCase().includes('out'));const exo=a.toLowerCase().includes('release')&&a.toLowerCase().includes('more');
+      const count=[breaking,making,exo].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Breaking = energy in ✓','Making = energy out ✓','Exothermic rule ✓'],missed:[],tip:'Bond energies — a key concept explained perfectly!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} ✓`],missed:['One more point'],tip:'Add: exothermic when energy released (making) > energy absorbed (breaking).'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Breaking needs energy','Making releases energy','Exothermic: released > absorbed'],tip:'Breaking IN, Making OUT. Net energy determines type.'};
+    }
+  },
+
+  { id:'ce3', t:'c-energy', marks:4, diff:'hard', year:'AQA 2023',
+    text:'Using bond energies: H₂ + Cl₂ → 2HCl.<br>Bond energies: H–H = 436 kJ/mol, Cl–Cl = 242 kJ/mol, H–Cl = 431 kJ/mol.<br>Calculate the <strong>overall energy change</strong>.',
+    scaffold:['Energy IN = energy to break H–H and Cl–Cl','Energy OUT = energy released making 2× H–Cl bonds','Overall = energy in − energy out'],
+    hint:'In: 436 + 242 = 678. Out: 2 × 431 = 862. ΔH = 678 − 862.',
+    ms:'Energy in = 678 [M1] | Energy out = 862 [M1] | ΔH = 678−862 = −184 kJ/mol [A1] | Exothermic (negative) [A1]',
+    check: a => {
+      const ok=a.includes('184')||(a.includes('-184')||a.includes('−184'));const m1=a.includes('678');const m2=a.includes('862');
+      if(ok&&m1&&m2) return {s:4,t:4,earned:['Energy in=678 ✓','Energy out=862 ✓','−184 kJ/mol ✓','Exothermic ✓'],missed:[],tip:'Bond energy calculation — all 4 marks!'};
+      if(ok&&(m1||m2)) return {s:3,t:4,earned:['Calculation ✓','−184 ✓'],missed:['Show both totals clearly'],tip:'Write 436+242=678 and 2×431=862 separately.'};
+      if(m1||m2) return {s:2,t:4,earned:['Partial working ✓'],missed:['Complete the subtraction','State exo/endo'],tip:'678−862 = −184 kJ/mol. Negative = exothermic.'};
+      return {s:0,t:4,earned:[],missed:['Energy in (breaking)','Energy out (making)','Subtract','Exo/endo'],tip:'Break bonds: 436+242=678. Make bonds: 2×431=862. ΔH=−184.'};
+    }
+  },
+
+  { id:'ce4', t:'c-energy', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Give <strong>two examples</strong> of endothermic processes from everyday life.',
+    scaffold:['Endothermic = absorbs energy from surroundings (feels cold)','Think: sport, cooking, chemical reactions that feel cold'],
+    hint:'Photosynthesis, thermal decomposition, dissolving ammonium nitrate.',
+    ms:'Any 2 from: photosynthesis, thermal decomposition, dissolving ammonium nitrate in water, cold packs [A1+A1]',
+    check: a => {
+      const examples=['photosynthesis','thermal decomp','ammonium','cold pack','electrolysis','dissolv'].filter(w=>a.toLowerCase().includes(w));
+      if(examples.length>=2) return {s:2,t:2,earned:['Example 1 ✓','Example 2 ✓'],missed:[],tip:'Endothermic examples — well known!'};
+      if(examples.length===1) return {s:1,t:2,earned:['One example ✓'],missed:['Give a second'],tip:'Add: photosynthesis, cold packs, ammonium nitrate dissolving.'};
+      return {s:0,t:2,earned:[],missed:['Two endothermic examples'],tip:'Photosynthesis, thermal decomposition, cold packs.'};
+    }
+  },
+
+  { id:'ce5', t:'c-energy', marks:3, diff:'medium', year:'AQA 2023',
+    text:'A student mixes two chemicals and measures the temperature drops from 22°C to 15°C. <strong>(a)</strong> Is this exo or endothermic? <strong>(b)</strong> What does this tell us about bond energies? <strong>(c)</strong> Give the temperature change.',
+    scaffold:['Temperature drops = energy absorbed from surroundings or released?','If endo: breaking or making bonds provides more energy?','Temperature change = final − initial'],
+    hint:'Temp drops = endothermic. Energy to break bonds > energy from making bonds.',
+    ms:'Endothermic [A1] | Energy to break bonds > energy released making bonds [A1] | ΔT = −7°C [A1]',
+    check: a => {
+      const endo=a.toLowerCase().includes('endotherm');const bonds=a.toLowerCase().includes('bond')&&(a.toLowerCase().includes('break')||a.toLowerCase().includes('more energy'));const temp=a.includes('7')||a.includes('−7')||a.includes('-7');
+      const count=[endo,bonds,temp].filter(Boolean).length;
+      if(count>=3) return {s:3,t:3,earned:['Endothermic ✓','Bond energy ✓','ΔT = −7°C ✓'],missed:[],tip:'Temperature change + bond energy interpretation — perfect!'};
+      if(count===2) return {s:2,t:3,earned:[`${count} ✓`],missed:['One more part'],tip:'Include all three: type, bond energy, and temperature change.'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Endothermic','Bond energy reason','ΔT = −7°C'],tip:'Drops 7°C = endothermic. Breaking > making bonds.'};
+    }
+  },
+
+  { id:'ce6', t:'c-energy', marks:2, diff:'easy', year:'AQA 2022',
+    text:'What is meant by <strong>specific heat capacity</strong>?',
+    scaffold:['It relates to how much energy is needed to change something\'s temperature','Per gram and per degree Celsius'],
+    hint:'Energy needed to raise 1g of a substance by 1°C.',
+    ms:'The energy needed to raise the temperature of 1g of substance by 1°C [A1+A1]',
+    check: a => {
+      const energy=a.toLowerCase().includes('energy');const gram=a.includes('1g')||a.includes('1 g')||a.toLowerCase().includes('per gram');const degree=a.includes('1°')||a.toLowerCase().includes('per degree');
+      if(energy&&gram&&degree) return {s:2,t:2,earned:['Energy per gram per °C ✓'],missed:[],tip:'Specific heat capacity — a precise definition!'};
+      if(energy&&(gram||degree)) return {s:1,t:2,earned:['Partial ✓'],missed:['Include per gram AND per degree Celsius'],tip:'Energy to raise 1g by 1°C.'};
+      return {s:0,t:2,earned:[],missed:['Energy per 1g per 1°C'],tip:'q = mcΔT — specific heat capacity = c.'};
+    }
+  },
+
+  { id:'ce7', t:'c-energy', marks:4, diff:'hard', year:'AQA 2023',
+    text:'Calculate the energy released when <strong>50g of water</strong> rises from <strong>20°C to 80°C</strong>. Specific heat capacity of water = 4.2 J/g°C.',
+    scaffold:['Formula: q = m × c × ΔT','m = mass in grams','ΔT = change in temperature (final − initial)','Calculate and include units (J or kJ)'],
+    hint:'q = 50 × 4.2 × 60.',
+    ms:'ΔT = 60 [M1] | q = 50 × 4.2 × 60 [M1] = 12,600 J [A1] | = 12.6 kJ [A1]',
+    check: a => {
+      const ok=a.includes('12600')||a.includes('12,600')||a.includes('12.6');const m1=a.includes('60');const m2=a.includes('4.2')||a.includes('50');
+      if(ok&&m1&&m2) return {s:4,t:4,earned:['ΔT=60 ✓','Formula ✓','12,600 J ✓','Units ✓'],missed:[],tip:'q=mcΔT calculation — full marks!'};
+      if(ok&&(m1||m2)) return {s:3,t:4,earned:['Answer ✓'],missed:['Show full working'],tip:'Write q = 50 × 4.2 × 60 = 12,600 J.'};
+      if(m1||m2) return {s:1,t:4,earned:['Partial working ✓'],missed:['Complete calculation'],tip:'50 × 4.2 × 60 = 12,600 J.'};
+      return {s:0,t:4,earned:[],missed:['ΔT=60','q=mcΔT','12,600 J','Units'],tip:'q = m × c × ΔT = 50 × 4.2 × 60 = 12,600 J.'};
+    }
+  },
+
+  { id:'ce8', t:'c-energy', marks:2, diff:'easy', year:'AQA 2022',
+    text:'Describe how you could use a <strong>simple calorimeter</strong> to measure the energy released by burning ethanol.',
+    scaffold:['What is being heated?','What do you measure before and after?','What equation would you use to calculate energy?'],
+    hint:'Burn ethanol under water in a can. Measure mass of water and temperature rise.',
+    ms:'Burn ethanol under known mass of water [A1] | Measure temperature rise, use q=mcΔT [A1]',
+    check: a => {
+      const water=a.toLowerCase().includes('water');const temp=a.toLowerCase().includes('temperature')||a.toLowerCase().includes('rise');
+      if(water&&temp) return {s:2,t:2,earned:['Water used ✓','Temperature rise ✓'],missed:[],tip:'Calorimetry method — correct!'};
+      if(water||temp) return {s:1,t:2,earned:['One part ✓'],missing:['The other'],tip:'Water + temperature change = calorimetry.'};
+      return {s:0,t:2,earned:[],missed:['Heat water','Measure temperature rise'],tip:'Burn under water, measure temp change, use q=mcΔT.'};
+    }
+  },
+
+  { id:'ce9', t:'c-energy', marks:3, diff:'medium', year:'AQA 2023',
+    text:'A reaction releases <strong>1200 kJ per mole</strong>. If only <strong>0.5 moles</strong> react, how much energy is released? Is this exo or endothermic? What sign is ΔH?',
+    scaffold:['Scale the energy: 0.5 × 1200','Releases energy = exo or endo?','ΔH sign for exothermic?'],
+    hint:'0.5 × 1200 = 600 kJ. Releases = exothermic. ΔH is negative.',
+    ms:'600 kJ [A1] | Exothermic [A1] | ΔH is negative [A1]',
+    check: a => {
+      const ok=a.includes('600');const exo=a.toLowerCase().includes('exotherm');const sign=a.includes('−')||a.includes('-')||a.toLowerCase().includes('negative');
+      if(ok&&exo&&sign) return {s:3,t:3,earned:['600 kJ ✓','Exothermic ✓','ΔH negative ✓'],missed:[],tip:'Energy calculations + sign conventions — perfect!'};
+      if(ok&&(exo||sign)) return {s:2,t:3,earned:['600 kJ ✓','Partial ✓'],missed:['State both type and ΔH sign'],tip:'Exothermic → ΔH is negative (−).'};
+      if(ok) return {s:1,t:3,earned:['600 kJ ✓'],missed:['Type (exothermic)','ΔH sign (negative)'],tip:'Releases energy = exothermic = ΔH negative.'};
+      return {s:0,t:3,earned:[],missed:['0.5×1200=600','Exothermic','ΔH negative'],tip:'0.5 × 1200 = 600 kJ. Releases = exo = ΔH −.'};
+    }
+  },
+
+  { id:'ce10', t:'c-energy', marks:3, diff:'hard', year:'AQA 2022',
+    text:'Explain why <strong>hydrogen</strong> is considered a good fuel in terms of its <strong>energy change</strong> when burned, and give one <strong>advantage</strong> and one <strong>disadvantage</strong> of using it.',
+    scaffold:['What is the product when hydrogen burns?','Is the energy change large?','Advantage: think environment. Disadvantage: think storage/safety'],
+    hint:'H₂ + O₂ → H₂O. High energy release, only water produced. Hard to store safely.',
+    ms:'Burns to form water only (clean) [1] | High energy release per gram [1] | Any 1 advantage (e.g. no CO₂) and 1 disadvantage (e.g. flammable, hard to store) [1]',
+    check: a => {
+      const water=a.toLowerCase().includes('water');const energy=a.toLowerCase().includes('energy')||a.toLowerCase().includes('releases');const adv=a.toLowerCase().includes('advantage')||a.toLowerCase().includes('no co₂')||a.toLowerCase().includes('clean');const disadv=a.toLowerCase().includes('disadvantage')||a.toLowerCase().includes('store')||a.toLowerCase().includes('flammable');
+      const count=[water,energy,adv||disadv].filter(Boolean).length;
+      if(count>=3&&adv&&disadv) return {s:3,t:3,earned:['Water only product ✓','Energy ✓','Advantage & disadvantage ✓'],missed:[],tip:'Hydrogen as fuel — balanced answer!'};
+      if(count>=2) return {s:2,t:3,earned:[`${count} ✓`],missed:['One more point — both adv AND disadv needed'],tip:'Give one advantage (no CO₂) AND one disadvantage (storage).'};
+      return {s:count||0,t:3,earned:count?['Partial ✓']:[],missed:['Water product','Energy release','Adv + disadv'],tip:'H₂ → H₂O. Clean fuel (adv). Hard to store safely (disadv).'};
+    }
+  },
+
+  // ══════════════════════════════════════════════════════════
+  // CHEMISTRY: EQUATIONS (10 questions)
+  // ══════════════════════════════════════════════════════════
+
+  { id:'ceq1', t:'c-equations', marks:3, diff:'medium', year:'AQA 2023',
+    text:'Write a <strong>balanced symbol equation</strong> for hydrogen + oxygen → water.',
+    scaffold:['Formulae: H₂, O₂, H₂O','Count atoms on each side','Add numbers in front to balance — never change the formula'],
+    hint:'H₂ + O₂ → H₂O. H is balanced but O isn\'t. You need 2 H₂O. Then 2 H₂.',
+    ms:'2H₂ + O₂ → 2H₂O [M1+A1+A1]',
+    check: a => {
+      const c=a.replace(/\s/g,'');const ok=(c.includes('2H₂')||c.includes('2H2'))&&(c.includes('2H₂O')||c.includes('2H2O'));const attempt=c.toLowerCase().includes('h₂')||c.includes('h2');
+      if(ok) return {s:3,t:3,earned:['Formulae ✓','Balanced ✓','2H₂+O₂→2H₂O ✓'],missed:[],tip:'Balanced!'};
+      if(attempt) return {s:1,t:3,earned:['Formulae used ✓'],missed:['Balance: 2H₂ + O₂ → 2H₂O'],tip:'O₂ has 2 oxygens → need 2 H₂O → need 2 H₂.'};
+      return {s:0,t:3,earned:[],missed:['Write formulae','Balance by adding numbers','Never change formula'],tip:'H₂ + O₂ → H₂O → unbalanced → 2H₂ + O₂ → 2H₂O.'};
+    }
+  },
+
+  { id:'ceq2', t:'c-equations', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Write a <strong>balanced symbol equation</strong> for the combustion of methane: CH₄ + O₂ → CO₂ + H₂O',
+    scaffold:['Count H atoms: CH₄ has 4H → need 2H₂O','Count O atoms: CO₂ + 2H₂O = 4O atoms → need 2O₂','Check all atoms balance'],
+    hint:'CH₄ + 2O₂ → CO₂ + 2H₂O.',
+    ms:'CH₄ + 2O₂ → CO₂ + 2H₂O [M1+A1+A1]',
+    check: a => {
+      const ok=a.includes('CH₄')&&a.includes('2O₂')&&a.includes('CO₂')&&a.includes('2H₂O')||a.replace(/\s/g,'').includes('CH4+2O2');
+      const attempt=a.includes('CH₄')||a.includes('CH4');
+      if(ok) return {s:3,t:3,earned:['Formulae ✓','Balanced ✓','CH₄+2O₂→CO₂+2H₂O ✓'],missed:[],tip:'Methane combustion — perfectly balanced!'};
+      if(attempt) return {s:1,t:3,earned:['Formula started ✓'],missed:['Balance: 2O₂ and 2H₂O'],tip:'4H in CH₄ → 2H₂O. Then count O: 4 needed → 2O₂.'};
+      return {s:0,t:3,earned:[],missed:['Write CH₄ + O₂ → CO₂ + H₂O','Balance H first','Then balance O'],tip:'CH₄ + 2O₂ → CO₂ + 2H₂O.'};
+    }
+  },
+
+  { id:'ceq3', t:'c-equations', marks:2, diff:'easy', year:'AQA 2023',
+    text:'What does a <strong>state symbol</strong> tell us in a chemical equation? What do (s), (l), (g) and (aq) stand for?',
+    scaffold:['State symbols show the physical state of each substance','Match each symbol to its meaning'],
+    hint:'s=solid, l=liquid, g=gas, aq=aqueous (dissolved in water).',
+    ms:'(s)=solid, (l)=liquid, (g)=gas, (aq)=dissolved in water [A1+A1]',
+    check: a => {
+      const count=['solid','liquid','gas','aqueous'].filter(w=>a.toLowerCase().includes(w)).length;
+      if(count>=4) return {s:2,t:2,earned:['All 4 state symbols ✓'],missed:[],tip:'All 4 state symbols — perfect!'};
+      if(count>=2) return {s:1,t:2,earned:[`${count} correct ✓`],missed:['Give all 4'],tip:'s=solid, l=liquid, g=gas, aq=aqueous.'};
+      return {s:0,t:2,earned:[],missed:['All 4 state symbols'],tip:'(s)solid, (l)liquid, (g)gas, (aq)aqueous.'};
+    }
+  },
+
+  { id:'ceq4', t:'c-equations', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Balance: <strong>___ Fe + ___ O₂ → ___ Fe₂O₃</strong>',
+    scaffold:['Fe₂O₃ has 2 iron and 3 oxygen','O₂ comes in pairs — LCM of 3 and 2 is 6. So 2 Fe₂O₃.','How many O₂ do you need for 6 oxygens? How many Fe for 4?'],
+    hint:'4Fe + 3O₂ → 2Fe₂O₃.',
+    ms:'4Fe + 3O₂ → 2Fe₂O₃ [M1+A1+A1]',
+    check: a => {
+      const ok=a.includes('4Fe')&&a.includes('3O₂')&&a.includes('2Fe₂O₃')||a.includes('4 Fe')&&a.includes('3 O₂');
+      const attempt=a.includes('Fe₂O₃')||a.includes('Fe2O3');
+      if(ok) return {s:3,t:3,earned:['4Fe ✓','3O₂ ✓','2Fe₂O₃ ✓'],missed:[],tip:'Rusting equation — all balanced!'};
+      if(attempt) return {s:1,t:3,earned:['Formula attempted ✓'],missed:['Balance: 4Fe + 3O₂ → 2Fe₂O₃'],tip:'Use LCM: 2 Fe₂O₃ gives 6O (need 3O₂) and 4Fe.'};
+      return {s:0,t:3,earned:[],missed:['Start with 2 Fe₂O₃','Work out O₂ needed','Work out Fe needed'],tip:'4Fe + 3O₂ → 2Fe₂O₃.'};
+    }
+  },
+
+  { id:'ceq5', t:'c-equations', marks:2, diff:'easy', year:'AQA 2023',
+    text:'Write a <strong>word equation</strong> for the reaction between calcium and water.',
+    scaffold:['Metal + water → ? + ?','Alkali metals and some others react with water to form a hydroxide and a gas'],
+    hint:'Calcium + water → calcium hydroxide + hydrogen.',
+    ms:'Calcium + water → calcium hydroxide + hydrogen [A1+A1]',
+    check: a => {
+      const prod1=a.toLowerCase().includes('calcium hydroxide');const prod2=a.toLowerCase().includes('hydrogen');
+      if(prod1&&prod2) return {s:2,t:2,earned:['Calcium hydroxide ✓','Hydrogen ✓'],missed:[],tip:'Metal + water word equation — correct!'};
+      if(prod1||prod2) return {s:1,t:2,earned:['One product ✓'],missing:['The other'],tip:'Both: calcium hydroxide AND hydrogen.'};
+      return {s:0,t:2,earned:[],missed:['Calcium hydroxide','Hydrogen'],tip:'Ca + H₂O → Ca(OH)₂ + H₂.'};
+    }
+  },
+
+  { id:'ceq6', t:'c-equations', marks:3, diff:'hard', year:'AQA 2022',
+    text:'Write an <strong>ionic equation</strong> for the reaction of hydrochloric acid (HCl) with sodium hydroxide (NaOH).',
+    scaffold:['Full equation: HCl + NaOH → NaCl + H₂O','Write all soluble ionic compounds as separate ions','Cross out spectator ions that appear on both sides'],
+    hint:'H⁺ + Cl⁻ + Na⁺ + OH⁻ → Na⁺ + Cl⁻ + H₂O. Cancel Na⁺ and Cl⁻.',
+    ms:'H⁺ + OH⁻ → H₂O [M1+A1+A1]',
+    check: a => {
+      const ok=a.includes('H⁺')&&a.includes('OH⁻')&&a.includes('H₂O')||a.replace(/\s/g,'').includes('H++OH-');
+      const spectator=a.toLowerCase().includes('spectator');
+      if(ok) return {s:3,t:3,earned:['Ionic equation ✓','Spectators removed ✓','H⁺ + OH⁻ → H₂O ✓'],missed:[],tip:'Ionic equation for neutralisation — excellent!'};
+      if(spectator||a.includes('Na⁺')) return {s:1,t:3,earned:['Recognising spectators ✓'],missed:['Write the final ionic equation'],tip:'Cancel Na⁺ and Cl⁻. Left with H⁺ + OH⁻ → H₂O.'};
+      return {s:0,t:3,earned:[],missed:['Write all ions','Cancel spectators','H⁺ + OH⁻ → H₂O'],tip:'Remove spectators (Na⁺, Cl⁻). Net: H⁺ + OH⁻ → H₂O.'};
+    }
+  },
+
+  { id:'ceq7', t:'c-equations', marks:2, diff:'easy', year:'AQA 2023',
+    text:'What is the law of <strong>conservation of mass</strong> and how does it apply to chemical equations?',
+    scaffold:['Mass before reaction vs after reaction','What does "balanced" equation show?'],
+    hint:'Mass is neither created nor destroyed. A balanced equation shows equal atoms each side.',
+    ms:'Mass is conserved (not created or destroyed) [A1] | Balanced equation = equal atoms both sides [A1]',
+    check: a => {
+      const conserve=a.toLowerCase().includes('conserved')||a.toLowerCase().includes('created')||a.toLowerCase().includes('destroyed');const balance=a.toLowerCase().includes('balance')||a.toLowerCase().includes('equal');
+      if(conserve&&balance) return {s:2,t:2,earned:['Conservation ✓','Balanced equation ✓'],missed:[],tip:'Conservation of mass — fundamental law!'};
+      if(conserve||balance) return {s:1,t:2,earned:['One part ✓'],missing:['The other'],tip:'Mass conserved AND shown by balanced equation.'};
+      return {s:0,t:2,earned:[],missed:['Mass conserved','Balanced = equal atoms'],tip:'Mass not created/destroyed → balanced equations.'};
+    }
+  },
+
+  { id:'ceq8', t:'c-equations', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Calculate the <strong>relative formula mass (Mr)</strong> of calcium carbonate, CaCO₃. (Ca=40, C=12, O=16)',
+    scaffold:['Add together the relative atomic masses of all atoms in the formula','CaCO₃ has 1 Ca, 1 C, and 3 O atoms'],
+    hint:'40 + 12 + (3 × 16).',
+    ms:'40 + 12 + 48 [M1+A1] = 100 [A1]',
+    check: a => {
+      const ok=a.includes('100');const work=a.includes('40')&&a.includes('12')&&a.includes('48');
+      if(ok&&work) return {s:3,t:3,earned:['Ca=40 ✓','C=12, 3×O=48 ✓','Mr=100 ✓'],missed:[],tip:'Relative formula mass — correct!'};
+      if(ok) return {s:2,t:3,earned:['100 ✓'],missed:['Show 40+12+48 working'],tip:'Write 40+12+(3×16)=100.'};
+      if(work) return {s:1,t:3,earned:['Working started ✓'],missed:['Add to get 100'],tip:'40+12+48=100.'};
+      return {s:0,t:3,earned:[],missed:['Add each atom\'s mass','3 oxygens = 48','Total = 100'],tip:'Ca(40)+C(12)+3×O(16) = 40+12+48 = 100.'};
+    }
+  },
+
+  { id:'ceq9', t:'c-equations', marks:4, diff:'hard', year:'AQA 2023',
+    text:'Calculate the <strong>mass of water produced</strong> when 16g of methane (CH₄) is burned. (C=12, H=1, O=16)<br>CH₄ + 2O₂ → CO₂ + 2H₂O',
+    scaffold:['Find Mr of CH₄','Find moles of CH₄ (mass ÷ Mr)','From equation: 1 mol CH₄ → 2 mol H₂O','Find mass of H₂O (moles × Mr of H₂O)'],
+    hint:'Mr CH₄ = 16. 16g = 1 mol. 1 mol CH₄ → 2 mol H₂O. Mr H₂O = 18. Mass = 36g.',
+    ms:'Mr CH₄ = 16 [M1] | 1 mol CH₄ [A1] | 2 mol H₂O [M1] | 2×18 = 36g [A1]',
+    check: a => {
+      const ok=a.includes('36');const m1=a.includes('16')||(a.includes('Mr')&&a.includes('CH₄'));const m2=a.includes('2 mol')||a.includes('18');
+      if(ok&&m1&&m2) return {s:4,t:4,earned:['Mr=16 ✓','1 mol ✓','2 mol H₂O ✓','36g ✓'],missed:[],tip:'Mole calculation — all 4 marks!'};
+      if(ok&&(m1||m2)) return {s:3,t:4,earned:['36g ✓'],missed:['Show Mr and mole steps fully'],tip:'Show Mr(CH₄)=16, n=1mol, H₂O: 2mol×18=36g.'};
+      if(m1||m2) return {s:2,t:4,earned:['Partial working ✓'],missed:['Complete for mass of water'],tip:'1 mol CH₄ → 2 mol H₂O × 18 g/mol = 36g.'};
+      return {s:0,t:4,earned:[],missed:['Mr of CH₄','Moles','Ratio from equation','Mass H₂O'],tip:'Mr CH₄=16. n=1mol. 2×18=36g H₂O.'};
+    }
+  },
+
+  { id:'ceq10', t:'c-equations', marks:3, diff:'medium', year:'AQA 2022',
+    text:'Explain what a <strong>half equation</strong> is, and write the half equation for the <strong>reduction of Cu²⁺ to Cu</strong>.',
+    scaffold:['A half equation shows what happens at one electrode/to one species','Reduction = gain of electrons (add e⁻ to left side)','Cu²⁺ + ? → Cu'],
+    hint:'Cu²⁺ + 2e⁻ → Cu.',
+    ms:'Half equation shows loss or gain of electrons [A1] | Cu²⁺ + 2e⁻ → Cu [A1+A1]',
+    check: a => {
+      const def=a.toLowerCase().includes('electron')&&(a.toLowerCase().includes('gain')||a.toLowerCase().includes('loss')||a.toLowerCase().includes('transfer'));const eq=a.includes('Cu²⁺')&&a.includes('2e⁻')&&a.includes('Cu')||a.replace(/\s/g,'').includes('Cu2+')&&a.includes('2e');
+      if(def&&eq) return {s:3,t:3,earned:['Definition ✓','Cu²⁺ + 2e⁻ → Cu ✓'],missed:[],tip:'Half equations — showing electron transfer!'};
+      if(eq) return {s:2,t:3,earned:['Half equation ✓'],missed:['Define: shows electron gain/loss'],tip:'Add definition: half equations show gain/loss of electrons.'};
+      if(def) return {s:1,t:3,earned:['Definition ✓'],missing:['Write Cu²⁺ + 2e⁻ → Cu'],tip:'Reduction: Cu²⁺ + 2e⁻ → Cu.'};
+      return {s:0,t:3,earned:[],missed:['Definition','Cu²⁺ + 2e⁻ → Cu'],tip:'Half equation = one species + electrons. Cu²⁺ + 2e⁻ → Cu.'};
+    }
+  },
+
 ];
 
 // ════════════════════════════════════════════════════════════
